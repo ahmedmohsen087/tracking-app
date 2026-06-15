@@ -10,6 +10,12 @@ class AppStrings {
   static String get error => 'error'.tr();
   static String get retry => 'retry'.tr();
 
+  // Splash / onboarding
+  static String get welcomeToFloweryRiderApp =>
+      'welcomeToFloweryRiderApp'.tr();
+  static String get login => 'login'.tr();
+  static String get applyNow => 'applyNow'.tr();
+
   // Secure storage - token
   static String get tokenEmpty => 'tokenEmpty'.tr();
   static String get tokenWriteFailed => 'tokenWriteFailed'.tr();
@@ -26,6 +32,12 @@ class AppStrings {
   static String get rememberMeWriteFailed => 'rememberMeWriteFailed'.tr();
   static String get rememberMeReadFailed => 'rememberMeReadFailed'.tr();
   static String get rememberMeDeleteFailed => 'rememberMeDeleteFailed'.tr();
+
+  // Secure storage - onboarding
+  static String get seenOnboardingWriteFailed =>
+      'seenOnboardingWriteFailed'.tr();
+  static String get seenOnboardingReadFailed =>
+      'seenOnboardingReadFailed'.tr();
 
   // Secure storage - general
   static String get clearStorageFailed => 'clearStorageFailed'.tr();

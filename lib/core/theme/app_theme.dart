@@ -1,4 +1,4 @@
-import 'package:flowery_driver_app/core/theme/text_styles.dart';
+import 'package:flowery_rider_app/core/theme/text_styles.dart';
 import 'package:flutter/material.dart';
 
 import 'app_colors.dart';

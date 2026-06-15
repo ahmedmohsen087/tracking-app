@@ -7,6 +7,10 @@
   "error": "Error",
   "retry": "Retry",
 
+  "welcomeToFloweryRiderApp": "Welcome to\nFlowery rider app",
+  "login": "Login",
+  "applyNow": "Apply now",
+
   "tokenEmpty": "Token cannot be empty",
   "tokenWriteFailed": "Failed to save the authentication token",
   "tokenReadFailed": "Failed to read the authentication token",
@@ -20,6 +24,9 @@
   "rememberMeWriteFailed": "Failed to save the remember me preference",
   "rememberMeReadFailed": "Failed to read the remember me preference",
   "rememberMeDeleteFailed": "Failed to remove the remember me preference",
+
+  "seenOnboardingWriteFailed": "Failed to save the onboarding status",
+  "seenOnboardingReadFailed": "Failed to read the onboarding status",
 
   "clearStorageFailed": "Failed to clear local storage",
 

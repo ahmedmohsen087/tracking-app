@@ -1,5 +1,5 @@
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
-import 'package:flowery_driver_app/config/cache/smart_cache_interceptor.dart';
+import 'package:flowery_rider_app/config/cache/smart_cache_interceptor.dart';
 import 'package:injectable/injectable.dart';
 
 @module

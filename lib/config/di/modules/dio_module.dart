@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
-import 'package:flowery_driver_app/config/auth/auth_interceptor.dart';
-import 'package:flowery_driver_app/config/cache/smart_cache_interceptor.dart';
-import 'package:flowery_driver_app/core/values/endpoints.dart';
+import 'package:flowery_rider_app/config/auth/auth_interceptor.dart';
+import 'package:flowery_rider_app/config/cache/smart_cache_interceptor.dart';
+import 'package:flowery_rider_app/core/values/endpoints.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';

@@ -1,5 +1,5 @@
-import 'package:flowery_driver_app/core/utils/validation/app_regex.dart';
-import 'package:flowery_driver_app/core/values/app_strings.dart';
+import 'package:flowery_rider_app/core/utils/validation/app_regex.dart';
+import 'package:flowery_rider_app/core/values/app_strings.dart';
 
 abstract class AppValidations {
   static String? validateFirstName(String firstName) {

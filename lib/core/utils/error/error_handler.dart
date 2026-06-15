@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:flowery_driver_app/config/secure_storage/local_storage_exception.dart';
-import 'package:flowery_driver_app/core/values/app_strings.dart';
+import 'package:flowery_rider_app/config/secure_storage/local_storage_exception.dart';
+import 'package:flowery_rider_app/core/values/app_strings.dart';
 
 abstract class ErrorHandler {
   static String handle(Object error) {

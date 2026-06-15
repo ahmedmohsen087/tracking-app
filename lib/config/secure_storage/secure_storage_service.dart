@@ -1,4 +1,4 @@
-import 'package:flowery_driver_app/core/values/app_strings.dart';
+import 'package:flowery_rider_app/core/values/app_strings.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injectable/injectable.dart';
 
@@ -128,6 +128,37 @@ class SecureStorageService {
     } catch (e, s) {
       throw LocalStorageException(
         AppStrings.rememberMeDeleteFailed,
+        error: e,
+        stackTrace: s,
+      );
+    }
+  }
+
+  Future<void> writeSeenOnboarding(bool value) async {
+    try {
+      await _secureStorage.write(
+        key: SecureStorageKeys.seenOnboarding,
+        value: value.toString(),
+      );
+    } catch (e, s) {
+      throw LocalStorageException(
+        AppStrings.seenOnboardingWriteFailed,
+        error: e,
+        stackTrace: s,
+      );
+    }
+  }
+
+  Future<bool> readSeenOnboarding() async {
+    try {
+      final value = await _secureStorage.read(
+        key: SecureStorageKeys.seenOnboarding,
+      );
+
+      return value == 'true';
+    } catch (e, s) {
+      throw LocalStorageException(
+        AppStrings.seenOnboardingReadFailed,
         error: e,
         stackTrace: s,
       );

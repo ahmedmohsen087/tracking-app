@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:flowery_driver_app/config/auth/auth_manager.dart';
-import 'package:flowery_driver_app/core/values/api_parameters.dart';
+import 'package:flowery_rider_app/config/auth/auth_manager.dart';
+import 'package:flowery_rider_app/core/values/api_parameters.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable

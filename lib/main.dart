@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flowery_driver_app/config/auth/auth_manager.dart';
-import 'package:flowery_driver_app/config/di/di.dart';
-import 'package:flowery_driver_app/my_app.dart';
+import 'package:flowery_rider_app/config/auth/auth_manager.dart';
+import 'package:flowery_rider_app/config/di/di.dart';
+import 'package:flowery_rider_app/my_app.dart';
 import 'package:flutter/material.dart';
 
 Future<void> main() async {

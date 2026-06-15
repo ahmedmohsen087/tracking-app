@@ -7,6 +7,10 @@
   "error": "حدث خطأ",
   "retry": "إعادة المحاولة",
 
+  "welcomeToFloweryRiderApp": "مرحباً بك في\nتطبيق Flowery للسائقين",
+  "login": "تسجيل الدخول",
+  "applyNow": "تقدم الآن",
+
   "tokenEmpty": "رمز المصادقة غير موجود",
   "tokenWriteFailed": "فشل حفظ رمز المصادقة",
   "tokenReadFailed": "فشل قراءة رمز المصادقة",
@@ -20,6 +24,9 @@
   "rememberMeWriteFailed": "فشل حفظ تفضيل تذكرني",
   "rememberMeReadFailed": "فشل قراءة تفضيل تذكرني",
   "rememberMeDeleteFailed": "فشل حذف تفضيل تذكرني",
+
+  "seenOnboardingWriteFailed": "فشل حفظ حالة التعريف بالتطبيق",
+  "seenOnboardingReadFailed": "فشل قراءة حالة التعريف بالتطبيق",
 
   "clearStorageFailed": "فشل مسح بيانات التخزين المحلي",
 

@@ -1,4 +1,4 @@
-name: flowery_driver_app
+name: flowery_rider_app
 description: "A new Flutter project."
 publish_to: "none"
 
@@ -25,6 +25,7 @@ dependencies:
   injectable: ^3.0.0
   json_annotation: ^4.12.0
   lottie: ^3.3.3
+  package_info_plus: ^10.1.0
   permission_handler: ^12.0.3
   pretty_dio_logger: ^1.4.0
   retrofit: ^4.9.2
@@ -34,7 +35,9 @@ dependencies:
 dev_dependencies:
   bloc_test: ^10.0.0
   build_runner: ^2.13.1
+  flutter_launcher_icons: ^0.14.4
   flutter_lints: ^6.0.0
+  flutter_native_splash: ^2.4.8
   flutter_test:
     sdk: flutter
   injectable_generator: ^3.0.2
@@ -62,3 +65,14 @@ flutter_launcher_icons:
   android: true
   ios: true
   remove_alpha_ios: true
+  image_path: "assets/icon/icon.png"
+
+flutter_native_splash:
+  color: "#D21E6A"
+  image: assets/images/app_icon.png
+  android_12:
+    image: assets/images/app_icon.png
+    color: "#D21E6A"
+  android: true
+  ios: true
+  web: false

@@ -1,6 +1,6 @@
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
-import 'package:flowery_driver_app/config/secure_storage/secure_storage_service.dart';
-import 'package:flowery_driver_app/core/values/app_strings.dart';
+import 'package:flowery_rider_app/config/secure_storage/secure_storage_service.dart';
+import 'package:flowery_rider_app/core/values/app_strings.dart';
 import 'package:injectable/injectable.dart';
 
 @lazySingleton
