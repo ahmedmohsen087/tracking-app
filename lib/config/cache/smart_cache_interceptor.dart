@@ -9,19 +9,19 @@ class SmartCacheInterceptor extends Interceptor {
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    if (options.method.toUpperCase() != 'GET') {
-      handler.next(options);
-      return;
-    }
+    // if (options.method.toUpperCase() != 'GET') {
+    //   handler.next(options);
+    //   return;
+    // }
 
-    final path = options.uri.path;
+    // final path = options.uri.path;
 
-    if (path.contains(_homeSegment)) {
-      options.extra.addAll(homeOptions.toExtra());
-    }
+    // if (path.contains(_homeSegment)) {
+    //   options.extra.addAll(homeOptions.toExtra());
+    // }
 
-    handler.next(options);
+    // handler.next(options);
   }
 
-  static final _homeSegment = Uri.parse(Endpoints.home).path;
+  // static final _homeSegment = Uri.parse(Endpoints.home).path;
 }
