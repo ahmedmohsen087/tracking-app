@@ -1,0 +1,52 @@
+{
+  "appName": "تطبيق التتبع",
+  "routeNotFound": "الصفحة غير موجودة",
+  "loading": "جاري التحميل...",
+  "cancel": "إلغاء",
+  "close": "إغلاق",
+  "error": "حدث خطأ",
+  "retry": "إعادة المحاولة",
+
+  "tokenEmpty": "رمز المصادقة غير موجود",
+  "tokenWriteFailed": "فشل حفظ رمز المصادقة",
+  "tokenReadFailed": "فشل قراءة رمز المصادقة",
+  "tokenDeleteFailed": "فشل حذف رمز المصادقة",
+
+  "userIdEmpty": "معرف المستخدم غير موجود",
+  "userIdWriteFailed": "فشل حفظ معرف المستخدم",
+  "userIdReadFailed": "فشل قراءة معرف المستخدم",
+  "userIdDeleteFailed": "فشل حذف معرف المستخدم",
+
+  "rememberMeWriteFailed": "فشل حفظ تفضيل تذكرني",
+  "rememberMeReadFailed": "فشل قراءة تفضيل تذكرني",
+  "rememberMeDeleteFailed": "فشل حذف تفضيل تذكرني",
+
+  "clearStorageFailed": "فشل مسح بيانات التخزين المحلي",
+
+  "firstNameRequired": "الاسم الأول مطلوب",
+  "lastNameRequired": "اسم العائلة مطلوب",
+  "nameInvalid": "يجب أن يحتوي الاسم على حروف ومسافات وشرطات فقط",
+  "nameTooShort": "يجب أن يكون الاسم مكونًا من حرفين على الأقل",
+  "nameTooLong": "يجب ألا يزيد الاسم عن 20 حرفًا",
+
+  "emailRequired": "البريد الإلكتروني مطلوب",
+  "emailInvalid": "يرجى إدخال بريد إلكتروني صحيح",
+
+  "phoneRequired": "رقم الهاتف مطلوب",
+  "phoneInvalid": "يرجى إدخال رقم هاتف صحيح",
+
+  "passwordRequired": "كلمة المرور مطلوبة",
+  "passwordWeak": "يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل، وتشمل حرف كبير وحرف صغير ورقم ورمز خاص",
+  "confirmPasswordRequired": "يرجى تأكيد كلمة المرور",
+  "passwordDoNotMatch": "كلمتا المرور غير متطابقتين",
+
+  "otpEmpty": "رمز التحقق مطلوب",
+  "otpInvalid": "يجب أن يحتوي رمز التحقق على أرقام فقط",
+  "otpLength": "يجب أن يكون رمز التحقق مكونًا من 4 أرقام",
+
+  "noInternetConnection": "لا يوجد اتصال بالإنترنت، يرجى التحقق من الشبكة",
+  "connectionTimeout": "انتهت مهلة الاتصال، يرجى المحاولة مرة أخرى",
+  "requestCancelled": "تم إلغاء الطلب",
+  "badCertificate": "فشل الاتصال الآمن",
+  "somethingWentWrong": "حدث خطأ ما، يرجى المحاولة مرة أخرى"
+}

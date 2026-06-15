@@ -1,0 +1,52 @@
+{
+  "appName": "Tracking App",
+  "routeNotFound": "Route not found",
+  "loading": "Loading...",
+  "cancel": "Cancel",
+  "close": "Close",
+  "error": "Error",
+  "retry": "Retry",
+
+  "tokenEmpty": "Token cannot be empty",
+  "tokenWriteFailed": "Failed to save the authentication token",
+  "tokenReadFailed": "Failed to read the authentication token",
+  "tokenDeleteFailed": "Failed to remove the authentication token",
+
+  "userIdEmpty": "User ID cannot be empty",
+  "userIdWriteFailed": "Failed to save the user ID",
+  "userIdReadFailed": "Failed to read the user ID",
+  "userIdDeleteFailed": "Failed to remove the user ID",
+
+  "rememberMeWriteFailed": "Failed to save the remember me preference",
+  "rememberMeReadFailed": "Failed to read the remember me preference",
+  "rememberMeDeleteFailed": "Failed to remove the remember me preference",
+
+  "clearStorageFailed": "Failed to clear local storage",
+
+  "firstNameRequired": "First name is required",
+  "lastNameRequired": "Last name is required",
+  "nameInvalid": "Name can only contain letters, spaces and hyphens",
+  "nameTooShort": "Name must be at least 2 characters",
+  "nameTooLong": "Name must be at most 20 characters",
+
+  "emailRequired": "Email is required",
+  "emailInvalid": "Please enter a valid email address",
+
+  "phoneRequired": "Phone number is required",
+  "phoneInvalid": "Please enter a valid phone number",
+
+  "passwordRequired": "Password is required",
+  "passwordWeak": "Password must be at least 8 characters and include an uppercase letter, a lowercase letter, a number and a special character",
+  "confirmPasswordRequired": "Please confirm your password",
+  "passwordDoNotMatch": "Passwords do not match",
+
+  "otpEmpty": "OTP is required",
+  "otpInvalid": "OTP must contain numbers only",
+  "otpLength": "OTP must be 4 digits",
+
+  "noInternetConnection": "No internet connection, please check your network",
+  "connectionTimeout": "Connection timed out, please try again",
+  "requestCancelled": "Request was cancelled",
+  "badCertificate": "Secure connection failed",
+  "somethingWentWrong": "Something went wrong, please try again"
+}

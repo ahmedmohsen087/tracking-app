@@ -1,5 +1,5 @@
+import 'package:flowery_driver_app/core/theme/text_styles.dart';
 import 'package:flutter/material.dart';
-import 'package:tracking_app/core/theme/text_styles.dart';
 
 import 'app_colors.dart';
 
@@ -8,10 +8,19 @@ class AppTheme {
     colorScheme: ColorScheme.fromSeed(
       seedColor: AppColors.pink,
       primary: AppColors.pink,
+      onPrimary: AppColors.white,
+      secondary: AppColors.lightPink,
+      onSecondary: AppColors.pink,
+      surface: AppColors.white,
+      onSurface: AppColors.black,
+      error: AppColors.red,
+      onError: AppColors.white,
     ),
     scaffoldBackgroundColor: AppColors.white,
     progressIndicatorTheme: ProgressIndicatorThemeData(
-      color: AppColors.lightPink,
+      color: AppColors.pink,
+      linearTrackColor: AppColors.lightPink,
+      circularTrackColor: AppColors.lightPink,
     ),
     appBarTheme: AppBarTheme(
       titleTextStyle: TextStyles.appBarTextStyle,
@@ -21,7 +30,13 @@ class AppTheme {
       leadingWidth: 40,
       foregroundColor: AppColors.black,
     ),
-    textTheme: TextTheme(bodyMedium: TextStyles.bodyRegular14),
+    textTheme: TextTheme(
+      titleLarge: TextStyles.appBarTextStyle,
+      bodyLarge: TextStyles.bodyRegular16,
+      bodyMedium: TextStyles.bodyRegular14,
+      bodySmall: TextStyles.bodyRegular12,
+      labelLarge: TextStyles.buttonTextStyle,
+    ),
     inputDecorationTheme: InputDecorationTheme(
       prefixIconConstraints: const BoxConstraints(minHeight: 24, maxHeight: 24),
       floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -46,11 +61,11 @@ class AppTheme {
       hintStyle: TextStyles.hintTextFieldStyle,
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(4),
-        borderSide: const BorderSide(color: AppColors.gray, width: 1),
+        borderSide: const BorderSide(color: AppColors.grey, width: 1),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(4),
-        borderSide: const BorderSide(color: AppColors.gray, width: 2),
+        borderSide: const BorderSide(color: AppColors.grey, width: 2),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(4),
@@ -64,26 +79,35 @@ class AppTheme {
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
-        backgroundColor: WidgetStateProperty.all(AppColors.pink),
-        foregroundColor: WidgetStateProperty.all(Colors.white),
+        backgroundColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.disabled)) {
+            return AppColors.grey;
+          }
+          return AppColors.pink;
+        }),
+        foregroundColor: WidgetStateProperty.all(AppColors.white),
         padding: WidgetStateProperty.all(
           EdgeInsets.symmetric(vertical: 10, horizontal: 24),
         ),
-        shape: WidgetStateProperty.all(
-          RoundedRectangleBorder(
+        minimumSize: WidgetStateProperty.all(Size(double.infinity, 48)),
+        shape: WidgetStateProperty.resolveWith((states) {
+          final color = states.contains(WidgetState.disabled)
+              ? AppColors.grey
+              : AppColors.pink;
+          return RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
-            side: BorderSide(color: AppColors.pink),
-          ),
-        ),
+            side: BorderSide(color: color),
+          );
+        }),
         textStyle: WidgetStateProperty.all(TextStyles.buttonTextStyle),
       ),
     ),
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: ButtonStyle(
         backgroundColor: WidgetStateProperty.all(AppColors.white),
-        foregroundColor: WidgetStateProperty.all(AppColors.gray),
+        foregroundColor: WidgetStateProperty.all(AppColors.grey),
         overlayColor: WidgetStateProperty.all(AppColors.lightPink),
-        side: WidgetStateProperty.all(BorderSide(color: AppColors.gray)),
+        side: WidgetStateProperty.all(BorderSide(color: AppColors.grey)),
         padding: WidgetStateProperty.all(
           EdgeInsets.symmetric(vertical: 10, horizontal: 24),
         ),
@@ -91,7 +115,7 @@ class AppTheme {
         shape: WidgetStateProperty.all(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
-            side: BorderSide(color: AppColors.gray),
+            side: BorderSide(color: AppColors.grey),
           ),
         ),
         textStyle: WidgetStateProperty.all(TextStyles.buttonTextStyle),
@@ -102,10 +126,14 @@ class AppTheme {
       showUnselectedLabels: true,
       showSelectedLabels: true,
       type: BottomNavigationBarType.fixed,
-      selectedIconTheme: IconThemeData(color: AppColors.gray),
-      unselectedIconTheme: IconThemeData(color: AppColors.gray),
-      selectedLabelStyle: TextStyle(color: AppColors.pink),
-      unselectedLabelStyle: TextStyle(color: AppColors.gray),
+      selectedIconTheme: IconThemeData(color: AppColors.pink),
+      unselectedIconTheme: IconThemeData(color: AppColors.grey),
+      selectedLabelStyle: TextStyles.bodyRegular12.copyWith(
+        color: AppColors.pink,
+      ),
+      unselectedLabelStyle: TextStyles.bodyRegular12.copyWith(
+        color: AppColors.grey,
+      ),
     ),
   );
 }

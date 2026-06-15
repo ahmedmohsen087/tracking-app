@@ -19,7 +19,7 @@ abstract class TextStyles {
   static const TextStyle labelTextFieldStyle = TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.w500,
-    color: AppColors.gray,
+    color: AppColors.grey,
   );
 
   static const TextStyle hintTextFieldStyle = TextStyle(
@@ -34,14 +34,6 @@ abstract class TextStyles {
     fontWeight: FontWeight.w500,
     color: AppColors.black,
     letterSpacing: 0.5,
-  );
-
-  static final TextStyle bodyRegularUnderLine13 = GoogleFonts.inter(
-    fontSize: 13,
-    fontWeight: FontWeight.w400,
-    color: AppColors.black,
-    decoration: TextDecoration.underline,
-    decorationColor: AppColors.black,
   );
 
   static const TextStyle errorTextFieldStyle = TextStyle(
@@ -61,6 +53,17 @@ abstract class TextStyles {
     fontWeight: FontWeight.w600,
     color: AppColors.white,
   );
+
+  static final TextStyle bodyRegular11 = GoogleFonts.inter(
+    fontSize: 11,
+    fontWeight: FontWeight.w400,
+    color: AppColors.black,
+  );
+  static final TextStyle bodyRegularPink11 = GoogleFonts.inter(
+    fontSize: 11,
+    fontWeight: FontWeight.w400,
+    color: AppColors.pink,
+  );
   static final TextStyle bodyRegular12 = GoogleFonts.inter(
     fontSize: 12,
     fontWeight: FontWeight.w400,
@@ -70,6 +73,13 @@ abstract class TextStyles {
     fontSize: 13,
     fontWeight: FontWeight.w400,
     color: AppColors.black,
+  );
+  static final TextStyle bodyRegularUnderLine13 = GoogleFonts.inter(
+    fontSize: 13,
+    fontWeight: FontWeight.w400,
+    color: AppColors.black,
+    decoration: TextDecoration.underline,
+    decorationColor: AppColors.black,
   );
   static final TextStyle bodyRegular14 = GoogleFonts.inter(
     fontSize: 14,
@@ -81,14 +91,9 @@ abstract class TextStyles {
     fontWeight: FontWeight.w400,
     color: AppColors.black,
   );
-  static final TextStyle bodyRegular18 = GoogleFonts.inter(
+  static final TextStyle bodyMedium18 = GoogleFonts.inter(
     fontSize: 18,
     fontWeight: FontWeight.w500,
     color: AppColors.black,
-  );
-  static final TextStyle bodyRegular11 = GoogleFonts.inter(
-    fontSize: 11,
-    fontWeight: FontWeight.w400,
-    color: AppColors.pink,
   );
 }
