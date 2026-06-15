@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
-
   await configureDependencies();
   await getIt<AuthManager>().init();
 
