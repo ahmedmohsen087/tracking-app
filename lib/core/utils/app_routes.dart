@@ -13,12 +13,7 @@ class AppRoutes {
     switch (settings.name) {
       case AppRoutsName.splashScreen:
         return MaterialPageRoute(builder: (_) => const SplashScreen());
-      case AppRoutsName.homeScreen:
-        return MaterialPageRoute(builder: (_) => const HomeScreen());
-      case AppRoutsName.ordersScreen:
-        return MaterialPageRoute(builder: (_) => const OrdersScreen());
-      case AppRoutsName.profileScreen:
-        return MaterialPageRoute(builder: (_) => const ProfileScreen());
+
       case AppRoutsName.sectionApp:
         return MaterialPageRoute(builder: (_) => const SectionApp());
       default:
