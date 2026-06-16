@@ -15,6 +15,18 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart' as _i558;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
+import '../../features/login/api/data_sources/login_remote_data_source_impl.dart'
+    as _i851;
+import '../../features/login/api/login_api_client/login_api_client.dart'
+    as _i315;
+import '../../features/login/data/data_sources/login_remote_data_source.dart'
+    as _i522;
+import '../../features/login/data/repository/login_repository_impl.dart'
+    as _i738;
+import '../../features/login/domain/repository/login_repository.dart' as _i312;
+import '../../features/login/domain/use_cases/login_use_case.dart' as _i191;
+import '../../features/login/presentation/view_model/login_view_model.dart'
+    as _i225;
 import '../auth/auth_interceptor.dart' as _i53;
 import '../auth/auth_manager.dart' as _i692;
 import '../cache/smart_cache_interceptor.dart' as _i276;
@@ -61,6 +73,24 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i276.SmartCacheInterceptor>(),
         gh<_i695.DioCacheInterceptor>(),
       ),
+    );
+    gh.lazySingleton<_i315.LoginApiClient>(
+      () => _i315.LoginApiClient(gh<_i361.Dio>()),
+    );
+    gh.factory<_i522.LoginRemoteDataSource>(
+      () => _i851.LoginRemoteDataSourceImpl(gh<_i315.LoginApiClient>()),
+    );
+    gh.factory<_i312.LoginRepository>(
+      () => _i738.LoginRepositoryImpl(
+        gh<_i522.LoginRemoteDataSource>(),
+        gh<_i692.AuthManager>(),
+      ),
+    );
+    gh.factory<_i191.LoginUseCase>(
+      () => _i191.LoginUseCase(gh<_i312.LoginRepository>()),
+    );
+    gh.factory<_i225.LoginViewModel>(
+      () => _i225.LoginViewModel(gh<_i191.LoginUseCase>()),
     );
     return this;
   }
