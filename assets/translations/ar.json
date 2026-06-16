@@ -55,5 +55,8 @@
   "connectionTimeout": "انتهت مهلة الاتصال، يرجى المحاولة مرة أخرى",
   "requestCancelled": "تم إلغاء الطلب",
   "badCertificate": "فشل الاتصال الآمن",
-  "somethingWentWrong": "حدث خطأ ما، يرجى المحاولة مرة أخرى"
+  "somethingWentWrong": "حدث خطأ ما، يرجى المحاولة مرة أخرى",
+  "home": "الرئيسي",
+  "order": "آوردراتي",
+  "profile": "الملف الشخصي"
 }

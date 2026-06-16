@@ -9,6 +9,11 @@ class AppStrings {
   static String get close => 'close'.tr();
   static String get error => 'error'.tr();
   static String get retry => 'retry'.tr();
+  static String get home => 'home'.tr();
+  static String get orders => 'orders'.tr();
+  static String get profile => 'profile'.tr();
+
+
 
   // Splash / onboarding
   static String get welcomeToFloweryRiderApp =>
