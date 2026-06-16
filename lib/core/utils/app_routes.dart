@@ -3,9 +3,7 @@ import 'package:flowery_rider_app/core/values/app_strings.dart';
 import 'package:flowery_rider_app/features/splash/presentation/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 
-import '../../features/section_app/home_screen.dart';
-import '../../features/section_app/orders_screen.dart';
-import '../../features/section_app/profile_screen.dart';
+
 import '../../features/section_app/section_app.dart';
 
 class AppRoutes {
