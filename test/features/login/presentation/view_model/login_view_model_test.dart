@@ -1,0 +1,139 @@
+import 'package:bloc_test/bloc_test.dart';
+import 'package:flowery_rider_app/config/base_response/base_response.dart';
+import 'package:flowery_rider_app/config/base_state/base_state.dart';
+import 'package:flowery_rider_app/core/entities/auth_response_entity.dart';
+import 'package:flowery_rider_app/features/login/api/request_models/login_request_model.dart';
+import 'package:flowery_rider_app/features/login/domain/use_cases/login_use_case.dart';
+import 'package:flowery_rider_app/features/login/presentation/view_model/login_events.dart';
+import 'package:flowery_rider_app/features/login/presentation/view_model/login_state.dart';
+import 'package:flowery_rider_app/features/login/presentation/view_model/login_view_model.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
+
+import 'login_view_model_test.mocks.dart';
+
+@GenerateMocks([LoginUseCase])
+void main() {
+  setUpAll(() {
+    provideDummy<BaseResponse<AuthResponseEntity>>(
+      SuccessBaseResponse<AuthResponseEntity>(
+        data: const AuthResponseEntity(token: 'dummy', user: null),
+      ),
+    );
+  });
+
+  late MockLoginUseCase mockLoginUseCase;
+  late LoginViewModel sut;
+
+  final tLoginRequestModel = LoginRequestModel(
+    email: 'test@example.com',
+    password: 'password123',
+    rememberMe: true,
+  );
+
+  const tAuthResponseEntity = AuthResponseEntity(
+    token: 'mocked_jwt_token',
+    user: null,
+  );
+
+  void stubLoginSuccess() {
+    when(mockLoginUseCase.execute(requestModel: tLoginRequestModel)).thenAnswer(
+      (_) async =>
+          SuccessBaseResponse<AuthResponseEntity>(data: tAuthResponseEntity),
+    );
+  }
+
+  void stubLoginError(String message) {
+    when(mockLoginUseCase.execute(requestModel: tLoginRequestModel)).thenAnswer(
+      (_) async => ErrorBaseResponse<AuthResponseEntity>(
+        errorMessage: message,
+        exception: Exception(message),
+      ),
+    );
+  }
+
+  setUp(() {
+    mockLoginUseCase = MockLoginUseCase();
+    sut = LoginViewModel(mockLoginUseCase);
+  });
+
+  tearDown(() => sut.close());
+
+  group('Initial State', () {
+    test('emits the correct initial state on creation', () {
+      expect(sut.state, const LoginState());
+      expect(sut.state.loginState, isA<BaseState<AuthResponseEntity>>());
+    });
+  });
+
+  group('LoginRequestEvent', () {
+    blocTest<LoginViewModel, LoginState>(
+      'emits [loading, success] states when login usecase succeeds',
+      build: () {
+        stubLoginSuccess();
+        return sut;
+      },
+      act: (vm) =>
+          vm.doEvent(LoginRequestEvent(requestModel: tLoginRequestModel)),
+      expect: () => [
+        isA<LoginState>().having(
+          (s) => s.loginState.isLoading,
+          'loginState.isLoading',
+          isTrue,
+        ),
+        isA<LoginState>()
+            .having(
+              (s) => s.loginState.isLoading,
+              'loginState.isLoading',
+              isFalse,
+            )
+            .having(
+              (s) => s.loginState.data,
+              'loginState.data',
+              tAuthResponseEntity,
+            ),
+      ],
+      verify: (_) {
+        verify(
+          mockLoginUseCase.execute(requestModel: tLoginRequestModel),
+        ).called(1);
+        verifyNoMoreInteractions(mockLoginUseCase);
+      },
+    );
+
+    blocTest<LoginViewModel, LoginState>(
+      'emits [loading, error] states when login usecase fails',
+      build: () {
+        stubLoginError('Invalid credentials');
+        return sut;
+      },
+      act: (vm) =>
+          vm.doEvent(LoginRequestEvent(requestModel: tLoginRequestModel)),
+      expect: () => [
+        isA<LoginState>().having(
+          (s) => s.loginState.isLoading,
+          'loginState.isLoading',
+          isTrue,
+        ),
+        isA<LoginState>()
+            .having(
+              (s) => s.loginState.isLoading,
+              'loginState.isLoading',
+              isFalse,
+            )
+            .having(
+              (s) => s.loginState.msg,
+              'loginState.msg',
+              'Invalid credentials',
+            ),
+      ],
+      verify: (_) {
+        verify(
+          mockLoginUseCase.execute(requestModel: tLoginRequestModel),
+        ).called(1);
+        verifyNoMoreInteractions(mockLoginUseCase);
+      },
+    );
+  });
+}
