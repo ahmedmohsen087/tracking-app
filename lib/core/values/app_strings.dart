@@ -11,8 +11,7 @@ class AppStrings {
   static String get retry => 'retry'.tr();
 
   // Splash / onboarding
-  static String get welcomeToFloweryRiderApp =>
-      'welcomeToFloweryRiderApp'.tr();
+  static String get welcomeToFloweryRiderApp => 'welcomeToFloweryRiderApp'.tr();
   static String get login => 'login'.tr();
   static String get applyNow => 'applyNow'.tr();
 
@@ -36,8 +35,7 @@ class AppStrings {
   // Secure storage - onboarding
   static String get seenOnboardingWriteFailed =>
       'seenOnboardingWriteFailed'.tr();
-  static String get seenOnboardingReadFailed =>
-      'seenOnboardingReadFailed'.tr();
+  static String get seenOnboardingReadFailed => 'seenOnboardingReadFailed'.tr();
 
   // Secure storage - general
   static String get clearStorageFailed => 'clearStorageFailed'.tr();
@@ -74,4 +72,7 @@ class AppStrings {
   static String get requestCancelled => 'requestCancelled'.tr();
   static String get badCertificate => 'badCertificate'.tr();
   static String get somethingWentWrong => 'somethingWentWrong'.tr();
+  // Logout
+  static String get logout => 'logout'.tr();
+  static String get confirmLogout => 'confirmLogout'.tr();
 }
