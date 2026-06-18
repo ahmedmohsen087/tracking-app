@@ -11,7 +11,8 @@ class VerificationCodeScreen extends StatelessWidget {
   final otbController = TextEditingController();
    final formKey = GlobalKey<FormState>();
 
-   String otp = '1111';
+  final String otp = '1234';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,6 +65,32 @@ class VerificationCodeScreen extends StatelessWidget {
                   ),
                   textStyle: TextStyles.textFieldTextStyle,
                 ),
+                onCompleted: (value) async {
+                  if (value == otp) {
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (_) => const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+
+                    await Future.delayed(const Duration(seconds: 2));
+                    if (context.mounted) {
+                      Navigator.pop(context);
+                    }
+                    if (context.mounted) {
+                      Navigator.pushNamed(context, '/resetPassword');
+                    }
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('OTP غير صحيح'),
+                      ),
+                    );
+                  }
+                },
+
 
 
               ),
@@ -75,6 +102,13 @@ class VerificationCodeScreen extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: (){
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>  VerificationCodeScreen(),
+                        ),
+                      );
+
 
                     },
                     child: Text(AppStrings.resend,

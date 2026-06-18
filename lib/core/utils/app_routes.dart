@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 
 import '../../features/forget_password/presentation/screens/forget_password_screen.dart';
+import '../../features/forget_password/presentation/screens/reset_password.dart';
 import '../../features/forget_password/presentation/screens/verification_code_screen.dart';
 import '../../features/section_app/section_app.dart';
 
@@ -19,6 +20,9 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) =>  ForgetPasswordScreen());
       case AppRoutsName.otpScreen:
         return MaterialPageRoute(builder: (_) =>  VerificationCodeScreen());
+      case AppRoutsName.resetPassword:
+        return MaterialPageRoute(builder: (_) =>  ResetPassword());
+
 
       default:
         return MaterialPageRoute(

@@ -57,6 +57,12 @@
   "password": "password",
   "forgetPassword": "forgetPassword",
   "confirm": "confirm",
+  "resetPassword": "ResetPassword",
+  "passwordMustNotBeEmptyAndMustContain6CharactersWithUpperCaseLetterAndOneNumberAtLeast ": "Password must not be empty and must contain 6 characters with upper case letter and one number at least ",
+  "newPassword": "NewPassword",
+  "enterYourPassword": "EnterYourPassword",
+  "confirmPassword": "ConfirmNewPassword",
+
 
   "otpEmpty": "OTP is required",
   "otpInvalid": "OTP must contain numbers only",

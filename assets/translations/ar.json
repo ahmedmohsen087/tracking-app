@@ -56,6 +56,11 @@
   "password": "كلمة السر",
   "forgetPassword": "نسيت كلمة السر",
   "confirm": "تآكيد",
+  "resetPassword": "إعادة تعيين كلمة المرور",
+  "passwordMustNotBeEmptyAndMustContain6CharactersWithUpperCaseLetterAndOneNumberAtLeast ": "يجب ألا تكون كلمة المرور فارغة ويجب أن تحتوي على 6 أحرف كبيرة ورقم واحد على الأقل",
+  "newPassword": "كلمة السر الجديدة",
+  "enterYourPassword": "آدخل كلمة السر",
+  "confirmPassword": "تآكيد كلمة السر",
 
   "otpEmpty": "رمز التحقق مطلوب",
   "otpInvalid": "يجب أن يحتوي رمز التحقق على أرقام فقط",

@@ -80,6 +80,15 @@ class AppStrings {
   static String get password => 'password'.tr();
   static String get forgetPassword => 'ForgetPassword'.tr();
   static String get confirm => 'Confirm'.tr();
+  static String get resetPassword => 'ResetPassword'.tr();
+  static String get passwordMustNotBeEmptyAndMustContain6CharactersWithUpperCaseLetterAndOneNumberAtLeast =>
+  'Password must not be empty and must contain \n  6 characters with upper case letter and one \n number at least'.tr();
+  static String get newPassword => 'New password'.tr();
+  static String get enterYourPassword => 'Enter Your Password'.tr();
+  static String get confirmPassword => 'Confirm Password'.tr();
+
+
+
 
 
 
