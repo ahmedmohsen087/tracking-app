@@ -38,6 +38,11 @@
 
   "emailRequired": "البريد الإلكتروني مطلوب",
   "emailInvalid": "يرجى إدخال بريد إلكتروني صحيح",
+  "email": "الآيميل",
+  "enterYourEmail": "ادخل الآيميل",
+  "emailVerification":"التحقق من البريد الإلكتروني",
+  "pleaseEnterYourEmailAssociatedToYourAccount": "الرجاء إدخال بريدك الإلكتروني المرتبط بحسابك",
+  "pleaseEnterYourCodeThatSendToYourEmailAddress": "الرجاء إدخال الرمز الذي تم إرساله إلى عنوان بريدك الإلكتروني",
 
   "phoneRequired": "رقم الهاتف مطلوب",
   "phoneInvalid": "يرجى إدخال رقم هاتف صحيح",
@@ -46,6 +51,9 @@
   "passwordWeak": "يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل، وتشمل حرف كبير وحرف صغير ورقم ورمز خاص",
   "confirmPasswordRequired": "يرجى تأكيد كلمة المرور",
   "passwordDoNotMatch": "كلمتا المرور غير متطابقتين",
+  "password": "كلمة السر",
+  "forgetPassword": "نسيت كلمة السر",
+  "confirm": "تآكيد",
 
   "otpEmpty": "رمز التحقق مطلوب",
   "otpInvalid": "يجب أن يحتوي رمز التحقق على أرقام فقط",

@@ -57,7 +57,13 @@ class AppStrings {
   // Validation - email
   static String get emailRequired => 'emailRequired'.tr();
   static String get emailInvalid => 'emailInvalid'.tr();
-
+  static String get email => 'email'.tr();
+  static String get enterYourEmail => 'enterYourEmail'.tr();
+  static String get emailVerification => 'EmailVerification'.tr();
+  static String get pleaseEnterYourEmailAssociatedToYourAccount =>
+  'Please enter your email associated to \n your account'.tr();
+  static String get pleaseEnterYourCodeThatSendToYourEmailAddress =>
+  'Please enter your code that send to your \n email address'.tr();
   // Validation - phone
   static String get phoneRequired => 'phoneRequired'.tr();
   static String get phoneInvalid => 'phoneInvalid'.tr();
@@ -67,6 +73,13 @@ class AppStrings {
   static String get passwordWeak => 'passwordWeak'.tr();
   static String get confirmPasswordRequired => 'confirmPasswordRequired'.tr();
   static String get passwordDoNotMatch => 'passwordDoNotMatch'.tr();
+  static String get password => 'password'.tr();
+  static String get forgetPassword => 'ForgetPassword'.tr();
+  static String get confirm => 'Confirm'.tr();
+
+
+
+
 
   // Validation - otp
   static String get otpEmpty => 'otpEmpty'.tr();

@@ -38,6 +38,11 @@
 
   "emailRequired": "Email is required",
   "emailInvalid": "Please enter a valid email address",
+  "email": "Email",
+  "enterYourEmail": "Enter your email",
+  "emailVerification": "Email verification",
+  "pleaseEnterYourEmailAssociatedToYourAccount": "Please enter your email associated to your account",
+  "pleaseEnterYourCodeThatSendToYourEmailAddress": "Please enter your code that send to your email address",
 
   "phoneRequired": "Phone number is required",
   "phoneInvalid": "Please enter a valid phone number",
@@ -46,6 +51,9 @@
   "passwordWeak": "Password must be at least 8 characters and include an uppercase letter, a lowercase letter, a number and a special character",
   "confirmPasswordRequired": "Please confirm your password",
   "passwordDoNotMatch": "Passwords do not match",
+  "password": "password",
+  "forgetPassword": "forgetPassword",
+  "confirm": "confirm",
 
   "otpEmpty": "OTP is required",
   "otpInvalid": "OTP must contain numbers only",

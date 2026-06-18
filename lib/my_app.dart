@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       supportedLocales: context.supportedLocales,
       locale: context.locale,
       theme: AppTheme.lightTheme,
-      initialRoute: AppRoutsName.sectionApp,
+      initialRoute: AppRoutsName.forgetPasswordScreen,
       onGenerateRoute: AppRoutes.onGenerateRoute,
     );
   }
