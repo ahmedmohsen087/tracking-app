@@ -43,6 +43,9 @@
   "emailVerification": "Email verification",
   "pleaseEnterYourEmailAssociatedToYourAccount": "Please enter your email associated to your account",
   "pleaseEnterYourCodeThatSendToYourEmailAddress": "Please enter your code that send to your email address",
+  "Didn'tReceiveCode? ": "Didn't receive code? ",
+  "Resend": "Resend",
+
 
   "phoneRequired": "Phone number is required",
   "phoneInvalid": "Please enter a valid phone number",

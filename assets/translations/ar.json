@@ -43,6 +43,8 @@
   "emailVerification":"التحقق من البريد الإلكتروني",
   "pleaseEnterYourEmailAssociatedToYourAccount": "الرجاء إدخال بريدك الإلكتروني المرتبط بحسابك",
   "pleaseEnterYourCodeThatSendToYourEmailAddress": "الرجاء إدخال الرمز الذي تم إرساله إلى عنوان بريدك الإلكتروني",
+  "Didn'tReceiveCode? ": "لم يتم استلام الرمز",
+  "Resend" : "آعادة الآرسال",
 
   "phoneRequired": "رقم الهاتف مطلوب",
   "phoneInvalid": "يرجى إدخال رقم هاتف صحيح",

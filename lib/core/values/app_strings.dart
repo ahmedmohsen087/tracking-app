@@ -64,6 +64,10 @@ class AppStrings {
   'Please enter your email associated to \n your account'.tr();
   static String get pleaseEnterYourCodeThatSendToYourEmailAddress =>
   'Please enter your code that send to your \n email address'.tr();
+  static String get didntReceiveCode => 'Did\'nTReceiveCode ?'.tr();
+  static String get resend => ' Resend'.tr();
+
+
   // Validation - phone
   static String get phoneRequired => 'phoneRequired'.tr();
   static String get phoneInvalid => 'phoneInvalid'.tr();

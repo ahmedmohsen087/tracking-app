@@ -27,6 +27,7 @@ dependencies:
   lottie: ^3.3.3
   package_info_plus: ^10.1.0
   permission_handler: ^12.0.3
+  pinput: ^6.0.2
   pretty_dio_logger: ^1.4.0
   retrofit: ^4.9.2
   rxdart: ^0.28.0
