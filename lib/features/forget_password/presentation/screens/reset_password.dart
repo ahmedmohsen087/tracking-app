@@ -74,8 +74,8 @@ class ResetPassword extends StatelessWidget {
                       }
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Passwords do not match'),
+                         SnackBar(
+                          content: Text(AppStrings.passwordDoNotMatch),
                         ),
                       );
                     }

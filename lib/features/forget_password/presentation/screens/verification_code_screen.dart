@@ -84,8 +84,8 @@ class VerificationCodeScreen extends StatelessWidget {
                     }
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('OTP غير صحيح'),
+                       SnackBar(
+                        content: Text(AppStrings.otpInvalid),
                       ),
                     );
                   }
