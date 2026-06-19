@@ -15,6 +15,19 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart' as _i558;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
+import '../../features/forget_password/api/forget_password_api.dart' as _i688;
+import '../../features/forget_password/data/repositories/auth_repository_impl.dart'
+    as _i467;
+import '../../features/forget_password/domain/repositories/auth_repository.dart'
+    as _i634;
+import '../../features/forget_password/domain/use_cases/forget_password_use_case.dart'
+    as _i437;
+import '../../features/forget_password/domain/use_cases/reset_password_use_case.dart'
+    as _i56;
+import '../../features/forget_password/domain/use_cases/verify_otp_use_case.dart'
+    as _i222;
+import '../../features/forget_password/presentation/view_model/auth_view_model.dart'
+    as _i1009;
 import '../auth/auth_interceptor.dart' as _i53;
 import '../auth/auth_manager.dart' as _i692;
 import '../cache/smart_cache_interceptor.dart' as _i276;
@@ -60,6 +73,28 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i53.AuthInterceptor>(),
         gh<_i276.SmartCacheInterceptor>(),
         gh<_i695.DioCacheInterceptor>(),
+      ),
+    );
+    gh.factory<_i688.ForgetPasswordApi>(
+      () => _i688.ForgetPasswordApi(gh<_i361.Dio>()),
+    );
+    gh.factory<_i634.AuthRepository>(
+      () => _i467.AuthRepositoryImpl(gh<_i688.ForgetPasswordApi>()),
+    );
+    gh.factory<_i437.ForgetPasswordUseCase>(
+      () => _i437.ForgetPasswordUseCase(gh<_i634.AuthRepository>()),
+    );
+    gh.factory<_i56.ResetPasswordUseCase>(
+      () => _i56.ResetPasswordUseCase(gh<_i634.AuthRepository>()),
+    );
+    gh.factory<_i222.VerifyOtpUseCase>(
+      () => _i222.VerifyOtpUseCase(gh<_i634.AuthRepository>()),
+    );
+    gh.factory<_i1009.AuthCubit>(
+      () => _i1009.AuthCubit(
+        forgetPasswordUseCase: gh<_i437.ForgetPasswordUseCase>(),
+        verifyOtpUseCase: gh<_i222.VerifyOtpUseCase>(),
+        resetPasswordUseCase: gh<_i56.ResetPasswordUseCase>(),
       ),
     );
     return this;

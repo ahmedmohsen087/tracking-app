@@ -3,7 +3,7 @@ import '../../domain/entities/verify_otp_entity.dart';
 
 part 'verify_otp_model.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class VerifyOtpModel extends VerifyOtpEntity {
   const VerifyOtpModel({
     required super.email,
@@ -13,8 +13,9 @@ class VerifyOtpModel extends VerifyOtpEntity {
   factory VerifyOtpModel.fromJson(Map<String, dynamic> json) =>
       _$VerifyOtpModelFromJson(json);
 
-  Map<String, dynamic> toJson() =>
-      _$VerifyOtpModelToJson(this);
+  Map<String, dynamic> toJson() => {
+        'resetCode': otp,
+      };
 
   factory VerifyOtpModel.fromEntity(VerifyOtpEntity entity) {
     return VerifyOtpModel(

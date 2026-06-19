@@ -60,9 +60,9 @@ class AppStrings {
   static String get email => 'email'.tr();
   static String get enterYourEmail => 'enterYourEmail'.tr();
   static String get emailVerification => 'EmailVerification'.tr();
-  static String get pleaseEnterYourEmailAssociatedToYourAccount =>
+  static String get pleaseEnterYourEmailAssociated =>
   'Please enter your email associated to \n your account'.tr();
-  static String get pleaseEnterYourCodeThatSendToYourEmailAddress =>
+  static String get pleaseEnterYourCode =>
   'Please enter your code that send to your \n email address'.tr();
   static String get didntReceiveCode => 'Did\'nTReceiveCode ?'.tr();
   static String get resend => ' Resend'.tr();
@@ -81,7 +81,7 @@ class AppStrings {
   static String get forgetPassword => 'ForgetPassword'.tr();
   static String get confirm => 'Confirm'.tr();
   static String get resetPassword => 'ResetPassword'.tr();
-  static String get passwordMustNotBeEmptyAndMustContain6CharactersWithUpperCaseLetterAndOneNumberAtLeast =>
+  static String get passwordMustNotBeEmpty =>
   'Password must not be empty and must contain \n  6 characters with upper case letter and one \n number at least'.tr();
   static String get newPassword => 'New password'.tr();
   static String get enterYourPassword => 'Enter Your Password'.tr();

@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../domain/entities/forget_password_entity.dart';
 import '../../domain/entities/reset_password_entity.dart';
@@ -6,9 +7,10 @@ import '../../domain/entities/verify_otp_entity.dart';
 import '../../domain/use_cases/forget_password_use_case.dart';
 import '../../domain/use_cases/reset_password_use_case.dart';
 import '../../domain/use_cases/verify_otp_use_case.dart';
+import '../../../../core/utils/error/error_handler.dart';
 import 'auth_state.dart';
 
-
+@injectable
 class AuthCubit extends Cubit<AuthState> {
   final ForgetPasswordUseCase forgetPasswordUseCase;
   final VerifyOtpUseCase verifyOtpUseCase;
@@ -21,16 +23,16 @@ class AuthCubit extends Cubit<AuthState> {
   }) : super(AuthInitial());
 
   Future<void> forgetPassword(String email) async {
-    emit(AuthLoading());
+    emit(ForgetPasswordLoading());
 
     try {
       await forgetPasswordUseCase(
         ForgetPasswordEntity(email: email),
       );
 
-      emit(AuthSuccess());
+      emit(ForgetPasswordSuccess());
     } catch (e) {
-      emit(AuthError(e.toString()));
+      emit(ForgetPasswordError(ErrorHandler.handle(e)));
     }
   }
 
@@ -38,7 +40,7 @@ class AuthCubit extends Cubit<AuthState> {
     required String email,
     required String otp,
   }) async {
-    emit(AuthLoading());
+    emit(VerifyOtpLoading());
 
     try {
       await verifyOtpUseCase(
@@ -48,9 +50,9 @@ class AuthCubit extends Cubit<AuthState> {
         ),
       );
 
-      emit(AuthSuccess());
+      emit(VerifyOtpSuccess());
     } catch (e) {
-      emit(AuthError(e.toString()));
+      emit(VerifyOtpError(ErrorHandler.handle(e)));
     }
   }
 
@@ -58,7 +60,7 @@ class AuthCubit extends Cubit<AuthState> {
     required String email,
     required String password,
   }) async {
-    emit(AuthLoading());
+    emit(ResetPasswordLoading());
 
     try {
       await resetPasswordUseCase(
@@ -68,9 +70,9 @@ class AuthCubit extends Cubit<AuthState> {
         ),
       );
 
-      emit(AuthSuccess());
+      emit(ResetPasswordSuccess());
     } catch (e) {
-      emit(AuthError(e.toString()));
+      emit(ResetPasswordError(ErrorHandler.handle(e)));
     }
   }
 }

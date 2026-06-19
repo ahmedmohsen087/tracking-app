@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
-import 'package:flowery_rider_app/core/values/endpoints.dart';
 
 class SmartCacheInterceptor extends Interceptor {
   final CacheOptions homeOptions;
