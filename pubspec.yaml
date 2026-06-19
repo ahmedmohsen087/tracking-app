@@ -54,6 +54,7 @@ flutter:
     - assets/animations/
     - assets/files/
     - assets/translations/
+    - assets/countries/
 
 flutter_assets:
   assets_path: assets/

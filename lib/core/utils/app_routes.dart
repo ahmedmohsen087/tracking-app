@@ -1,8 +1,9 @@
 import 'package:flowery_rider_app/core/values/app_routs_name.dart';
 import 'package:flowery_rider_app/core/values/app_strings.dart';
+import 'package:flowery_rider_app/features/apply/presentation/screens/apply_screen.dart';
+import 'package:flowery_rider_app/features/apply/presentation/screens/success_apply_screen.dart';
 import 'package:flowery_rider_app/features/splash/presentation/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
-
 
 import '../../features/section_app/section_app.dart';
 
@@ -14,6 +15,12 @@ class AppRoutes {
 
       case AppRoutsName.sectionApp:
         return MaterialPageRoute(builder: (_) => const SectionApp());
+
+      case AppRoutsName.applyScreen:
+        return MaterialPageRoute(builder: (_) => const ApplyScreen());
+
+      case AppRoutsName.successApplyScreen:
+        return MaterialPageRoute(builder: (_) => const SuccessApplyScreen());
       default:
         return MaterialPageRoute(
           builder: (_) =>

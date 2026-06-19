@@ -79,4 +79,77 @@ class AppStrings {
   static String get requestCancelled => 'requestCancelled'.tr();
   static String get badCertificate => 'badCertificate'.tr();
   static String get somethingWentWrong => 'somethingWentWrong'.tr();
+
+  // Apply screen
+  static String get apply => 'apply'.tr();
+
+  static String get welcomeExclamation => 'welcomeExclamation'.tr();
+
+  static String get applySubtitle => 'applySubtitle'.tr();
+
+  static String get country => 'country'.tr();
+
+  static String get firstLegalName => 'firstLegalName'.tr();
+
+  static String get enterFirstLegalName => 'enterFirstLegalName'.tr();
+
+  static String get secondLegalName => 'secondLegalName'.tr();
+
+  static String get enterSecondLegalName => 'enterSecondLegalName'.tr();
+
+  static String get vehicleType => 'vehicleType'.tr();
+
+  static String get vehicleNumber => 'vehicleNumber'.tr();
+
+  static String get enterVehicleNumber => 'enterVehicleNumber'.tr();
+
+  static String get vehicleLicense => 'vehicleLicense'.tr();
+
+  static String get uploadLicensePhoto => 'uploadLicensePhoto'.tr();
+
+  static String get enterYourEmail => 'enterYourEmail'.tr();
+
+  static String get phoneNumber => 'phoneNumber'.tr();
+
+  static String get enterPhoneNumber => 'enterPhoneNumber'.tr();
+
+  static String get idNumber => 'idNumber'.tr();
+
+  static String get enterNationalIdNumber => 'enterNationalIdNumber'.tr();
+
+  static String get idImage => 'idImage'.tr();
+
+  static String get uploadIdImage => 'uploadIdImage'.tr();
+
+  static String get enterPassword => 'enterPassword'.tr();
+
+  static String get confirmPassword => 'confirmPassword'.tr();
+
+  static String get gender => 'gender'.tr();
+
+  static String get female => 'female'.tr();
+
+  static String get male => 'male'.tr();
+
+  static String get continueText => 'continueText'.tr();
+
+  static String get countryRequired => 'countryRequired'.tr();
+
+  static String get vehicleTypeRequired => 'vehicleTypeRequired'.tr();
+
+  static String get vehicleNumberRequired => 'vehicleNumberRequired'.tr();
+
+  static String get vehicleLicenseRequired => 'vehicleLicenseRequired'.tr();
+
+  static String get idNumberRequired => 'idNumberRequired'.tr();
+
+  static String get idImageRequired => 'idImageRequired'.tr();
+
+  static String get genderRequired => 'genderRequired'.tr();
+
+  // Success apply screen
+  static String get applicationSubmitted => 'applicationSubmitted'.tr();
+
+  static String get applicationSubmittedSubtitle =>
+      'applicationSubmittedSubtitle'.tr();
 }

@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flowery_rider_app/config/auth/auth_manager.dart';
 import 'package:flowery_rider_app/config/di/di.dart';
 import 'package:flowery_rider_app/config/secure_storage/secure_storage_service.dart';
 import 'package:flowery_rider_app/core/theme/app_colors.dart';
@@ -40,14 +39,12 @@ class _SplashScreenState extends State<SplashScreen>
   final List<Timer> _timers = [];
   int _step = 0;
 
-  late final bool _isLoggedIn;
   late final Future<bool> _seenOnboardingFuture;
 
   @override
   void initState() {
     super.initState();
 
-    _isLoggedIn = getIt<AuthManager>().isLoggedIn;
     _seenOnboardingFuture = getIt<SecureStorageService>().readSeenOnboarding();
 
     _logoController = AnimationController(
@@ -115,16 +112,11 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   Future<void> _onHeroPhaseComplete() async {
-    if (_isLoggedIn) {
-      Navigator.of(context).pushReplacementNamed(AppRoutsName.homeScreen);
-      return;
-    }
-
     final seenOnboarding = await _seenOnboardingFuture;
     if (!mounted) return;
 
     if (seenOnboarding) {
-      Navigator.of(context).pushReplacementNamed(AppRoutsName.loginScreen);
+      Navigator.of(context).pushReplacementNamed(AppRoutsName.applyScreen);
       return;
     }
 
@@ -158,7 +150,7 @@ class _SplashScreenState extends State<SplashScreen>
 
   void _onApplyNow() {
     getIt<SecureStorageService>().writeSeenOnboarding(true);
-    Navigator.of(context).pushReplacementNamed(AppRoutsName.registerScreen);
+    Navigator.of(context).pushReplacementNamed(AppRoutsName.applyScreen);
   }
 
   @override

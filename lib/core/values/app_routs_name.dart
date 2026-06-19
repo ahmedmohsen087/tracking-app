@@ -9,4 +9,6 @@ abstract class AppRoutsName {
   static const String otpScreen = '/otpScreen';
   static const String changePasswordScreen = '/changePasswordScreen';
   static const String sectionApp = '/sectionApp';
+  static const String applyScreen = '/applyScreen';
+  static const String successApplyScreen = '/successApplyScreen';
 }

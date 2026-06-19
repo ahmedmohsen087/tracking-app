@@ -108,4 +108,21 @@ abstract class AppValidations {
 
     return null;
   }
+
+  static String? validateRequired(String value, String errorMessage) {
+    if (!AppRegex.isNotEmpty(value)) {
+      return errorMessage;
+    }
+    return null;
+  }
+
+  static String? validateNid(String nid) {
+    if (!AppRegex.isNotEmpty(nid)) {
+      return AppStrings.idNumberRequired;
+    }
+    if (!RegExp(r'^[0-9]{14}$').hasMatch(nid.trim())) {
+      return AppStrings.idNumberRequired;
+    }
+    return null;
+  }
 }
