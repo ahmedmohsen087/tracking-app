@@ -50,6 +50,7 @@ class ForgetPasswordScreen extends StatelessWidget {
                 children: [
                   Text(AppStrings.forgetPassword,
                     style: TextStyles.bodyMedium18,
+
                   ),
                   Text(AppStrings.pleaseEnterYourEmailAssociated,
                     textAlign: TextAlign.center,
