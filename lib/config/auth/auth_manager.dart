@@ -50,7 +50,6 @@ class AuthManager {
       await _storage.writeToken(token);
     } else {
       await _storage.deleteToken();
-      await _storage.deleteUserId();
     }
   }
 

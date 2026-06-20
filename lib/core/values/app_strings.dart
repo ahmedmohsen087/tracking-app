@@ -24,11 +24,6 @@ class AppStrings {
   static String get tokenReadFailed => 'tokenReadFailed'.tr();
   static String get tokenDeleteFailed => 'tokenDeleteFailed'.tr();
 
-  // Secure storage - user id
-  static String get userIdEmpty => 'userIdEmpty'.tr();
-  static String get userIdWriteFailed => 'userIdWriteFailed'.tr();
-  static String get userIdReadFailed => 'userIdReadFailed'.tr();
-  static String get userIdDeleteFailed => 'userIdDeleteFailed'.tr();
 
   // Secure storage - remember me
   static String get rememberMeWriteFailed => 'rememberMeWriteFailed'.tr();
