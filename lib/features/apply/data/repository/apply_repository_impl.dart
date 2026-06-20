@@ -52,7 +52,10 @@ class ApplyRepositoryImpl implements ApplyRepository {
         );
 
       case ErrorBaseResponse<ApplyResponse>():
-        return ErrorBaseResponse(errorMessage: response.errorMessage);
+        return ErrorBaseResponse(
+          errorMessage: response.errorMessage,
+          exception: Exception(response.errorMessage),
+        );
     }
   }
 }

@@ -1,3 +1,5 @@
+import 'package:flowery_rider_app/config/base_response/base_response.dart';
+import 'package:flowery_rider_app/core/models/auth_response.dart';
 import 'package:flowery_rider_app/features/logout/api/logout_api_client/logout_api_client.dart';
 import 'package:flowery_rider_app/features/logout/data/data_sources/logout_remote_data_source.dart';
 import 'package:injectable/injectable.dart';
@@ -9,7 +11,7 @@ class LogoutRemoteDataSourceImpl implements LogoutRemoteDataSource {
   LogoutRemoteDataSourceImpl(this._logoutApiClient);
 
   @override
-  Future<void> logout() {
+  Future<BaseResponse<AuthResponse>> logout() {
     return _logoutApiClient.logout();
   }
 }

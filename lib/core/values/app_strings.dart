@@ -161,4 +161,6 @@ class AppStrings {
   // Logout
   static String get logout => 'logout'.tr();
   static String get confirmLogout => 'confirmLogout'.tr();
+  // profile
+  static String get profileScreen => 'Profile Screen'.tr();
 }
