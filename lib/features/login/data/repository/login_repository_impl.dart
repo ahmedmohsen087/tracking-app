@@ -11,33 +11,28 @@ import '../data_sources/login_remote_data_source.dart';
 class LoginRepositoryImpl implements LoginRepository {
   final LoginRemoteDataSource _remoteDataSource;
   final AuthManager _authManager;
-
   LoginRepositoryImpl(this._remoteDataSource, this._authManager);
 
   @override
   Future<BaseResponse<AuthResponseEntity>> login({
     required String email,
     required String password,
-    required bool rememberMe,
   }) async {
-    try {
-      final response = await _remoteDataSource.login(
-        email: email,
-        password: password,
-      );
-      final entity = response.toEntity();
-      await _authManager.setAuthData(
-        token: entity.token ?? '',
-        rememberMe: rememberMe,
-        userId: entity.user?.id,
-      );
-      return SuccessBaseResponse(data: entity);
-    } catch (e) {
-      // TODO: Handle specific exceptions and provide error messages
-      return ErrorBaseResponse<AuthResponseEntity>(
-        errorMessage: '',
-        exception: e,
-      );
+    final response = await _remoteDataSource.login(
+      email: email,
+      password: password,
+    );
+    switch (response) {
+      case SuccessBaseResponse<AuthResponse>():
+        final entity = response.data.toEntity();
+        await _authManager.setAuthData(
+          token: entity.token,
+        );
+        return SuccessBaseResponse<AuthResponseEntity>(data: entity);
+      case ErrorBaseResponse<AuthResponse>():
+        return ErrorBaseResponse<AuthResponseEntity>(
+          errorMessage: response.errorMessage,
+        );
     }
   }
 }

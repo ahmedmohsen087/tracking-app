@@ -1,3 +1,4 @@
+import 'package:flowery_rider_app/config/base_response/base_response.dart';
 import 'package:flowery_rider_app/core/models/auth_response.dart';
 import 'package:flowery_rider_app/features/login/api/data_sources/login_remote_data_source_impl.dart';
 import 'package:flowery_rider_app/features/login/api/login_api_client/login_api_client.dart';
@@ -27,7 +28,7 @@ void main() {
 
   group('login', () {
     test(
-      'should return AuthResponse when api client login call succeeds',
+      'should return SuccessBaseResponse when api client login call succeeds',
       () async {
         // Arrange
         when(mockApiClient.login(any)).thenAnswer((_) async => tAuthResponse);
@@ -39,25 +40,31 @@ void main() {
         );
 
         // Assert
-        expect(result, tAuthResponse);
+        expect(result, isA<SuccessBaseResponse<AuthResponse>>());
+        expect(
+          (result as SuccessBaseResponse<AuthResponse>).data,
+          tAuthResponse,
+        );
         verify(mockApiClient.login(any)).called(1);
         verifyNoMoreInteractions(mockApiClient);
       },
     );
 
     test(
-      'should throw an exception when api client login call fails',
+      'should return ErrorBaseResponse when api client login call fails',
       () async {
         // Arrange
         final exception = Exception('Invalid Credentials');
         when(mockApiClient.login(any)).thenThrow(exception);
 
-        // Act & Assert
-        expect(
-          () => datasource.login(email: tEmail, password: tPassword),
-          throwsA(isA<Exception>()),
+        // Act
+        final result = await datasource.login(
+          email: tEmail,
+          password: tPassword,
         );
 
+        // Assert
+        expect(result, isA<ErrorBaseResponse<AuthResponse>>());
         verify(mockApiClient.login(any)).called(1);
         verifyNoMoreInteractions(mockApiClient);
       },

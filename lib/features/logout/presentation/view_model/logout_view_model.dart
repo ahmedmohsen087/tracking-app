@@ -21,8 +21,11 @@ class LogoutViewModel extends Cubit<LogoutState> {
   }
 
   Future<void> _logoutUser() async {
+  
     emit(state.copyWith(logoutState: BaseState.loading()));
     final response = await _logoutUseCase.execute();
+    if (isClosed) return;
+
     switch (response) {
       case SuccessBaseResponse<void>():
         emit(state.copyWith(logoutState: BaseState.success(null)));

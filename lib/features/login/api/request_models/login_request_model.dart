@@ -6,13 +6,8 @@ part 'login_request_model.g.dart';
 class LoginRequestModel {
   final String email;
   final String password;
-  final bool rememberMe;
 
-  LoginRequestModel({
-    required this.email,
-    required this.password,
-    required this.rememberMe,
-  });
+  LoginRequestModel({required this.email, required this.password});
 
   factory LoginRequestModel.fromJson(Map<String, dynamic> json) =>
       _$LoginRequestModelFromJson(json);

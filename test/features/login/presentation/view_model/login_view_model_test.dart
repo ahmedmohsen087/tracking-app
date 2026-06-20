@@ -2,10 +2,12 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flowery_rider_app/config/base_response/base_response.dart';
 import 'package:flowery_rider_app/config/base_state/base_state.dart';
 import 'package:flowery_rider_app/core/entities/auth_response_entity.dart';
+import 'package:flowery_rider_app/core/entities/user_entity.dart';
 import 'package:flowery_rider_app/features/login/api/request_models/login_request_model.dart';
 import 'package:flowery_rider_app/features/login/domain/use_cases/login_use_case.dart';
 import 'package:flowery_rider_app/features/login/presentation/view_model/login_events.dart';
 import 'package:flowery_rider_app/features/login/presentation/view_model/login_state.dart';
+import 'package:flowery_rider_app/config/auth/auth_manager.dart';
 import 'package:flowery_rider_app/features/login/presentation/view_model/login_view_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -13,28 +15,47 @@ import 'package:mockito/mockito.dart';
 
 import 'login_view_model_test.mocks.dart';
 
-@GenerateMocks([LoginUseCase])
+final tUserEntity = UserEntity(
+  id: 'dummy',
+  firstName: 'dummy',
+  lastName: 'dummy',
+  email: 'dummy@example.com',
+  gender: 'dummy',
+  phone: 'dummy',
+  photo: 'dummy',
+  role: 'dummy',
+  wishlist: const [],
+  addresses: const [],
+  createdAt: DateTime.fromMillisecondsSinceEpoch(0),
+);
+
+@GenerateMocks([LoginUseCase, AuthManager])
 void main() {
   setUpAll(() {
     provideDummy<BaseResponse<AuthResponseEntity>>(
       SuccessBaseResponse<AuthResponseEntity>(
-        data: const AuthResponseEntity(token: 'dummy', user: null),
+        data: AuthResponseEntity(
+          token: 'dummy',
+          message: '',
+          userEntity: tUserEntity,
+        ),
       ),
     );
   });
 
   late MockLoginUseCase mockLoginUseCase;
+  late MockAuthManager mockAuthManager;
   late LoginViewModel sut;
 
   final tLoginRequestModel = LoginRequestModel(
     email: 'test@example.com',
     password: 'password123',
-    rememberMe: true,
   );
 
-  const tAuthResponseEntity = AuthResponseEntity(
+  final tAuthResponseEntity = AuthResponseEntity(
     token: 'mocked_jwt_token',
-    user: null,
+    message: 'Success',
+    userEntity: tUserEntity,
   );
 
   void stubLoginSuccess() {
@@ -48,14 +69,14 @@ void main() {
     when(mockLoginUseCase.execute(requestModel: tLoginRequestModel)).thenAnswer(
       (_) async => ErrorBaseResponse<AuthResponseEntity>(
         errorMessage: message,
-        exception: Exception(message),
       ),
     );
   }
 
   setUp(() {
     mockLoginUseCase = MockLoginUseCase();
-    sut = LoginViewModel(mockLoginUseCase);
+    mockAuthManager = MockAuthManager();
+    sut = LoginViewModel(mockLoginUseCase, mockAuthManager);
   });
 
   tearDown(() => sut.close());
@@ -99,6 +120,21 @@ void main() {
           mockLoginUseCase.execute(requestModel: tLoginRequestModel),
         ).called(1);
         verifyNoMoreInteractions(mockLoginUseCase);
+      },
+    );
+
+    blocTest<LoginViewModel, LoginState>(
+      'calls AuthManager.setRememberMe when RememberMeEvent is dispatched',
+      build: () {
+        return sut;
+      },
+      act: (vm) {
+        when(mockAuthManager.setRememberMe(true))
+            .thenAnswer((_) async {});
+        vm.doEvent(RememberMeEvent(rememberMe: true));
+      },
+      verify: (_) {
+        verify(mockAuthManager.setRememberMe(true)).called(1);
       },
     );
 

@@ -62,7 +62,6 @@ class _LoginViewState extends State<LoginView> {
         requestModel: LoginRequestModel(
           email: _emailController.text.trim(),
           password: _passwordController.text,
-          rememberMe: _rememberMeNotifier.value,
         ),
       ),
     );
@@ -111,7 +110,7 @@ class _LoginAppBar extends StatelessWidget implements PreferredSizeWidget {
 class _LoginListener {
   static void onStateChange(BuildContext context, LoginState state) {
     if (state.loginState.data != null) {
-      Navigator.pushReplacementNamed(context, AppRoutsName.homeScreen);
+      Navigator.pushReplacementNamed(context, AppRoutsName.sectionApp);
     } else if (state.loginState.msg != null) {
       AppSnackBar.showError(
         context,
@@ -205,7 +204,12 @@ class LoginForm extends StatelessWidget {
                 builder: (context, isRemembered, child) {
                   return Checkbox(
                     value: isRemembered,
-                    onChanged: (v) => rememberMeNotifier.value = v ?? false,
+                    onChanged: (v) => {
+                      rememberMeNotifier.value = v ?? false,
+                      context.read<LoginViewModel>().doEvent(
+                        RememberMeEvent(rememberMe: v ?? false),
+                      ),
+                    },
                   );
                 },
               ),
@@ -263,7 +267,7 @@ class _SignUpLink extends StatelessWidget {
               ),
               recognizer: TapGestureRecognizer()
                 ..onTap = () =>
-                    Navigator.pushNamed(context, AppRoutsName.registerScreen),
+                    Navigator.pushNamed(context, AppRoutsName.applyScreen),
             ),
           ],
         ),

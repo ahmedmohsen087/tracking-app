@@ -165,9 +165,11 @@ class SecureStorageService {
     }
   }
 
-  Future<void> clearAll() async {
+  Future<void> clearAuthData() async {
     try {
-      await _secureStorage.deleteAll();
+      await _secureStorage.delete(key: SecureStorageKeys.token);
+      await _secureStorage.delete(key: SecureStorageKeys.userId);
+      await _secureStorage.delete(key: SecureStorageKeys.rememberMe);
     } catch (e, s) {
       throw LocalStorageException(
         AppStrings.clearStorageFailed,

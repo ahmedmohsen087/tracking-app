@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:flowery_rider_app/core/values/endpoints.dart';
+import 'package:flowery_rider_app/core/values/api_endpoints.dart';
 import 'package:flowery_rider_app/features/apply/api/responses/apply_response.dart';
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/retrofit.dart';
@@ -12,7 +12,9 @@ abstract class ApplyApiClient {
   @factoryMethod
   factory ApplyApiClient(Dio dio) = _ApplyApiClient;
 
-  @POST(Endpoints.applyDriver)
+  @POST(ApiEndpoints.applyDriver)
   @MultiPart()
+
+  // model reqquest ???
   Future<ApplyResponse> applyAsDriver(@Body() FormData formData);
 }

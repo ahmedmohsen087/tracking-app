@@ -17,7 +17,6 @@ class LoginUseCase {
     return _loginRepository.login(
       email: requestModel.email,
       password: requestModel.password,
-      rememberMe: requestModel.rememberMe,
     );
   }
 }

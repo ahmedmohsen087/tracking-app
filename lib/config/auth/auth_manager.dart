@@ -9,13 +9,10 @@ class AuthManager {
   final CacheStore _cacheStore;
 
   String? _token;
-  String? _userId;
 
   AuthManager(this._storage, this._cacheStore);
 
   String? get token => _token;
-
-  String? get userId => _userId;
 
   bool get isLoggedIn => _token != null && _token!.isNotEmpty;
 
@@ -24,42 +21,33 @@ class AuthManager {
 
     if (!rememberMe) {
       _token = null;
-      _userId = null;
       return;
     }
 
     final savedToken = await _storage.readToken();
-    final savedUserId = await _storage.readUserId();
-
     if (savedToken != null && savedToken.isNotEmpty) {
       _token = savedToken;
     }
-
-    if (savedUserId != null && savedUserId.isNotEmpty) {
-      _userId = savedUserId;
-    }
   }
 
-  Future<void> setAuthData({
-    required String token,
-    required bool rememberMe,
-    String? userId,
-  }) async {
+  Future<void> setRememberMe(bool rememberMe) async {
+    await _storage.writeRememberMe(rememberMe);
+  }
+
+  Future<bool> _getRememberMe() async {
+    return await _storage.readRememberMe();
+  }
+
+  Future<void> setAuthData({required String token}) async {
     if (token.isEmpty) {
       throw Exception(AppStrings.tokenEmpty);
     }
 
     _token = token;
-    _userId = userId;
 
-    await _storage.writeRememberMe(rememberMe);
-
+    final rememberMe = await _getRememberMe();
     if (rememberMe) {
       await _storage.writeToken(token);
-
-      if (userId != null) {
-        await _storage.writeUserId(userId);
-      }
     } else {
       await _storage.deleteToken();
       await _storage.deleteUserId();
@@ -68,9 +56,8 @@ class AuthManager {
 
   Future<void> logout() async {
     _token = null;
-    _userId = null;
 
-    await _storage.clearAll();
+    await _storage.clearAuthData();
     await _cacheStore.clean();
   }
 

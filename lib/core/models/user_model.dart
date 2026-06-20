@@ -20,7 +20,7 @@ class User {
   String? role;
   @JsonKey(name: "wishlist")
   List<dynamic>? wishlist;
-  @JsonKey(name: "_id")
+  @JsonKey(name: "_id", readValue: _readId)
   String? id;
   @JsonKey(name: "addresses")
   List<dynamic>? addresses;
@@ -46,20 +46,22 @@ class User {
   Map<String, dynamic> toJson() => _$UserToJson(this);
 }
 
+Object? _readId(Map json, String key) => json[key] ?? json['id'];
+
 extension UserMapper on User {
   UserEntity toEntity() {
     return UserEntity(
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      gender: gender,
-      phone: phone,
-      photo: photo,
-      role: role,
-      wishlist: wishlist,
-      id: id,
-      addresses: addresses,
-      createdAt: createdAt,
+      firstName: firstName ?? '',
+      lastName: lastName ?? '',
+      email: email ?? '',
+      gender: gender ?? '',
+      phone: phone ?? '',
+      photo: photo ?? '',
+      role: role ?? '',
+      wishlist: wishlist ?? const [],
+      id: id ?? '',
+      addresses: addresses ?? const [],
+      createdAt: createdAt ?? DateTime.now(),
     );
   }
 }

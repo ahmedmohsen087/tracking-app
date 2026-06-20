@@ -26,31 +26,22 @@ class ApplyViewModel extends Cubit<ApplyState> {
   Future<void> _submitApply(SubmitApplyEvent event) async {
     emit(state.copyWith(applyState: BaseState.loading()));
 
-    try {
-      final response = await _applyUseCase
-          .execute(requestModel: event.requestModel)
-          .timeout(const Duration(seconds: 60));
+    final response = await _applyUseCase.execute(
+      requestModel: event.requestModel,
+    );
 
-      switch (response) {
-        case SuccessBaseResponse<ApplyResponseEntity>():
-          final token = response.data.token;
-          if (token != null && token.isNotEmpty) {
-            await _authManager.setAuthData(token: token, rememberMe: true);
-          }
-          emit(state.copyWith(applyState: BaseState.success(response.data)));
+    switch (response) {
+      case SuccessBaseResponse<ApplyResponseEntity>():
+        final token = response.data.token;
+        if (token != null && token.isNotEmpty) {
+          await _authManager.setAuthData(token: token , );
+        }
+        emit(state.copyWith(applyState: BaseState.success(response.data)));
 
-        case ErrorBaseResponse<ApplyResponseEntity>():
-          emit(
-            state.copyWith(applyState: BaseState.error(response.errorMessage)),
-          );
-      }
-    } catch (e) {
-      String errorMsg = e.toString();
-      if (errorMsg.contains('TimeoutException')) {
-        errorMsg = 'Connection timed out, please try again';
-      }
-
-      emit(state.copyWith(applyState: BaseState.error(errorMsg)));
+      case ErrorBaseResponse<ApplyResponseEntity>():
+        emit(
+          state.copyWith(applyState: BaseState.error(response.errorMessage)),
+        );
     }
   }
 }

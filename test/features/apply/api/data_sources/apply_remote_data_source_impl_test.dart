@@ -75,6 +75,7 @@ void main() {
     when(mockApiClient.applyAsDriver(any)).thenThrow(
       DioException(
         requestOptions: RequestOptions(path: ''),
+        type: DioExceptionType.badResponse,
         response: Response(
           requestOptions: RequestOptions(path: ''),
           data: {'message': 'Server error'},

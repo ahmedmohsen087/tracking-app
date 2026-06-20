@@ -18,7 +18,6 @@ class LogoutDialog {
       cancelButtonColor: AppColors.pink,
       barrierDismissible: false,
       onConfirm: () {
-        Navigator.pop(context);
         viewModel.doEvent(LogoutRequestEvent());
       },
     );

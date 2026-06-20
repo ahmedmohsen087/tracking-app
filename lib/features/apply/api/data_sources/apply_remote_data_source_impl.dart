@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flowery_rider_app/config/base_response/base_response.dart';
+import 'package:flowery_rider_app/core/utils/error/error_handler.dart';
 import 'package:flowery_rider_app/features/apply/api/apply_api_client/apply_api_client.dart';
 import 'package:flowery_rider_app/features/apply/api/request_models/apply_request_model.dart';
 import 'package:flowery_rider_app/features/apply/api/responses/apply_response.dart';
@@ -42,20 +43,8 @@ class ApplyRemoteDataSourceImpl implements ApplyRemoteDataSource {
       final response = await _apiClient.applyAsDriver(formData);
       return SuccessBaseResponse(data: response);
     } catch (e) {
-      final message = _extractErrorMessage(e);
+      final message = ErrorHandler.handle(e);
       return ErrorBaseResponse(errorMessage: message);
     }
-  }
-
-  String _extractErrorMessage(Object e) {
-    if (e is DioException) {
-      final data = e.response?.data;
-      if (data is Map<String, dynamic>) {
-        final msg = data['message'] ?? data['error'];
-        if (msg != null) return msg.toString();
-      }
-      return e.message ?? e.toString();
-    }
-    return e.toString();
   }
 }

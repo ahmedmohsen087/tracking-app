@@ -1,5 +1,6 @@
 import 'package:flowery_rider_app/config/base_response/base_response.dart';
 import 'package:flowery_rider_app/core/entities/auth_response_entity.dart';
+import 'package:flowery_rider_app/core/entities/user_entity.dart';
 import 'package:flowery_rider_app/features/login/api/request_models/login_request_model.dart';
 import 'package:flowery_rider_app/features/login/domain/repository/login_repository.dart';
 import 'package:flowery_rider_app/features/login/domain/use_cases/login_use_case.dart';
@@ -9,11 +10,29 @@ import 'package:mockito/mockito.dart';
 
 import 'login_use_case_test.mocks.dart';
 
+final tUserEntity = UserEntity(
+  id: 'dummy',
+  firstName: 'dummy',
+  lastName: 'dummy',
+  email: 'dummy@example.com',
+  gender: 'dummy',
+  phone: 'dummy',
+  photo: 'dummy',
+  role: 'dummy',
+  wishlist: const [],
+  addresses: const [],
+  createdAt: DateTime.fromMillisecondsSinceEpoch(0),
+);
+
 @GenerateMocks([LoginRepository])
 void main() {
   provideDummy<BaseResponse<AuthResponseEntity>>(
     SuccessBaseResponse<AuthResponseEntity>(
-      data: const AuthResponseEntity(token: 'dummy_token', user: null),
+      data: AuthResponseEntity(
+        token: 'dummy_token',
+        message: '',
+        userEntity: tUserEntity,
+      ),
     ),
   );
 
@@ -22,17 +41,16 @@ void main() {
 
   const tEmail = 'test@example.com';
   const tPassword = 'password123';
-  const tRememberMe = true;
 
   final tLoginRequestModel = LoginRequestModel(
     email: tEmail,
     password: tPassword,
-    rememberMe: tRememberMe,
   );
 
-  const tAuthResponseEntity = AuthResponseEntity(
+  final tAuthResponseEntity = AuthResponseEntity(
     token: 'mocked_jwt_token',
-    user: null,
+    message: 'Success',
+    userEntity: tUserEntity,
   );
 
   setUp(() {
@@ -49,11 +67,7 @@ void main() {
           data: tAuthResponseEntity,
         );
         when(
-          mockRepository.login(
-            email: tEmail,
-            password: tPassword,
-            rememberMe: tRememberMe,
-          ),
+          mockRepository.login(email: tEmail, password: tPassword),
         ).thenAnswer((_) async => expectedResponse);
 
         // Act
@@ -62,11 +76,7 @@ void main() {
         // Assert
         expect(result, expectedResponse);
         verify(
-          mockRepository.login(
-            email: tEmail,
-            password: tPassword,
-            rememberMe: tRememberMe,
-          ),
+          mockRepository.login(email: tEmail, password: tPassword),
         ).called(1);
         verifyNoMoreInteractions(mockRepository);
       },
@@ -76,17 +86,11 @@ void main() {
       'should forward params to repository and return ErrorBaseResponse on failure',
       () async {
         // Arrange
-        final exception = Exception('Invalid Credentials');
         final expectedResponse = ErrorBaseResponse<AuthResponseEntity>(
           errorMessage: 'Invalid Credentials',
-          exception: exception,
         );
         when(
-          mockRepository.login(
-            email: tEmail,
-            password: tPassword,
-            rememberMe: tRememberMe,
-          ),
+          mockRepository.login(email: tEmail, password: tPassword),
         ).thenAnswer((_) async => expectedResponse);
 
         // Act
@@ -95,11 +99,7 @@ void main() {
         // Assert
         expect(result, expectedResponse);
         verify(
-          mockRepository.login(
-            email: tEmail,
-            password: tPassword,
-            rememberMe: tRememberMe,
-          ),
+          mockRepository.login(email: tEmail, password: tPassword),
         ).called(1);
         verifyNoMoreInteractions(mockRepository);
       },

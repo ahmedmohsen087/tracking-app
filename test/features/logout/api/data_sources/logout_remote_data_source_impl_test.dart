@@ -1,3 +1,5 @@
+import 'package:flowery_rider_app/config/base_response/base_response.dart';
+import 'package:flowery_rider_app/core/models/auth_response.dart';
 import 'package:flowery_rider_app/features/logout/api/data_sources/logout_remote_data_source_impl.dart';
 import 'package:flowery_rider_app/features/logout/api/logout_api_client/logout_api_client.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -11,32 +13,48 @@ void main() {
   late MockLogoutApiClient mockApiClient;
   late LogoutRemoteDataSourceImpl datasource;
 
+  final tAuthResponse = AuthResponse(message: 'Success', token: 'token');
+
   setUp(() {
     mockApiClient = MockLogoutApiClient();
     datasource = LogoutRemoteDataSourceImpl(mockApiClient);
   });
 
   group('logout', () {
-    test('should complete successfully when api call succeeds', () async {
-      // Arrange
-      when(mockApiClient.logout()).thenAnswer((_) async {});
+    test(
+      'should return SuccessBaseResponse when api call succeeds',
+      () async {
+        // Arrange
+        when(mockApiClient.logout()).thenAnswer((_) async => tAuthResponse);
 
-      // Act & Assert
-      expect(datasource.logout(), completes);
+        // Act
+        final result = await datasource.logout();
 
-      verify(mockApiClient.logout()).called(1);
-      verifyNoMoreInteractions(mockApiClient);
-    });
+        // Assert
+        expect(result, isA<SuccessBaseResponse<AuthResponse>>());
+        expect(
+          (result as SuccessBaseResponse<AuthResponse>).data,
+          tAuthResponse,
+        );
+        verify(mockApiClient.logout()).called(1);
+        verifyNoMoreInteractions(mockApiClient);
+      },
+    );
 
-    test('should throw an exception when api call fails', () async {
-      // Arrange
-      final exception = Exception('Server Error');
-      when(mockApiClient.logout()).thenThrow(exception);
+    test(
+      'should return ErrorBaseResponse when api call fails',
+      () async {
+        // Arrange
+        when(mockApiClient.logout()).thenThrow(Exception('Server Error'));
 
-      expect(() => datasource.logout(), throwsA(isA<Exception>()));
+        // Act
+        final result = await datasource.logout();
 
-      verify(mockApiClient.logout()).called(1);
-      verifyNoMoreInteractions(mockApiClient);
-    });
+        // Assert
+        expect(result, isA<ErrorBaseResponse<AuthResponse>>());
+        verify(mockApiClient.logout()).called(1);
+        verifyNoMoreInteractions(mockApiClient);
+      },
+    );
   });
 }

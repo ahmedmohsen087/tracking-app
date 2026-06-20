@@ -1,3 +1,4 @@
+import 'package:flowery_rider_app/config/auth/auth_manager.dart';
 import 'package:flowery_rider_app/config/base_response/base_response.dart';
 import 'package:flowery_rider_app/config/base_state/base_state.dart';
 import 'package:flowery_rider_app/core/entities/auth_response_entity.dart';
@@ -11,13 +12,18 @@ import 'login_state.dart';
 
 @injectable
 class LoginViewModel extends Cubit<LoginState> {
-  LoginViewModel(this._loginUseCase) : super(const LoginState());
+  LoginViewModel(this._loginUseCase, this._authManager)
+    : super(const LoginState());
   final LoginUseCase _loginUseCase;
+  final AuthManager _authManager;
 
   void doEvent(LoginEvents event) {
     switch (event) {
       case LoginRequestEvent():
         _loginUser(requestModel: event.requestModel);
+        break;
+      case RememberMeEvent():
+        _rememberMe(event.rememberMe);
         break;
     }
   }
@@ -35,5 +41,9 @@ class LoginViewModel extends Cubit<LoginState> {
         );
         break;
     }
+  }
+
+  void _rememberMe(bool rememberMe) {
+    _authManager.setRememberMe(rememberMe);
   }
 }

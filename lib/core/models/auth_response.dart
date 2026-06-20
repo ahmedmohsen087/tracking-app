@@ -1,4 +1,5 @@
 import 'package:flowery_rider_app/core/entities/auth_response_entity.dart';
+import 'package:flowery_rider_app/core/entities/user_entity.dart';
 import 'package:flowery_rider_app/core/models/user_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'auth_response.g.dart';
@@ -23,9 +24,23 @@ class AuthResponse {
 extension AuthResponseMapper on AuthResponse {
   AuthResponseEntity toEntity() {
     return AuthResponseEntity(
-      message: message,
-      token: token,
-      user: user?.toEntity(),
+      message: message ?? '',
+      token: token ?? '',
+      userEntity:
+          user?.toEntity() ??
+          UserEntity(
+            id: '',
+            firstName: '',
+            lastName: '',
+            email: '',
+            gender: '',
+            phone: '',
+            photo: '',
+            role: '',
+            wishlist: const [],
+            addresses: const [],
+            createdAt: DateTime.now(),
+          ),
     );
   }
 }

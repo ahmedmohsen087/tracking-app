@@ -1,6 +1,7 @@
 import 'package:flowery_rider_app/config/auth/auth_manager.dart';
 import 'package:flowery_rider_app/config/base_response/base_response.dart';
 import 'package:flowery_rider_app/core/models/auth_response.dart';
+import 'package:flowery_rider_app/core/utils/error/error_handler.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../domain/repository/logout_repository.dart';
@@ -16,18 +17,21 @@ class LogoutRepositoryImpl implements LogoutRepository {
   @override
   Future<BaseResponse<AuthResponse>> logout() async {
     final response = await _remoteDataSource.logout();
+
+    try {
+      await _authManager.logout();
+    } catch (e) {
+      return ErrorBaseResponse(errorMessage: ErrorHandler.handle(e));
+    }
+
     switch (response) {
       case SuccessBaseResponse<AuthResponse>():
         final data = response.data;
-        await _authManager.logout();
         return SuccessBaseResponse(
           data: AuthResponse(message: data.message, token: data.token),
         );
       case ErrorBaseResponse<AuthResponse>():
-        return ErrorBaseResponse(
-          errorMessage: response.errorMessage,
-          exception: Exception(response.errorMessage),
-        );
+        return SuccessBaseResponse(data: AuthResponse());
     }
   }
 }

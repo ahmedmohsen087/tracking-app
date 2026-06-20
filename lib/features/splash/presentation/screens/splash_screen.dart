@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flowery_rider_app/config/auth/auth_manager.dart';
 import 'package:flowery_rider_app/config/di/di.dart';
 import 'package:flowery_rider_app/config/secure_storage/secure_storage_service.dart';
 import 'package:flowery_rider_app/core/theme/app_colors.dart';
@@ -115,8 +116,13 @@ class _SplashScreenState extends State<SplashScreen>
     final seenOnboarding = await _seenOnboardingFuture;
     if (!mounted) return;
 
+    if (getIt<AuthManager>().isLoggedIn) {
+      Navigator.of(context).pushReplacementNamed(AppRoutsName.sectionApp);
+      return;
+    }
+
     if (seenOnboarding) {
-      Navigator.of(context).pushReplacementNamed(AppRoutsName.applyScreen);
+      Navigator.of(context).pushReplacementNamed(AppRoutsName.loginScreen);
       return;
     }
 

@@ -63,10 +63,7 @@ void main() {
         mockUseCase.execute(requestModel: anyNamed('requestModel')),
       ).thenAnswer((_) async => SuccessBaseResponse(data: successResponse));
       when(
-        mockAuthManager.setAuthData(
-          token: anyNamed('token'),
-          rememberMe: anyNamed('rememberMe'),
-        ),
+        mockAuthManager.setAuthData(token: anyNamed('token')),
       ).thenAnswer((_) async {});
       return viewModel;
     },
@@ -82,7 +79,7 @@ void main() {
         mockUseCase.execute(requestModel: anyNamed('requestModel')),
       ).called(1);
       verify(
-        mockAuthManager.setAuthData(token: 'token123', rememberMe: true),
+        mockAuthManager.setAuthData(token: 'token123'),
       ).called(1);
     },
   );
@@ -102,23 +99,6 @@ void main() {
       predicate<ApplyState>((state) => state.applyState.isLoading),
       predicate<ApplyState>(
         (state) => state.applyState.msg == 'Error occurred',
-      ),
-    ],
-  );
-
-  blocTest<ApplyViewModel, ApplyState>(
-    'emits [loading, error] when exception occurs',
-    build: () {
-      when(
-        mockUseCase.execute(requestModel: anyNamed('requestModel')),
-      ).thenThrow(Exception('Unexpected error'));
-      return viewModel;
-    },
-    act: (bloc) => bloc.doEvent(SubmitApplyEvent(requestModel: requestModel)),
-    expect: () => [
-      predicate<ApplyState>((state) => state.applyState.isLoading),
-      predicate<ApplyState>(
-        (state) => state.applyState.msg!.contains('Unexpected error'),
       ),
     ],
   );

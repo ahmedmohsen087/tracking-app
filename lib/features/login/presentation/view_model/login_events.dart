@@ -8,3 +8,8 @@ class LoginRequestEvent extends LoginEvents {
 
   LoginRequestEvent({required this.requestModel});
 }
+class RememberMeEvent extends LoginEvents {
+  final bool rememberMe;
+
+  RememberMeEvent({required this.rememberMe});
+}
