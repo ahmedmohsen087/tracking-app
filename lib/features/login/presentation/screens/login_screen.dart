@@ -39,13 +39,18 @@ class _LoginViewState extends State<LoginView> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool _rememberMe = false;
-  bool _obscurePassword = true;
+
+  final ValueNotifier<bool> _rememberMeNotifier = ValueNotifier<bool>(false);
+  final ValueNotifier<bool> _obscurePasswordNotifier = ValueNotifier<bool>(
+    true,
+  );
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _rememberMeNotifier.dispose();
+    _obscurePasswordNotifier.dispose();
     super.dispose();
   }
 
@@ -57,7 +62,7 @@ class _LoginViewState extends State<LoginView> {
         requestModel: LoginRequestModel(
           email: _emailController.text.trim(),
           password: _passwordController.text,
-          rememberMe: _rememberMe,
+          rememberMe: _rememberMeNotifier.value,
         ),
       ),
     );
@@ -71,40 +76,13 @@ class _LoginViewState extends State<LoginView> {
         listener: _LoginListener.onStateChange,
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                const SizedBox(height: 16),
-
-                _EmailField(controller: _emailController),
-                const SizedBox(height: 16),
-
-                _PasswordField(
-                  controller: _passwordController,
-                  obscure: _obscurePassword,
-                  onToggle: () =>
-                      setState(() => _obscurePassword = !_obscurePassword),
-                ),
-
-                const SizedBox(height: 16),
-
-                _RememberMeRow(
-                  value: _rememberMe,
-                  onChanged: (v) => setState(() => _rememberMe = v ?? false),
-                ),
-
-                const SizedBox(height: 40),
-
-                _LoginButton(onPressed: () => _onLogin(context)),
-
-                const SizedBox(height: 16),
-                const _GuestButton(),
-
-                const SizedBox(height: 24),
-                const _SignUpLink(),
-              ],
-            ),
+          child: LoginForm(
+            formKey: _formKey,
+            emailController: _emailController,
+            passwordController: _passwordController,
+            obscurePasswordNotifier: _obscurePasswordNotifier,
+            rememberMeNotifier: _rememberMeNotifier,
+            onLoginPressed: () => _onLogin(context),
           ),
         ),
       ),
@@ -149,114 +127,118 @@ class _LoginListener {
   }
 }
 
-class _EmailField extends StatelessWidget {
-  const _EmailField({required this.controller});
-  final TextEditingController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      controller: controller,
-      validator: (value) => AppValidations.validateEmail(value ?? ''),
-      decoration: InputDecoration(
-        labelText: AppStrings.emailLabel,
-        hintText: AppStrings.emailHint,
-      ),
-      keyboardType: TextInputType.emailAddress,
-    );
-  }
-}
-
-class _PasswordField extends StatelessWidget {
-  const _PasswordField({
-    required this.controller,
-    required this.obscure,
-    required this.onToggle,
+class LoginForm extends StatelessWidget {
+  const LoginForm({
+    super.key,
+    required this.formKey,
+    required this.emailController,
+    required this.passwordController,
+    required this.obscurePasswordNotifier,
+    required this.rememberMeNotifier,
+    required this.onLoginPressed,
   });
 
-  final TextEditingController controller;
-  final bool obscure;
-  final VoidCallback onToggle;
+  final GlobalKey<FormState> formKey;
+  final TextEditingController emailController;
+  final TextEditingController passwordController;
+  final ValueNotifier<bool> obscurePasswordNotifier;
+  final ValueNotifier<bool> rememberMeNotifier;
+  final VoidCallback onLoginPressed;
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: controller,
-      obscureText: obscure,
-      validator: (value) => AppValidations.validatePassword(value ?? ''),
-      decoration: InputDecoration(
-        labelText: AppStrings.passwordLabel,
-        hintText: AppStrings.passwordHint,
-        suffixIcon: IconButton(
-          onPressed: onToggle,
-          icon: SvgPicture.asset(
-            obscure
-                ? Assets.assetsIconsVisibilityOff
-                : Assets.assetsIconsVisibilityOn,
-            width: 20,
-            height: 20,
-            colorFilter: const ColorFilter.mode(
-              AppColors.grey,
-              BlendMode.srcIn,
+    return Form(
+      key: formKey,
+      child: Column(
+        children: [
+          const SizedBox(height: 16),
+
+          // Email Field
+          TextFormField(
+            controller: emailController,
+            validator: (value) => AppValidations.validateEmail(value ?? ''),
+            decoration: InputDecoration(
+              labelText: AppStrings.emailLabel,
+              hintText: AppStrings.emailHint,
+            ),
+            keyboardType: TextInputType.emailAddress,
+          ),
+          const SizedBox(height: 16),
+
+          // Password Field
+          ValueListenableBuilder<bool>(
+            valueListenable: obscurePasswordNotifier,
+            builder: (context, isObscured, child) {
+              return TextFormField(
+                controller: passwordController,
+                obscureText: isObscured,
+                validator: (value) =>
+                    AppValidations.validatePassword(value ?? ''),
+                decoration: InputDecoration(
+                  labelText: AppStrings.passwordLabel,
+                  hintText: AppStrings.passwordHint,
+                  suffixIcon: IconButton(
+                    onPressed: () =>
+                        obscurePasswordNotifier.value = !isObscured,
+                    icon: SvgPicture.asset(
+                      isObscured
+                          ? Assets.assetsIconsVisibilityOff
+                          : Assets.assetsIconsVisibilityOn,
+                      width: 20,
+                      height: 20,
+                      colorFilter: const ColorFilter.mode(
+                        AppColors.grey,
+                        BlendMode.srcIn,
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+          const SizedBox(height: 16),
+
+          Row(
+            children: [
+              ValueListenableBuilder<bool>(
+                valueListenable: rememberMeNotifier,
+                builder: (context, isRemembered, child) {
+                  return Checkbox(
+                    value: isRemembered,
+                    onChanged: (v) => rememberMeNotifier.value = v ?? false,
+                  );
+                },
+              ),
+              Text(AppStrings.rememberMe),
+              const Spacer(),
+              GestureDetector(
+                onTap: () => Navigator.pushNamed(
+                  context,
+                  AppRoutsName.forgetPasswordScreen,
+                ),
+                child: Text(
+                  AppStrings.forgetPassword,
+                  style: TextStyles.bodyRegularUnderLine13,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 40),
+
+          // Login Button
+          SizedBox(
+            width: double.infinity,
+            height: 52,
+            child: ElevatedButton(
+              onPressed: onLoginPressed,
+              child: Text(AppStrings.loginButton),
             ),
           ),
-        ),
+
+          const SizedBox(height: 24),
+          const _SignUpLink(),
+        ],
       ),
-    );
-  }
-}
-
-class _RememberMeRow extends StatelessWidget {
-  const _RememberMeRow({required this.value, required this.onChanged});
-
-  final bool value;
-  final ValueChanged<bool?> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Checkbox(value: value, onChanged: onChanged),
-        Text(AppStrings.rememberMe),
-        const Spacer(),
-        GestureDetector(
-          onTap: () =>
-              Navigator.pushNamed(context, AppRoutsName.forgetPasswordScreen),
-          child: Text(
-            AppStrings.forgetPassword,
-            style: TextStyles.bodyRegularUnderLine13,
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _LoginButton extends StatelessWidget {
-  const _LoginButton({required this.onPressed});
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      height: 52,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        child: Text(AppStrings.loginButton),
-      ),
-    );
-  }
-}
-
-class _GuestButton extends StatelessWidget {
-  const _GuestButton();
-
-  @override
-  Widget build(BuildContext context) {
-    return OutlinedButton(
-      onPressed: () {},
-      child: Text(AppStrings.continueAsGuest),
     );
   }
 }

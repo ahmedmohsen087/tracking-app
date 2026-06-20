@@ -33,7 +33,11 @@ class LoginRepositoryImpl implements LoginRepository {
       );
       return SuccessBaseResponse(data: entity);
     } catch (e) {
-      return ErrorBaseResponse(exception: e, errorMessage: '');
+      // TODO: Handle specific exceptions and provide error messages
+      return ErrorBaseResponse<AuthResponseEntity>(
+        errorMessage: '',
+        exception: e,
+      );
     }
   }
 }

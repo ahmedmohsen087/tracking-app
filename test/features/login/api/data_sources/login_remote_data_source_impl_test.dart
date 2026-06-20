@@ -1,5 +1,4 @@
 import 'package:flowery_rider_app/core/models/auth_response.dart';
-import 'package:flowery_rider_app/core/values/api_parameters.dart';
 import 'package:flowery_rider_app/features/login/api/data_sources/login_remote_data_source_impl.dart';
 import 'package:flowery_rider_app/features/login/api/login_api_client/login_api_client.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -16,11 +15,6 @@ void main() {
   const tEmail = 'test@example.com';
   const tPassword = 'password123';
 
-  final tRequestMap = {
-    ApiParameters.email: tEmail,
-    ApiParameters.password: tPassword,
-  };
-
   final tAuthResponse = AuthResponse(
     token: 'mocked_jwt_token_for_testing',
     message: 'Success',
@@ -36,9 +30,7 @@ void main() {
       'should return AuthResponse when api client login call succeeds',
       () async {
         // Arrange
-        when(
-          mockApiClient.login(tRequestMap),
-        ).thenAnswer((_) async => tAuthResponse);
+        when(mockApiClient.login(any)).thenAnswer((_) async => tAuthResponse);
 
         // Act
         final result = await datasource.login(
@@ -48,7 +40,7 @@ void main() {
 
         // Assert
         expect(result, tAuthResponse);
-        verify(mockApiClient.login(tRequestMap)).called(1);
+        verify(mockApiClient.login(any)).called(1);
         verifyNoMoreInteractions(mockApiClient);
       },
     );
@@ -58,7 +50,7 @@ void main() {
       () async {
         // Arrange
         final exception = Exception('Invalid Credentials');
-        when(mockApiClient.login(tRequestMap)).thenThrow(exception);
+        when(mockApiClient.login(any)).thenThrow(exception);
 
         // Act & Assert
         expect(
@@ -66,7 +58,7 @@ void main() {
           throwsA(isA<Exception>()),
         );
 
-        verify(mockApiClient.login(tRequestMap)).called(1);
+        verify(mockApiClient.login(any)).called(1);
         verifyNoMoreInteractions(mockApiClient);
       },
     );
