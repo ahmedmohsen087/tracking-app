@@ -76,7 +76,6 @@ class AppStrings {
   static String get badCertificate => 'badCertificate'.tr();
   static String get somethingWentWrong => 'somethingWentWrong'.tr();
 
-  // Apply screen
   static String get apply => 'apply'.tr();
 
   static String get welcomeExclamation => 'welcomeExclamation'.tr();
@@ -159,4 +158,7 @@ class AppStrings {
   static String get continueAsGuest => 'Continue as guest'.tr();
   static String get dontHaveAccount => "Don't have an account? ".tr();
   static String get signUp => 'Sign up'.tr();
+  // Logout
+  static String get logout => 'logout'.tr();
+  static String get confirmLogout => 'confirmLogout'.tr();
 }
