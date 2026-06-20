@@ -13,11 +13,8 @@ class AppStrings {
   static String get orders => 'orders'.tr();
   static String get profile => 'profile'.tr();
 
-
-
   // Splash / onboarding
-  static String get welcomeToFloweryRiderApp =>
-      'welcomeToFloweryRiderApp'.tr();
+  static String get welcomeToFloweryRiderApp => 'welcomeToFloweryRiderApp'.tr();
   static String get login => 'login'.tr();
   static String get applyNow => 'applyNow'.tr();
 
@@ -41,8 +38,7 @@ class AppStrings {
   // Secure storage - onboarding
   static String get seenOnboardingWriteFailed =>
       'seenOnboardingWriteFailed'.tr();
-  static String get seenOnboardingReadFailed =>
-      'seenOnboardingReadFailed'.tr();
+  static String get seenOnboardingReadFailed => 'seenOnboardingReadFailed'.tr();
 
   // Secure storage - general
   static String get clearStorageFailed => 'clearStorageFailed'.tr();
@@ -152,4 +148,15 @@ class AppStrings {
 
   static String get applicationSubmittedSubtitle =>
       'applicationSubmittedSubtitle'.tr();
+  static String get loginTitle => 'Login'.tr();
+  static String get emailLabel => 'Email'.tr();
+  static String get emailHint => 'Enter your email'.tr();
+  static String get passwordLabel => 'Password'.tr();
+  static String get passwordHint => 'Enter your password'.tr();
+  static String get rememberMe => 'Remember me'.tr();
+  static String get forgetPassword => 'Forget password?'.tr();
+  static String get loginButton => 'Login'.tr();
+  static String get continueAsGuest => 'Continue as guest'.tr();
+  static String get dontHaveAccount => "Don't have an account? ".tr();
+  static String get signUp => 'Sign up'.tr();
 }

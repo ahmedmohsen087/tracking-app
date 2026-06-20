@@ -2,6 +2,7 @@ import 'package:flowery_rider_app/core/values/app_routs_name.dart';
 import 'package:flowery_rider_app/core/values/app_strings.dart';
 import 'package:flowery_rider_app/features/apply/presentation/screens/apply_screen.dart';
 import 'package:flowery_rider_app/features/apply/presentation/screens/success_apply_screen.dart';
+import 'package:flowery_rider_app/features/login/presentation/screens/login_screen.dart';
 import 'package:flowery_rider_app/features/splash/presentation/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -21,6 +22,8 @@ class AppRoutes {
 
       case AppRoutsName.successApplyScreen:
         return MaterialPageRoute(builder: (_) => const SuccessApplyScreen());
+      case AppRoutsName.loginScreen:
+        return MaterialPageRoute(builder: (_) => const LoginScreen());
       default:
         return MaterialPageRoute(
           builder: (_) =>
