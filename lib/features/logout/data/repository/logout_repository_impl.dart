@@ -14,15 +14,15 @@ class LogoutRepositoryImpl implements LogoutRepository {
 
   @override
   Future<BaseResponse<void>> logout() async {
+    final response = await _remoteDataSource.logout();
     try {
       await _remoteDataSource.logout();
-    } catch (_) {}
-    try {
       await _authManager.logout();
+
+      return SuccessBaseResponse(data: null);
     } catch (e) {
       // TODO: Handle logout error message
-      return ErrorBaseResponse(errorMessage: '');
+      return ErrorBaseResponse(errorMessage: response.errorMessage);
     }
-    return SuccessBaseResponse(data: null);
   }
 }
