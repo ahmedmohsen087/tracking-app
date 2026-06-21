@@ -2,32 +2,32 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flowery_rider_app/config/base_response/base_response.dart';
-import 'package:flowery_rider_app/features/apply/api/apply_api_client/apply_api_client.dart';
-import 'package:flowery_rider_app/features/apply/api/data_sources/apply_remote_data_source_impl.dart';
-import 'package:flowery_rider_app/features/apply/api/request_models/apply_request_model.dart';
-import 'package:flowery_rider_app/features/apply/api/responses/apply_response.dart';
+import 'package:flowery_rider_app/features/auth/api/auth_api_client/auth_api_client.dart';
+import 'package:flowery_rider_app/features/auth/api/data_sources_impl/auth_remote_data_source_impl.dart';
+import 'package:flowery_rider_app/features/auth/api/request_models/apply_request_model.dart';
+import 'package:flowery_rider_app/features/auth/data/models/auth_response_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import 'apply_remote_data_source_impl_test.mocks.dart';
 
-@GenerateMocks([ApplyApiClient])
+@GenerateMocks([AuthApiClient])
 void main() {
-  late ApplyRemoteDataSourceImpl dataSource;
-  late MockApplyApiClient mockApiClient;
+  late AuthRemoteDataSourceImpl dataSource;
+  late MockAuthApiClient mockApiClient;
   late File licenseFile;
   late File nidFile;
 
   setUpAll(() {
-    provideDummy<BaseResponse<ApplyResponse>>(
-      SuccessBaseResponse(data: ApplyResponse()),
+    provideDummy<BaseResponse<AuthResponseModel>>(
+      SuccessBaseResponse(data: AuthResponseModel()),
     );
   });
 
   setUp(() {
-    mockApiClient = MockApplyApiClient();
-    dataSource = ApplyRemoteDataSourceImpl(mockApiClient);
+    mockApiClient = MockAuthApiClient();
+    dataSource = AuthRemoteDataSourceImpl(mockApiClient);
 
     licenseFile = File('test_license.jpg')..createSync();
     nidFile = File('test_nid.jpg')..createSync();
@@ -61,12 +61,12 @@ void main() {
   test(
     'should return SuccessBaseResponse when API call is successful',
     () async {
-      final response = ApplyResponse();
+      final response = AuthResponseModel();
       when(mockApiClient.applyAsDriver(any)).thenAnswer((_) async => response);
 
       final result = await dataSource.apply(requestModel: requestModel);
 
-      expect(result, isA<SuccessBaseResponse<ApplyResponse>>());
+      expect(result, isA<SuccessBaseResponse<AuthResponseModel>>());
       verify(mockApiClient.applyAsDriver(any)).called(1);
     },
   );
@@ -85,7 +85,7 @@ void main() {
 
     final result = await dataSource.apply(requestModel: requestModel);
 
-    expect(result, isA<ErrorBaseResponse<ApplyResponse>>());
+    expect(result, isA<ErrorBaseResponse<AuthResponseModel>>());
     expect((result as ErrorBaseResponse).errorMessage, 'Server error');
   });
 }

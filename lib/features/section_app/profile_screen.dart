@@ -1,9 +1,9 @@
 import 'package:flowery_rider_app/core/reusable_widgets/app_snack_bar.dart';
 import 'package:flowery_rider_app/core/values/app_routs_name.dart';
 import 'package:flowery_rider_app/core/values/app_strings.dart';
-import 'package:flowery_rider_app/features/logout/presentation/view_model/logout_state.dart';
-import 'package:flowery_rider_app/features/logout/presentation/view_model/logout_view_model.dart';
-import 'package:flowery_rider_app/features/logout/presentation/widgets/logout_dialog.dart';
+import 'package:flowery_rider_app/features/auth/presentation/view_models/logout_view_model/logout_state.dart';
+import 'package:flowery_rider_app/features/auth/presentation/view_models/logout_view_model/logout_view_model.dart';
+import 'package:flowery_rider_app/features/auth/presentation/widgets/logout_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

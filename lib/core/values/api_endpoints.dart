@@ -3,4 +3,7 @@ abstract class ApiEndpoints {
   static const String login = "$baseUrl/signin";
   static const String applyDriver = "$baseUrl/apply";
   static const String logout = "$baseUrl/logout";
+  static const String forgetPassword = "$baseUrl/forgotPassword";
+  static const String verifyOtp = "$baseUrl/verifyResetCode";
+  static const String resetPassword = "$baseUrl/resetPassword";
 }

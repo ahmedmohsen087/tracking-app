@@ -1,21 +1,21 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flowery_rider_app/config/base_response/base_response.dart';
 import 'package:flowery_rider_app/config/base_state/base_state.dart';
-import 'package:flowery_rider_app/core/entities/auth_response_entity.dart';
-import 'package:flowery_rider_app/core/entities/user_entity.dart';
-import 'package:flowery_rider_app/features/login/api/request_models/login_request_model.dart';
-import 'package:flowery_rider_app/features/login/domain/use_cases/login_use_case.dart';
-import 'package:flowery_rider_app/features/login/presentation/view_model/login_events.dart';
-import 'package:flowery_rider_app/features/login/presentation/view_model/login_state.dart';
+import 'package:flowery_rider_app/features/auth/domain/entities/auth_response_entity.dart';
+import 'package:flowery_rider_app/features/auth/domain/entities/driver_entity.dart';
+import 'package:flowery_rider_app/features/auth/api/request_models/login_request_model.dart';
+import 'package:flowery_rider_app/features/auth/domain/use_cases/login_use_case.dart';
+import 'package:flowery_rider_app/features/auth/presentation/view_models/login_view_model/login_events.dart';
+import 'package:flowery_rider_app/features/auth/presentation/view_models/login_view_model/login_state.dart';
 import 'package:flowery_rider_app/config/auth/auth_manager.dart';
-import 'package:flowery_rider_app/features/login/presentation/view_model/login_view_model.dart';
+import 'package:flowery_rider_app/features/auth/presentation/view_models/login_view_model/login_view_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import 'login_view_model_test.mocks.dart';
 
-final tUserEntity = UserEntity(
+const tDriverEntity = DriverEntity(
   id: 'dummy',
   firstName: 'dummy',
   lastName: 'dummy',
@@ -24,9 +24,6 @@ final tUserEntity = UserEntity(
   phone: 'dummy',
   photo: 'dummy',
   role: 'dummy',
-  wishlist: const [],
-  addresses: const [],
-  createdAt: DateTime.fromMillisecondsSinceEpoch(0),
 );
 
 @GenerateMocks([LoginUseCase, AuthManager])
@@ -34,10 +31,10 @@ void main() {
   setUpAll(() {
     provideDummy<BaseResponse<AuthResponseEntity>>(
       SuccessBaseResponse<AuthResponseEntity>(
-        data: AuthResponseEntity(
+        data: const AuthResponseEntity(
           token: 'dummy',
           message: '',
-          userEntity: tUserEntity,
+          driver: tDriverEntity,
         ),
       ),
     );
@@ -55,7 +52,7 @@ void main() {
   final tAuthResponseEntity = AuthResponseEntity(
     token: 'mocked_jwt_token',
     message: 'Success',
-    userEntity: tUserEntity,
+    driver: tDriverEntity,
   );
 
   void stubLoginSuccess() {

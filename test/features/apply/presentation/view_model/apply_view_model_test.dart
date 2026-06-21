@@ -1,34 +1,31 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:flowery_rider_app/config/auth/auth_manager.dart';
 import 'package:flowery_rider_app/config/base_response/base_response.dart';
-import 'package:flowery_rider_app/features/apply/api/request_models/apply_request_model.dart';
-import 'package:flowery_rider_app/features/apply/domain/entities/apply_response_entity.dart';
-import 'package:flowery_rider_app/features/apply/domain/use_cases/apply_use_case.dart';
-import 'package:flowery_rider_app/features/apply/presentation/view_model/apply_events.dart';
-import 'package:flowery_rider_app/features/apply/presentation/view_model/apply_state.dart';
-import 'package:flowery_rider_app/features/apply/presentation/view_model/apply_view_model.dart';
+import 'package:flowery_rider_app/features/auth/api/request_models/apply_request_model.dart';
+import 'package:flowery_rider_app/features/auth/domain/entities/auth_response_entity.dart';
+import 'package:flowery_rider_app/features/auth/domain/use_cases/apply_use_case.dart';
+import 'package:flowery_rider_app/features/auth/presentation/view_models/apply_view_model/apply_events.dart';
+import 'package:flowery_rider_app/features/auth/presentation/view_models/apply_view_model/apply_state.dart';
+import 'package:flowery_rider_app/features/auth/presentation/view_models/apply_view_model/apply_view_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import 'apply_view_model_test.mocks.dart';
 
-@GenerateMocks([ApplyUseCase, AuthManager])
+@GenerateMocks([ApplyUseCase])
 void main() {
   late ApplyViewModel viewModel;
   late MockApplyUseCase mockUseCase;
-  late MockAuthManager mockAuthManager;
 
   setUpAll(() {
-    provideDummy<BaseResponse<ApplyResponseEntity>>(
-      SuccessBaseResponse(data: const ApplyResponseEntity()),
+    provideDummy<BaseResponse<AuthResponseEntity>>(
+      SuccessBaseResponse(data: const AuthResponseEntity()),
     );
   });
 
   setUp(() {
     mockUseCase = MockApplyUseCase();
-    mockAuthManager = MockAuthManager();
-    viewModel = ApplyViewModel(mockUseCase, mockAuthManager);
+    viewModel = ApplyViewModel(mockUseCase);
   });
 
   tearDown(() {
@@ -51,20 +48,17 @@ void main() {
     gender: 'male',
   );
 
-  final successResponse = ApplyResponseEntity(
+  final successResponse = AuthResponseEntity(
     message: 'Success',
     token: 'token123',
   );
 
   blocTest<ApplyViewModel, ApplyState>(
-    'emits [loading, success] when apply is successful and sets auth data',
+    'emits [loading, success] when apply is successful',
     build: () {
       when(
         mockUseCase.execute(requestModel: anyNamed('requestModel')),
       ).thenAnswer((_) async => SuccessBaseResponse(data: successResponse));
-      when(
-        mockAuthManager.setAuthData(token: anyNamed('token')),
-      ).thenAnswer((_) async {});
       return viewModel;
     },
     act: (bloc) => bloc.doEvent(SubmitApplyEvent(requestModel: requestModel)),
@@ -77,9 +71,6 @@ void main() {
     verify: (_) {
       verify(
         mockUseCase.execute(requestModel: anyNamed('requestModel')),
-      ).called(1);
-      verify(
-        mockAuthManager.setAuthData(token: 'token123'),
       ).called(1);
     },
   );

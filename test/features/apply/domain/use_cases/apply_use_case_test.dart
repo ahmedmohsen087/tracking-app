@@ -1,27 +1,27 @@
 import 'package:flowery_rider_app/config/base_response/base_response.dart';
-import 'package:flowery_rider_app/features/apply/api/request_models/apply_request_model.dart';
-import 'package:flowery_rider_app/features/apply/domain/entities/apply_response_entity.dart';
-import 'package:flowery_rider_app/features/apply/domain/repository/apply_repository.dart';
-import 'package:flowery_rider_app/features/apply/domain/use_cases/apply_use_case.dart';
+import 'package:flowery_rider_app/features/auth/api/request_models/apply_request_model.dart';
+import 'package:flowery_rider_app/features/auth/domain/entities/auth_response_entity.dart';
+import 'package:flowery_rider_app/features/auth/domain/repository_contract/auth_repository_contract.dart';
+import 'package:flowery_rider_app/features/auth/domain/use_cases/apply_use_case.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import 'apply_use_case_test.mocks.dart';
 
-@GenerateMocks([ApplyRepository])
+@GenerateMocks([AuthRepositoryContract])
 void main() {
   late ApplyUseCase useCase;
-  late MockApplyRepository mockRepository;
+  late MockAuthRepositoryContract mockRepository;
 
   setUpAll(() {
-    provideDummy<BaseResponse<ApplyResponseEntity>>(
-      SuccessBaseResponse(data: const ApplyResponseEntity()),
+    provideDummy<BaseResponse<AuthResponseEntity>>(
+      SuccessBaseResponse(data: const AuthResponseEntity()),
     );
   });
 
   setUp(() {
-    mockRepository = MockApplyRepository();
+    mockRepository = MockAuthRepositoryContract();
     useCase = ApplyUseCase(mockRepository);
   });
 
@@ -42,14 +42,14 @@ void main() {
   );
 
   test('should return SuccessBaseResponse from repository', () async {
-    final responseEntity = ApplyResponseEntity(message: 'Success');
+    final responseEntity = AuthResponseEntity(message: 'Success');
     when(
       mockRepository.apply(requestModel: anyNamed('requestModel')),
     ).thenAnswer((_) async => SuccessBaseResponse(data: responseEntity));
 
     final result = await useCase.execute(requestModel: requestModel);
 
-    expect(result, isA<SuccessBaseResponse<ApplyResponseEntity>>());
+    expect(result, isA<SuccessBaseResponse<AuthResponseEntity>>());
     verify(
       mockRepository.apply(requestModel: anyNamed('requestModel')),
     ).called(1);
@@ -62,7 +62,7 @@ void main() {
 
     final result = await useCase.execute(requestModel: requestModel);
 
-    expect(result, isA<ErrorBaseResponse<ApplyResponseEntity>>());
+    expect(result, isA<ErrorBaseResponse<AuthResponseEntity>>());
     expect((result as ErrorBaseResponse).errorMessage, 'Error');
   });
 }

@@ -1,71 +1,35 @@
 import 'package:flowery_rider_app/config/auth/auth_manager.dart';
 import 'package:flowery_rider_app/config/base_response/base_response.dart';
-import 'package:flowery_rider_app/core/entities/auth_response_entity.dart';
-import 'package:flowery_rider_app/core/entities/user_entity.dart';
-import 'package:flowery_rider_app/core/models/auth_response.dart';
-import 'package:flowery_rider_app/features/login/data/data_sources/login_remote_data_source.dart';
-import 'package:flowery_rider_app/features/login/data/repository/login_repository_impl.dart';
+import 'package:flowery_rider_app/features/auth/data/data_sources_contract/auth_remote_data_source_contract.dart';
+import 'package:flowery_rider_app/features/auth/data/models/auth_response_model.dart';
+import 'package:flowery_rider_app/features/auth/data/repository_impl/auth_repository_impl.dart';
+import 'package:flowery_rider_app/features/auth/domain/entities/auth_response_entity.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import 'login_repository_impl_test.mocks.dart';
 
-final tUserEntity = UserEntity(
-  id: 'dummy',
-  firstName: 'dummy',
-  lastName: 'dummy',
-  email: 'dummy@example.com',
-  gender: 'dummy',
-  phone: 'dummy',
-  photo: 'dummy',
-  role: 'dummy',
-  wishlist: const [],
-  addresses: const [],
-  createdAt: DateTime.fromMillisecondsSinceEpoch(0),
-);
-
-@GenerateMocks([LoginRemoteDataSource, AuthManager])
+@GenerateMocks([AuthRemoteDataSourceContract, AuthManager])
 void main() {
-  setUpAll(() {
-    final fallbackEntity = AuthResponseEntity(
-      token: 'dummy',
-      message: '',
-      userEntity: tUserEntity,
-    );
-
-    provideDummy<BaseResponse<AuthResponseEntity>>(
-      SuccessBaseResponse<AuthResponseEntity>(data: fallbackEntity),
-    );
-    provideDummy<SuccessBaseResponse<AuthResponseEntity>>(
-      SuccessBaseResponse<AuthResponseEntity>(data: fallbackEntity),
-    );
-    provideDummy<ErrorBaseResponse<AuthResponseEntity>>(
-      ErrorBaseResponse<AuthResponseEntity>(errorMessage: 'dummy_error'),
-    );
-    provideDummy<BaseResponse<AuthResponse>>(
-      ErrorBaseResponse<AuthResponse>(errorMessage: 'dummy_error'),
-    );
-  });
-
-  late MockLoginRemoteDataSource mockRemoteDataSource;
+  late AuthRepositoryImpl repository;
+  late MockAuthRemoteDataSourceContract mockDataSource;
   late MockAuthManager mockAuthManager;
-  late LoginRepositoryImpl repository;
 
   const tEmail = 'test@example.com';
   const tPassword = 'password123';
   const tToken = 'mocked_jwt_token';
 
-  final tAuthResponse = AuthResponse(
-    token: tToken,
-    message: 'Success',
-    user: null,
-  );
+  setUpAll(() {
+    provideDummy<BaseResponse<AuthResponseModel>>(
+      SuccessBaseResponse(data: AuthResponseModel()),
+    );
+  });
 
   setUp(() {
-    mockRemoteDataSource = MockLoginRemoteDataSource();
+    mockDataSource = MockAuthRemoteDataSourceContract();
     mockAuthManager = MockAuthManager();
-    repository = LoginRepositoryImpl(mockRemoteDataSource, mockAuthManager);
+    repository = AuthRepositoryImpl(mockDataSource, mockAuthManager);
   });
 
   group('login', () {
@@ -73,40 +37,30 @@ void main() {
       'should return SuccessBaseResponse and save auth data when login is successful',
       () async {
         // Arrange
+        final response = AuthResponseModel(message: 'Success', token: tToken);
         when(
-          mockRemoteDataSource.login(
-            email: anyNamed('email'),
-            password: anyNamed('password'),
-          ),
-        ).thenAnswer(
-          (_) async => SuccessBaseResponse<AuthResponse>(data: tAuthResponse),
-        );
+          mockDataSource.login(email: anyNamed('email'), password: anyNamed('password')),
+        ).thenAnswer((_) async => SuccessBaseResponse(data: response));
 
         when(
           mockAuthManager.setAuthData(token: anyNamed('token')),
         ).thenAnswer((_) async {});
 
         // Act
-        final result = await repository.login(
-          email: tEmail,
-          password: tPassword,
-        );
+        final result = await repository.login(email: tEmail, password: tPassword);
 
         // Assert
         expect(result, isA<SuccessBaseResponse<AuthResponseEntity>>());
+        expect(
+          (result as SuccessBaseResponse<AuthResponseEntity>).data.token,
+          tToken,
+        );
 
         verify(
-          mockRemoteDataSource.login(
-            email: anyNamed('email'),
-            password: anyNamed('password'),
-          ),
+          mockDataSource.login(email: anyNamed('email'), password: anyNamed('password')),
         ).called(1);
-
-        verify(
-          mockAuthManager.setAuthData(token: anyNamed('token')),
-        ).called(1);
-
-        verifyNoMoreInteractions(mockRemoteDataSource);
+        verify(mockAuthManager.setAuthData(token: tToken)).called(1);
+        verifyNoMoreInteractions(mockDataSource);
         verifyNoMoreInteractions(mockAuthManager);
       },
     );
@@ -116,34 +70,25 @@ void main() {
       () async {
         // Arrange
         when(
-          mockRemoteDataSource.login(
-            email: anyNamed('email'),
-            password: anyNamed('password'),
-          ),
+          mockDataSource.login(email: anyNamed('email'), password: anyNamed('password')),
         ).thenAnswer(
-          (_) async => ErrorBaseResponse<AuthResponse>(
-            errorMessage: 'Network Failure',
-          ),
+          (_) async => ErrorBaseResponse(errorMessage: 'Network Failure'),
         );
 
         // Act
-        final result = await repository.login(
-          email: tEmail,
-          password: tPassword,
-        );
+        final result = await repository.login(email: tEmail, password: tPassword);
 
         // Assert
         expect(result, isA<ErrorBaseResponse<AuthResponseEntity>>());
+        expect(
+          (result as ErrorBaseResponse<AuthResponseEntity>).errorMessage,
+          'Network Failure',
+        );
 
         verify(
-          mockRemoteDataSource.login(
-            email: anyNamed('email'),
-            password: anyNamed('password'),
-          ),
+          mockDataSource.login(email: anyNamed('email'), password: anyNamed('password')),
         ).called(1);
-        verifyNever(
-          mockAuthManager.setAuthData(token: anyNamed('token')),
-        );
+        verifyNever(mockAuthManager.setAuthData(token: anyNamed('token')));
       },
     );
   });

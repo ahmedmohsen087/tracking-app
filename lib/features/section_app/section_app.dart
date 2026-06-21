@@ -1,5 +1,5 @@
 import 'package:flowery_rider_app/config/di/di.dart';
-import 'package:flowery_rider_app/features/logout/presentation/view_model/logout_view_model.dart';
+import 'package:flowery_rider_app/features/auth/presentation/view_models/logout_view_model/logout_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/values/app_strings.dart';
