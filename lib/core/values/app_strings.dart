@@ -9,6 +9,8 @@ class AppStrings {
   static String get close => 'close'.tr();
   static String get error => 'error'.tr();
   static String get retry => 'retry'.tr();
+
+  // Bottom navigation
   static String get home => 'home'.tr();
   static String get orders => 'orders'.tr();
   static String get profile => 'profile'.tr();
@@ -23,7 +25,6 @@ class AppStrings {
   static String get tokenWriteFailed => 'tokenWriteFailed'.tr();
   static String get tokenReadFailed => 'tokenReadFailed'.tr();
   static String get tokenDeleteFailed => 'tokenDeleteFailed'.tr();
-
 
   // Secure storage - remember me
   static String get rememberMeWriteFailed => 'rememberMeWriteFailed'.tr();
@@ -50,14 +51,12 @@ class AppStrings {
   static String get emailInvalid => 'emailInvalid'.tr();
   static String get email => 'email'.tr();
   static String get enterYourEmail => 'enterYourEmail'.tr();
-  static String get emailVerification => 'EmailVerification'.tr();
+  static String get emailVerification => 'emailVerification'.tr();
   static String get pleaseEnterYourEmailAssociated =>
-  'Please enter your email associated to \n your account'.tr();
-  static String get pleaseEnterYourCode =>
-  'Please enter your code that send to your \n email address'.tr();
-  static String get didntReceiveCode => 'Did\'nTReceiveCode ?'.tr();
-  static String get resend => ' Resend'.tr();
-
+      'pleaseEnterYourEmailAssociated'.tr();
+  static String get pleaseEnterYourCode => 'pleaseEnterYourCode'.tr();
+  static String get didntReceiveCode => 'didntReceiveCode'.tr();
+  static String get resend => 'resend'.tr();
 
   // Validation - phone
   static String get phoneRequired => 'phoneRequired'.tr();
@@ -69,21 +68,14 @@ class AppStrings {
   static String get confirmPasswordRequired => 'confirmPasswordRequired'.tr();
   static String get passwordDoNotMatch => 'passwordDoNotMatch'.tr();
   static String get password => 'password'.tr();
-  static String get forgetPassword => 'ForgetPassword'.tr();
-  static String get confirm => 'Confirm'.tr();
-  static String get resetPassword => 'ResetPassword'.tr();
-  static String get passwordMustNotBeEmpty =>
-  'Password must not be empty and must contain \n  6 characters with upper case letter and one \n number at least'.tr();
-  static String get newPassword => 'New password'.tr();
-  static String get enterYourPassword => 'Enter Your Password'.tr();
-  static String get confirmPassword => 'Confirm Password'.tr();
-
-
-
-
-
-
-
+  static String get forgetPassword => 'forgetPassword'.tr();
+  static String get confirm => 'confirm'.tr();
+  static String get resetPassword => 'resetPassword'.tr();
+  static String get passwordMustNotBeEmpty => 'passwordMustNotBeEmpty'.tr();
+  static String get newPassword => 'newPassword'.tr();
+  static String get enterYourPassword => 'enterYourPassword'.tr();
+  static String get enterPassword => 'enterPassword'.tr();
+  static String get confirmPassword => 'confirmPassword'.tr();
 
   // Validation - otp
   static String get otpEmpty => 'otpEmpty'.tr();
@@ -97,91 +89,56 @@ class AppStrings {
   static String get badCertificate => 'badCertificate'.tr();
   static String get somethingWentWrong => 'somethingWentWrong'.tr();
 
+  // Apply
   static String get apply => 'apply'.tr();
-
   static String get welcomeExclamation => 'welcomeExclamation'.tr();
-
   static String get applySubtitle => 'applySubtitle'.tr();
-
   static String get country => 'country'.tr();
-
   static String get firstLegalName => 'firstLegalName'.tr();
-
   static String get enterFirstLegalName => 'enterFirstLegalName'.tr();
-
   static String get secondLegalName => 'secondLegalName'.tr();
-
   static String get enterSecondLegalName => 'enterSecondLegalName'.tr();
-
   static String get vehicleType => 'vehicleType'.tr();
-
   static String get vehicleNumber => 'vehicleNumber'.tr();
-
   static String get enterVehicleNumber => 'enterVehicleNumber'.tr();
-
   static String get vehicleLicense => 'vehicleLicense'.tr();
-
   static String get uploadLicensePhoto => 'uploadLicensePhoto'.tr();
-
-  static String get enterYourEmail => 'enterYourEmail'.tr();
-
   static String get phoneNumber => 'phoneNumber'.tr();
-
   static String get enterPhoneNumber => 'enterPhoneNumber'.tr();
-
   static String get idNumber => 'idNumber'.tr();
-
   static String get enterNationalIdNumber => 'enterNationalIdNumber'.tr();
-
   static String get idImage => 'idImage'.tr();
-
   static String get uploadIdImage => 'uploadIdImage'.tr();
-
-  static String get enterPassword => 'enterPassword'.tr();
-
-  static String get confirmPassword => 'confirmPassword'.tr();
-
   static String get gender => 'gender'.tr();
-
   static String get female => 'female'.tr();
-
   static String get male => 'male'.tr();
-
   static String get continueText => 'continueText'.tr();
-
   static String get countryRequired => 'countryRequired'.tr();
-
   static String get vehicleTypeRequired => 'vehicleTypeRequired'.tr();
-
   static String get vehicleNumberRequired => 'vehicleNumberRequired'.tr();
-
   static String get vehicleLicenseRequired => 'vehicleLicenseRequired'.tr();
-
   static String get idNumberRequired => 'idNumberRequired'.tr();
-
   static String get idImageRequired => 'idImageRequired'.tr();
-
   static String get genderRequired => 'genderRequired'.tr();
 
-  // Success apply screen
+  // Apply - success screen
   static String get applicationSubmitted => 'applicationSubmitted'.tr();
-
   static String get applicationSubmittedSubtitle =>
       'applicationSubmittedSubtitle'.tr();
-  static String get loginTitle => 'Login'.tr();
-  static String get emailLabel => 'Email'.tr();
-  static String get emailHint => 'Enter your email'.tr();
-  static String get passwordLabel => 'Password'.tr();
-  static String get passwordHint => 'Enter your password'.tr();
-  static String get rememberMe => 'Remember me'.tr();
-  static String get forgetPassword => 'Forget password?'.tr();
-  static String get loginButton => 'Login'.tr();
-  static String get continueAsGuest => 'Continue as guest'.tr();
-  static String get dontHaveAccount => "Don't have an account? ".tr();
-  static String get signUp => 'Sign up'.tr();
+
+  // Login
+  static String get loginTitle => 'loginTitle'.tr();
+  static String get emailLabel => 'emailLabel'.tr();
+  static String get emailHint => 'emailHint'.tr();
+  static String get passwordLabel => 'passwordLabel'.tr();
+  static String get passwordHint => 'passwordHint'.tr();
+  static String get rememberMe => 'rememberMe'.tr();
+  static String get loginButton => 'loginButton'.tr();
+  static String get continueAsGuest => 'continueAsGuest'.tr();
+  static String get dontHaveAccount => 'dontHaveAccount'.tr();
+  static String get signUp => 'signUp'.tr();
+
   // Logout
   static String get logout => 'logout'.tr();
   static String get confirmLogout => 'confirmLogout'.tr();
-  // profile
-  static String get profileScreen => 'Profile Screen'.tr();
 }

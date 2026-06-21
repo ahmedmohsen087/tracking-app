@@ -15,6 +15,5 @@ abstract class ApplyApiClient {
   @POST(ApiEndpoints.applyDriver)
   @MultiPart()
 
-  // model reqquest ???
   Future<ApplyResponse> applyAsDriver(@Body() FormData formData);
 }
