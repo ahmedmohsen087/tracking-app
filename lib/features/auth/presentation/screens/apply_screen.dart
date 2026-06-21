@@ -133,15 +133,46 @@ class _ApplyScreenContentState extends State<_ApplyScreenContent> {
   }
 
   Future<void> _pickFile(bool isLicense) async {
-    final result = await context.read<ApplyViewModel>().checkPermissions();
+    final source = await showModalBottomSheet<ImageSource>(
+      context: context,
+      builder: (ctx) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.camera_alt_outlined),
+              title: Text(AppStrings.takePhoto),
+              onTap: () => Navigator.pop(ctx, ImageSource.camera),
+            ),
+            ListTile(
+              leading: const Icon(Icons.photo_library_outlined),
+              title: Text(AppStrings.chooseFromGallery),
+              onTap: () => Navigator.pop(ctx, ImageSource.gallery),
+            ),
+          ],
+        ),
+      ),
+    );
+    if (source == null) return;
+    if (!mounted) return;
+
+    final viewModel = context.read<ApplyViewModel>();
+    final result = source == ImageSource.camera
+        ? await viewModel.checkCameraPermission()
+        : await viewModel.checkPermissions();
 
     if (result != PermissionResult.granted) {
       if (!mounted) return;
+      final isCamera = source == ImageSource.camera;
       showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
           title: Text(AppStrings.permissionRequired),
-          content: Text(AppStrings.photoPermanentlyDenied),
+          content: Text(
+            isCamera
+                ? AppStrings.cameraPermanentlyDenied
+                : AppStrings.photoPermanentlyDenied,
+          ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(ctx),
@@ -162,7 +193,7 @@ class _ApplyScreenContentState extends State<_ApplyScreenContent> {
 
     final picker = ImagePicker();
     final image = await picker.pickImage(
-      source: ImageSource.gallery,
+      source: source,
       imageQuality: 50,
       maxWidth: 800,
       maxHeight: 800,

@@ -122,5 +122,10 @@
   "permissionRequired": "Permission Required",
   "photoPermanentlyDenied": "Photo access has been permanently denied. Please enable it in app settings to upload images.",
   "openSettings": "Open Settings",
-  "photoDenied": "Photo access was denied. Please allow it to upload images."
+  "photoDenied": "Photo access was denied. Please allow it to upload images.",
+  "cameraPermanentlyDenied": "Camera access has been permanently denied. Please enable it in app settings to take photos.",
+  "cameraDenied": "Camera access was denied. Please allow it to take photos.",
+  "chooseImageSource": "Choose Image Source",
+  "takePhoto": "Take Photo",
+  "chooseFromGallery": "Choose from Gallery"
 }

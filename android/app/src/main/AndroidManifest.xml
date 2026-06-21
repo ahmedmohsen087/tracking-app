@@ -42,6 +42,8 @@
             <data android:mimeType="text/plain"/>
         </intent>
     </queries>
+    <!-- Camera permission for image picker -->
+    <uses-permission android:name="android.permission.CAMERA" />
     <!-- Storage permissions for image picker -->
     <!-- Android 13+ -->
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />

@@ -150,4 +150,15 @@ class AppStrings {
   static String get openSettings => 'openSettings'.tr();
 
   static String get photoDenied => 'photoDenied'.tr();
+
+  static String get cameraPermanentlyDenied =>
+      'cameraPermanentlyDenied'.tr();
+
+  static String get cameraDenied => 'cameraDenied'.tr();
+
+  static String get chooseImageSource => 'chooseImageSource'.tr();
+
+  static String get takePhoto => 'takePhoto'.tr();
+
+  static String get chooseFromGallery => 'chooseFromGallery'.tr();
 }

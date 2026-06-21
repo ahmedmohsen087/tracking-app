@@ -62,4 +62,12 @@ class ApplyViewModel extends Cubit<ApplyState> {
 
     return PermissionResult.denied;
   }
+
+  Future<PermissionResult> checkCameraPermission() async {
+    final status = await Permission.camera.request();
+    if (status.isGranted) return PermissionResult.granted;
+    if (status.isPermanentlyDenied) return PermissionResult.permanentlyDenied;
+
+    return PermissionResult.denied;
+  }
 }
