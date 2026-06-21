@@ -141,4 +141,13 @@ class AppStrings {
   // Logout
   static String get logout => 'logout'.tr();
   static String get confirmLogout => 'confirmLogout'.tr();
+
+  // Apply screen - permission dialog
+  static String get permissionRequired => 'permissionRequired'.tr();
+
+  static String get photoPermanentlyDenied => 'photoPermanentlyDenied'.tr();
+
+  static String get openSettings => 'openSettings'.tr();
+
+  static String get photoDenied => 'photoDenied'.tr();
 }

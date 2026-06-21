@@ -65,6 +65,7 @@ class CountryDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButtonFormField<Map<String, String>>(
       isExpanded: true,
+      menuMaxHeight: 300,
       initialValue: countries.firstWhere((c) => c['id'] == value),
       decoration: InputDecoration(
         labelText: AppStrings.country,
@@ -119,6 +120,7 @@ class VehicleTypeDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButtonFormField<Map<String, String>>(
       isExpanded: true,
+      menuMaxHeight: 300,
       initialValue: types.firstWhere((t) => t['label'] == value),
       decoration: InputDecoration(
         labelText: AppStrings.vehicleType,

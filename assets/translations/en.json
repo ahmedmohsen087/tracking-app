@@ -118,5 +118,9 @@
   "signUp": "Sign up",
 
   "logout": "Logout",
-  "confirmLogout": "Are you sure you want to logout?"
+  "confirmLogout": "Are you sure you want to logout?",
+  "permissionRequired": "Permission Required",
+  "photoPermanentlyDenied": "Photo access has been permanently denied. Please enable it in app settings to upload images.",
+  "openSettings": "Open Settings",
+  "photoDenied": "Photo access was denied. Please allow it to upload images."
 }
