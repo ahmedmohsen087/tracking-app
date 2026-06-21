@@ -93,5 +93,11 @@
   "idImageRequired": "ID image is required",
   "genderRequired": "Gender is required",
   "applicationSubmitted": "Your application has been\nsubmitted!",
-  "applicationSubmittedSubtitle": "Thank you for providing your application,\nwe will review your application and will\nget back to you soon."
+  "applicationSubmittedSubtitle": "Thank you for providing your application,\nwe will review your application and will\nget back to you soon.",
+  "email": "Email",
+  "password": "Password",
+  "permissionRequired": "Permission Required",
+  "photoPermanentlyDenied": "Photo access has been permanently denied. Please enable it in app settings to upload images.",
+  "openSettings": "Open Settings",
+  "photoDenied": "Photo access was denied. Please allow it to upload images."
 }

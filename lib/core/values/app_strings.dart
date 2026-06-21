@@ -152,4 +152,18 @@ class AppStrings {
 
   static String get applicationSubmittedSubtitle =>
       'applicationSubmittedSubtitle'.tr();
+
+  // Apply screen - labels
+  static String get email => 'email'.tr();
+
+  static String get password => 'password'.tr();
+
+  // Apply screen - permission dialog
+  static String get permissionRequired => 'permissionRequired'.tr();
+
+  static String get photoPermanentlyDenied => 'photoPermanentlyDenied'.tr();
+
+  static String get openSettings => 'openSettings'.tr();
+
+  static String get photoDenied => 'photoDenied'.tr();
 }
