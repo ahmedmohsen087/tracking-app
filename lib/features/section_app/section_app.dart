@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/values/app_strings.dart';
 import 'home_screen.dart';
-import 'orders_screen.dart';
-import 'profile_screen.dart';
+import '../orders/presentation/screens/orders_screen.dart';
+import '../profile/presentation/screens/profile_screen.dart';
 
 enum AppTab { home, orders, profile }
 
