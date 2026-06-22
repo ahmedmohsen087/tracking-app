@@ -128,5 +128,7 @@
   "chooseImageSource": "Choose Image Source",
   "takePhoto": "Take Photo",
   "chooseFromGallery": "Choose from Gallery",
-  "vehicleInfo": "Vehicle Info"
+  "vehicleInfo": "Vehicle Info",
+  "language": "Language",
+  "English": "English"
 }

@@ -163,4 +163,6 @@ class AppStrings {
   static String get chooseFromGallery => 'chooseFromGallery'.tr();
   // profile
   static String get vehicleInfo => 'vehicleInfo'.tr();
+  static String get language => 'language'.tr();
+  static String get english => 'English'.tr();
 }
