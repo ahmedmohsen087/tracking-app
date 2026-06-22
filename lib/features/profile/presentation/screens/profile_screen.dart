@@ -2,6 +2,7 @@
 import 'package:flowery_rider_app/core/values/app_strings.dart';
 import 'package:flutter/material.dart';
 import '../widgets/personal_information_card.dart';
+import '../widgets/vehicle_info_card.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -13,8 +14,11 @@ class ProfileScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          spacing: 30,
           children: [
-            PersonalInformationCard()
+            PersonalInformationCard(),
+
+            VehicleInfoCard(),
 
           ],
         ),

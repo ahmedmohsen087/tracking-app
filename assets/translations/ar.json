@@ -127,5 +127,7 @@
   "cameraDenied": "تم رفض الوصول للكاميرا. من فضلك سمح بالوصول لتصوير الصور.",
   "chooseImageSource": "اختر مصدر الصورة",
   "takePhoto": "تصوير بالكاميرا",
-  "chooseFromGallery": "اختيار من المعرض"
+  "chooseFromGallery": "اختيار من المعرض",
+  "vehicleInfo" : "معلومات المركبة"
+
 }

@@ -161,4 +161,6 @@ class AppStrings {
   static String get takePhoto => 'takePhoto'.tr();
 
   static String get chooseFromGallery => 'chooseFromGallery'.tr();
+  // profile
+  static String get vehicleInfo => 'vehicleInfo'.tr();
 }
