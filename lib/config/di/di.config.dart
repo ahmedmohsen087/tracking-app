@@ -33,6 +33,7 @@ import '../../features/auth/presentation/view_models/login_view_model/login_view
     as _i580;
 import '../../features/auth/presentation/view_models/logout_view_model/logout_view_model.dart'
     as _i310;
+import '../../features/home/api/home_api_client/home_api_client.dart' as _i866;
 import '../auth/auth_interceptor.dart' as _i53;
 import '../auth/auth_manager.dart' as _i692;
 import '../cache/smart_cache_interceptor.dart' as _i276;
@@ -82,6 +83,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i474.AuthApiClient>(
       () => _i474.AuthApiClient(gh<_i361.Dio>()),
+    );
+    gh.lazySingleton<_i866.HomeApiClient>(
+      () => _i866.HomeApiClient(gh<_i361.Dio>(), baseUrl: gh<String>()),
     );
     gh.factory<_i95.AuthRemoteDataSourceContract>(
       () => _i691.AuthRemoteDataSourceImpl(gh<_i474.AuthApiClient>()),
