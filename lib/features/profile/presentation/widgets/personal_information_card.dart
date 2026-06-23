@@ -3,7 +3,18 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/text_styles.dart';
 
 class PersonalInformationCard extends StatelessWidget {
-  const PersonalInformationCard({super.key});
+  final String? name;
+  final String? email;
+  final String? phone;
+  final String? photo;
+
+  const PersonalInformationCard({
+    super.key,
+    this.name,
+    this.email,
+    this.phone,
+    this.photo,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +45,7 @@ class PersonalInformationCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
               CircleAvatar(
-                child: Image.asset('assets/images/Photo.png',
+                child: Image.network(photo!,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -43,12 +54,12 @@ class PersonalInformationCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('John Doe',
+                Text(name!,
               style: TextStyles.bodyMedium18,
             ),
-                Text('John Doe@gmail.com',
+                Text(email!,
                   style: TextStyles.bodyRegular16,),
-                Text('012113456789',
+                Text(phone!,
                   style: TextStyles.bodyRegular16,),
 
               ],

@@ -1,12 +1,14 @@
+import 'package:injectable/injectable.dart';
 import '../../../../config/base_response/base_response.dart';
 import '../../../auth/domain/entities/driver_entity.dart';
-import '../../data/repository_impl/profile_repository_impl.dart';
+import '../repository_contract/profile_repository_contract.dart';
 
+@injectable
 class GetProfileUseCase {
-  final ProfileRepositoryImpl profileRepositoryImpl ;
-  GetProfileUseCase(this.profileRepositoryImpl);
+  final ProfileRepositoryContract profileRepositoryContract ;
+  GetProfileUseCase(this.profileRepositoryContract);
   Future<BaseResponse<DriverEntity>> call()async {
-    return await profileRepositoryImpl.getProfile();
+    return await profileRepositoryContract.getProfile();
   }
-  }
+}
 

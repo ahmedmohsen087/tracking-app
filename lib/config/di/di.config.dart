@@ -33,6 +33,8 @@ import '../../features/auth/presentation/view_models/login_view_model/login_view
     as _i580;
 import '../../features/auth/presentation/view_models/logout_view_model/logout_view_model.dart'
     as _i310;
+import '../../features/profile/api/data_sources_impl/profile_remote_data_source_impl.dart'
+    as _i1028;
 import '../../features/profile/api/profile_api_client/profile_api_client.dart'
     as _i1000;
 import '../../features/profile/data/data_sources_contract/profile_remote_data_source_contract.dart'
@@ -41,6 +43,10 @@ import '../../features/profile/data/repository_impl/profile_repository_impl.dart
     as _i187;
 import '../../features/profile/domain/repository_contract/profile_repository_contract.dart'
     as _i193;
+import '../../features/profile/domain/use_cases/get_profile_use_case.dart'
+    as _i110;
+import '../../features/profile/presentation/view_models/get_profile_view_model/get_profile_view_model.dart'
+    as _i530;
 import '../auth/auth_interceptor.dart' as _i53;
 import '../auth/auth_manager.dart' as _i692;
 import '../cache/smart_cache_interceptor.dart' as _i276;
@@ -72,11 +78,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i695.DioCacheInterceptor>(
       () => cacheModule.dioCacheInterceptor(gh<_i695.CacheStore>()),
     );
-    gh.factory<_i193.ProfileRepositoryContract>(
-      () => _i187.ProfileRepositoryImpl(
-        gh<_i1040.ProfileRemoteDataSourceContract>(),
-      ),
-    );
     gh.lazySingleton<_i692.AuthManager>(
       () => _i692.AuthManager(
         gh<_i611.SecureStorageService>(),
@@ -102,6 +103,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i95.AuthRemoteDataSourceContract>(
       () => _i691.AuthRemoteDataSourceImpl(gh<_i474.AuthApiClient>()),
     );
+    gh.factory<_i1040.ProfileRemoteDataSourceContract>(
+      () => _i1028.ProfileRemoteDataSourceImpl(gh<_i1000.ProfileApiClient>()),
+    );
     gh.factory<_i148.AuthRepositoryContract>(
       () => _i954.AuthRepositoryImpl(
         gh<_i95.AuthRemoteDataSourceContract>(),
@@ -117,6 +121,11 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i692.AuthManager>(),
       ),
     );
+    gh.factory<_i193.ProfileRepositoryContract>(
+      () => _i187.ProfileRepositoryImpl(
+        gh<_i1040.ProfileRemoteDataSourceContract>(),
+      ),
+    );
     gh.factory<_i698.LogoutUseCase>(
       () => _i698.LogoutUseCase(gh<_i148.AuthRepositoryContract>()),
     );
@@ -128,6 +137,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i993.ApplyViewModel>(
       () => _i993.ApplyViewModel(gh<_i743.ApplyUseCase>()),
+    );
+    gh.factory<_i110.GetProfileUseCase>(
+      () => _i110.GetProfileUseCase(gh<_i193.ProfileRepositoryContract>()),
+    );
+    gh.factory<_i530.GetProfileViewModel>(
+      () => _i530.GetProfileViewModel(gh<_i110.GetProfileUseCase>()),
     );
     return this;
   }

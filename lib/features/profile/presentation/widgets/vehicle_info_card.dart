@@ -5,7 +5,13 @@ import '../../../../core/theme/text_styles.dart';
 import '../../../../core/values/app_strings.dart';
 
 class VehicleInfoCard extends StatelessWidget {
-  const VehicleInfoCard({super.key});
+  final String? kindOfVehicle;
+  final String? vehicleNumber;
+  const VehicleInfoCard({
+    super.key,
+    this.kindOfVehicle,
+    this.vehicleNumber,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -36,9 +42,9 @@ class VehicleInfoCard extends StatelessWidget {
               children: [
                 Text(AppStrings.vehicleInfo,
                   style: TextStyles.bodyMedium18,),
-                Text('Bike',
+                Text(kindOfVehicle!,
                   style: TextStyles.bodyRegular16,),
-                Text('UP16DL0007',
+                Text(vehicleNumber!,
                   style: TextStyles.bodyRegular16,),
 
               ],
