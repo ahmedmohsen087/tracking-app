@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import '../../../auth/data/models/driver_model.dart';
+import 'driver.dart';
 part 'get_profile_response.g.dart';
 
 @JsonSerializable()
