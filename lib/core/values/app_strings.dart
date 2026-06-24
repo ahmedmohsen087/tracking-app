@@ -166,5 +166,7 @@ class AppStrings {
   static String get flowerOrder => 'flowerOrder'.tr();
   static String get pickupAddress => 'pickupAddress'.tr();
   static String get userAddress => 'userAddress'.tr();
+  static String get reject => 'reject'.tr();
+  static String get accept => 'accept'.tr();
 
 }
