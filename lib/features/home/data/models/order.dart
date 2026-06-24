@@ -2,6 +2,7 @@ import 'package:flowery_rider_app/features/home/data/models/product.dart';
 import 'package:flowery_rider_app/features/home/data/models/shipping_address.dart';
 import 'package:flowery_rider_app/features/home/data/models/store.dart';
 import 'package:flowery_rider_app/features/home/data/models/user.dart';
+import 'package:flowery_rider_app/features/home/domain/entities/order_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'order_item.dart';
@@ -60,4 +61,24 @@ class Order {
   factory Order.fromJson(Map<String, dynamic> json) => _$OrderFromJson(json);
 
   Map<String, dynamic> toJson() => _$OrderToJson(this);
+  OrderEntity toDomain() {
+    return OrderEntity(
+      id: id,
+      user: user?.toDomain(),
+      orderItems: orderItems
+          ?.map((e) => e.toDomain())
+          .toList() ??
+          [],
+      totalPrice: totalPrice,
+      shippingAddress: shippingAddress?.toDomain(),
+      paymentType: paymentType?.name,
+      isPaid: isPaid,
+      isDelivered: isDelivered,
+      state: state?.name,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
+      orderNumber: orderNumber,
+      store: store?.toDomain(),
+    );
+  }
 }

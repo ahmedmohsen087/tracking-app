@@ -1,4 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
+
+import '../../domain/entities/store_entity.dart';
 part 'store.g.dart';
 @JsonSerializable()
 class Store {
@@ -24,6 +26,15 @@ class Store {
   factory Store.fromJson(Map<String, dynamic> json) => _$StoreFromJson(json);
 
   Map<String, dynamic> toJson() => _$StoreToJson(this);
+  StoreEntity toDomain(){
+    return StoreEntity(
+      name: name.toString(),
+      image: image,
+      address: address.toString(),
+      phoneNumber: phoneNumber,
+      latLong: latLong.toString(),
+    );
+  }
 }
 
 enum Address {
@@ -39,4 +50,6 @@ enum LatLong {
 enum Name {
   @JsonValue("Elevate FlowerApp Store")
   ELEVATE_FLOWER_APP_STORE
+
+
 }

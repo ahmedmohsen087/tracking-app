@@ -1,4 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
+
+import '../../domain/entities/product_entity.dart';
 part 'product.g.dart';
 @JsonSerializable()
 class Product {
@@ -66,6 +68,18 @@ class Product {
   factory Product.fromJson(Map<String, dynamic> json) => _$ProductFromJson(json);
 
   Map<String, dynamic> toJson() => _$ProductToJson(this);
+  ProductEntity toDomain(){
+    return ProductEntity(
+      id: id,
+      title: title,
+      description: description,
+      imgCover: imgCover,
+      images: images ?? [],
+      price: price?.toDouble(),
+      priceAfterDiscount: priceAfterDiscount?.toDouble(),
+      discount: discount,
+    );
+  }
 }
 
 enum PaymentType {
