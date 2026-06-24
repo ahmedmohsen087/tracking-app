@@ -127,5 +127,9 @@
   "cameraDenied": "Camera access was denied. Please allow it to take photos.",
   "chooseImageSource": "Choose Image Source",
   "takePhoto": "Take Photo",
-  "chooseFromGallery": "Choose from Gallery"
+  "chooseFromGallery": "Choose from Gallery",
+
+  "flowerOrder": "Flower Order",
+  "pickupAddress": "Pickup Address",
+  "userAddress": "User Address"
 }

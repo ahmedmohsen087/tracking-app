@@ -80,4 +80,6 @@ class Assets {
   static const String assetsTranslationsAr = "assets/translations/ar.json";
 
   static const String assetsTranslationsEn = "assets/translations/en.json";
+
+  static const String appBarIcon = "assets/images/flowery_rider.png";
 }

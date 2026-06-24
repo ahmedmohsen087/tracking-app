@@ -3,7 +3,7 @@ import 'package:flowery_rider_app/features/auth/presentation/view_models/logout_
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/values/app_strings.dart';
-import 'home_screen.dart';
+import '../home/presentation/screens/home_screen.dart';
 import '../orders/presentation/screens/orders_screen.dart';
 import '../profile/presentation/screens/profile_screen.dart';
 
