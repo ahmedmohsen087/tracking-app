@@ -151,8 +151,7 @@ class AppStrings {
 
   static String get photoDenied => 'photoDenied'.tr();
 
-  static String get cameraPermanentlyDenied =>
-      'cameraPermanentlyDenied'.tr();
+  static String get cameraPermanentlyDenied => 'cameraPermanentlyDenied'.tr();
 
   static String get cameraDenied => 'cameraDenied'.tr();
 
@@ -161,4 +160,9 @@ class AppStrings {
   static String get takePhoto => 'takePhoto'.tr();
 
   static String get chooseFromGallery => 'chooseFromGallery'.tr();
+  // change password
+  static String get passwordUpdated => 'passwordUpdated'.tr();
+  static String get currentPassword => 'currentPassword'.tr();
+  static String get changePassword => 'changePassword'.tr();
+  static String get update => 'update'.tr();
 }

@@ -1,10 +1,14 @@
+import 'package:flowery_rider_app/config/di/di.dart';
 import 'package:flowery_rider_app/core/values/app_routs_name.dart';
 import 'package:flowery_rider_app/core/values/app_strings.dart';
 import 'package:flowery_rider_app/features/auth/presentation/screens/apply_screen.dart';
 import 'package:flowery_rider_app/features/auth/presentation/screens/login_screen.dart';
 import 'package:flowery_rider_app/features/auth/presentation/screens/success_apply_screen.dart';
+import 'package:flowery_rider_app/features/profile/presentation/screens/change_password_screen.dart';
+import 'package:flowery_rider_app/features/profile/presentation/view_models/change_password_view_model/change_password_view_model.dart';
 import 'package:flowery_rider_app/features/splash/presentation/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../features/section_app/section_app.dart';
 
 class AppRoutes {
@@ -20,6 +24,14 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const SuccessApplyScreen());
       case AppRoutsName.loginScreen:
         return MaterialPageRoute(builder: (_) => const LoginScreen());
+      case AppRoutsName.changePasswordScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => getIt<ChangePasswordViewModel>(),
+            child: Builder(builder: (context) => const ChangePasswordScreen()),
+          ),
+        );
+
       default:
         return MaterialPageRoute(
           builder: (_) =>

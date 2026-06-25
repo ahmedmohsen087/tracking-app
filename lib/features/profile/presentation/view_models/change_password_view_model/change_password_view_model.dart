@@ -4,8 +4,8 @@ import 'package:flowery_rider_app/config/base_state/base_state.dart';
 import 'package:flowery_rider_app/features/profile/api/request_models/profile_request_model.dart';
 import 'package:flowery_rider_app/features/profile/domain/entities/profile_entity.dart';
 import 'package:flowery_rider_app/features/profile/domain/use_cases/change_password_usecase.dart';
-import 'package:flowery_rider_app/features/profile/presentation/view_models/change_password_events.dart';
-import 'package:flowery_rider_app/features/profile/presentation/view_models/change_password_state.dart';
+import 'package:flowery_rider_app/features/profile/presentation/view_models/change_password_view_model/change_password_events.dart';
+import 'package:flowery_rider_app/features/profile/presentation/view_models/change_password_view_model/change_password_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
@@ -48,10 +48,16 @@ class ChangePasswordViewModel extends Cubit<ChangePasswordState> {
 
     switch (response) {
       case SuccessBaseResponse<ProfileResponseEntity>():
+        final newToken = response.data.token;
+        if (newToken != null && newToken.isNotEmpty) {
+          await _authManager.setAuthData(token: newToken);
+        }
+
         emit(
           state.copyWith(changePasswordState: BaseState.success(response.data)),
         );
         break;
+
       case ErrorBaseResponse<ProfileResponseEntity>():
         emit(
           state.copyWith(
