@@ -1,5 +1,4 @@
 import 'package:flowery_rider_app/features/home/data/models/product.dart';
-import 'package:flowery_rider_app/features/home/domain/entities/order_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../domain/entities/order_item_entity.dart';

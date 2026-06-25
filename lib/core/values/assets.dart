@@ -82,4 +82,7 @@ class Assets {
   static const String assetsTranslationsEn = "assets/translations/en.json";
 
   static const String appBarIcon = "assets/images/flowery_rider.png";
+  static const String flowerLogo = "assets/images/flowerylogo.png";
+  static const String userLogo = "assets/images/userlogo.png";
+
 }

@@ -3,16 +3,29 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/text_styles.dart';
+import '../../domain/entities/order_entity.dart';
 import 'address_item.dart';
 import 'item_selected.dart';
 
 class FlowerOrderItem extends StatelessWidget {
-  const FlowerOrderItem({super.key});
+  final OrderEntity order;
+  final VoidCallback onReject;
+
+  const FlowerOrderItem({
+    super.key,
+    required this.order,
+    required this.onReject,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final shippingAddress = order.shippingAddress;
+    final userAddress = [
+      shippingAddress?.street,
+      shippingAddress?.city,
+    ].where((part) => part?.isNotEmpty == true).join(', ');
+
     return Container(
-      //height: 400,
       width: double.infinity,
       decoration: BoxDecoration(
         color: AppColors.white,
@@ -25,8 +38,6 @@ class FlowerOrderItem extends StatelessWidget {
             offset: Offset(0, 3),
           ),
         ],
-
-
       ),
       child: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -34,27 +45,25 @@ class FlowerOrderItem extends StatelessWidget {
           spacing: 10,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(AppStrings.flowerOrder,
-              style: TextStyles.textFieldTextStyle,
+            Text(AppStrings.flowerOrder, style: TextStyles.textFieldTextStyle),
+            Text(
+              AppStrings.pickupAddress,
+              style: TextStyles.bodyRegular12.copyWith(color: AppColors.grey),
             ),
-            Text(AppStrings.pickupAddress,
-              style: TextStyles.bodyRegular12.copyWith(
-                color: AppColors.grey
-              ),
+            AddressItem(
+              title: order.store?.name,
+              address: order.store?.address,
+              image: order.store?.image,
             ),
-            AddressItem(),
-            Text(AppStrings.userAddress,
-              style: TextStyles.bodyRegular12.copyWith(
-                  color: AppColors.grey
-              ),
+            Text(
+              AppStrings.userAddress,
+              style: TextStyles.bodyRegular12.copyWith(color: AppColors.grey),
             ),
-            AddressItem(),
-            ItemSelected(),
+            AddressItem(title: order.user?.firstName, address: userAddress),
+            ItemSelected(price: order.totalPrice, onReject: onReject),
           ],
         ),
       ),
-
-
     );
   }
 }

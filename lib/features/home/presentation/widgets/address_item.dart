@@ -4,12 +4,15 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/text_styles.dart';
 
 class AddressItem extends StatelessWidget {
-  const AddressItem({super.key});
+  final String? title;
+  final String? address;
+  final String? image;
+  const AddressItem({super.key, this.title, this.address, this.image});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       width: double.infinity,
       decoration: BoxDecoration(
         color: AppColors.white,
@@ -22,34 +25,53 @@ class AddressItem extends StatelessWidget {
             offset: Offset(0, 3),
           ),
         ],
-
-
       ),
       child: Row(
-        spacing: 20,
         children: [
-          CircleAvatar(
-            child: Image.asset('assets/images/Photo.png',
-              fit: BoxFit.cover,
+          SizedBox(
+            width: 40,
+            height: 40,
+            child: CircleAvatar(
+              backgroundImage: image?.isNotEmpty == true
+                  ? NetworkImage(image!)
+                  : null,
+              child: image?.isNotEmpty == true
+                  ? null
+                  : const Icon(Icons.storefront_outlined, size: 20),
             ),
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Flowery store',
-              style: TextStyles.bodyRegular13.copyWith(
-                color: AppColors.grey
-              ),
-              ),
-              Row(
-                children: [
-                  Icon(Icons.location_on_outlined),
-                  Text('20th st, Sheikh Zayed, Giza ',
-                    style: TextStyles.bodyRegular13,
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title ?? '',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyles.bodyRegular13.copyWith(
+                    color: AppColors.grey,
                   ),
-                ],
-              )
-            ],
+                ),
+                Row(
+                  children: [
+                    const SizedBox(
+                      width: 18,
+                      child: Icon(Icons.location_on_outlined, size: 18),
+                    ),
+                    const SizedBox(width: 4),
+                    Expanded(
+                      child: Text(
+                        address ?? '',
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyles.bodyRegular13,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ],
       ),

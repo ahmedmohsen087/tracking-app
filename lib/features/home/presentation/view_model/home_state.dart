@@ -1,20 +1,18 @@
-import 'package:equatable/equatable.dart';
-import '../../../../../config/base_state/base_state.dart';
+import '../../../../config/base_state/base_state.dart';
 import '../../domain/entities/order_entity.dart';
 
-class HomeState extends Equatable {
-  final BaseState<OrderEntity> getHomeState;
+class HomeState {
+  final BaseState<List<OrderEntity>> getOrdersState;
 
-  const HomeState({this.getHomeState = const BaseState()});
+  const HomeState({
+    this.getOrdersState = const BaseState<List<OrderEntity>>(),
+  });
 
- HomeState copyWith({
-    BaseState<OrderEntity>? getHomeState,
+  HomeState copyWith({
+    BaseState<List<OrderEntity>>? getOrdersState,
   }) {
     return HomeState(
-      getHomeState: getHomeState ?? this.getHomeState,
+      getOrdersState: getOrdersState ?? this.getOrdersState,
     );
- }
-
-  @override
-  List<Object?> get props => [getHomeState];
+  }
 }

@@ -9,7 +9,7 @@ part 'home_api_client.g.dart';
 @RestApi()
 abstract class HomeApiClient {
   @factoryMethod
-  factory HomeApiClient(Dio dio, {String baseUrl}) = _HomeApiClient;
+  factory HomeApiClient(Dio dio) = _HomeApiClient;
 
   @GET(ApiEndpoints.pendingOrders)
   Future<HomeResponse> getOrders();
