@@ -127,5 +127,12 @@
   "cameraDenied": "تم رفض الوصول للكاميرا. من فضلك سمح بالوصول لتصوير الصور.",
   "chooseImageSource": "اختر مصدر الصورة",
   "takePhoto": "تصوير بالكاميرا",
-  "chooseFromGallery": "اختيار من المعرض"
+  "chooseFromGallery": "اختيار من المعرض",
+  "editProfile": "تعديل الملف الشخصي",
+  "updateProfile": "تحديث",
+  "profileUpdatedSuccessfully": "تم تحديث الملف الشخصي بنجاح",
+  "photoUploadedSuccessfully": "تم رفع الصورة بنجاح",
+  "firstName": "الاسم الأول",
+  "lastName": "اسم العائلة",
+  "changePassword": "تغيير"
 }

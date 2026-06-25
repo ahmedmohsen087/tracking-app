@@ -3,8 +3,10 @@ import 'package:flowery_rider_app/core/values/app_strings.dart';
 import 'package:flowery_rider_app/features/auth/presentation/screens/apply_screen.dart';
 import 'package:flowery_rider_app/features/auth/presentation/screens/login_screen.dart';
 import 'package:flowery_rider_app/features/auth/presentation/screens/success_apply_screen.dart';
+import 'package:flowery_rider_app/features/profile/presentation/screens/edit_profile_screen.dart';
 import 'package:flowery_rider_app/features/splash/presentation/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
+
 import '../../features/section_app/section_app.dart';
 
 class AppRoutes {
@@ -20,6 +22,8 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const SuccessApplyScreen());
       case AppRoutsName.loginScreen:
         return MaterialPageRoute(builder: (_) => const LoginScreen());
+      case AppRoutsName.editProfileScreen:
+        return MaterialPageRoute(builder: (_) => const EditProfileScreen());
       default:
         return MaterialPageRoute(
           builder: (_) =>

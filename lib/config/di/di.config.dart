@@ -33,6 +33,22 @@ import '../../features/auth/presentation/view_models/login_view_model/login_view
     as _i580;
 import '../../features/auth/presentation/view_models/logout_view_model/logout_view_model.dart'
     as _i310;
+import '../../features/profile/api/data_sources_impl/profile_remote_data_source_impl.dart'
+    as _i1028;
+import '../../features/profile/api/profile_api_client/profile_api_client.dart'
+    as _i1000;
+import '../../features/profile/data/data_sources_contract/profile_remote_data_source_contract.dart'
+    as _i1040;
+import '../../features/profile/data/repository_impl/profile_repository_impl.dart'
+    as _i187;
+import '../../features/profile/domain/repository_contract/profile_repository_contract.dart'
+    as _i193;
+import '../../features/profile/domain/use_cases/edit_profile_use_case.dart'
+    as _i199;
+import '../../features/profile/domain/use_cases/upload_photo_use_case.dart'
+    as _i967;
+import '../../features/profile/presentation/view_models/edit_profile_view_model/edit_profile_view_model.dart'
+    as _i87;
 import '../auth/auth_interceptor.dart' as _i53;
 import '../auth/auth_manager.dart' as _i692;
 import '../cache/smart_cache_interceptor.dart' as _i276;
@@ -83,13 +99,24 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i474.AuthApiClient>(
       () => _i474.AuthApiClient(gh<_i361.Dio>()),
     );
+    gh.lazySingleton<_i1000.ProfileApiClient>(
+      () => _i1000.ProfileApiClient(gh<_i361.Dio>()),
+    );
     gh.factory<_i95.AuthRemoteDataSourceContract>(
       () => _i691.AuthRemoteDataSourceImpl(gh<_i474.AuthApiClient>()),
+    );
+    gh.factory<_i1040.ProfileRemoteDataSourceContract>(
+      () => _i1028.ProfileRemoteDataSourceImpl(gh<_i1000.ProfileApiClient>()),
     );
     gh.factory<_i148.AuthRepositoryContract>(
       () => _i954.AuthRepositoryImpl(
         gh<_i95.AuthRemoteDataSourceContract>(),
         gh<_i692.AuthManager>(),
+      ),
+    );
+    gh.factory<_i193.ProfileRepositoryContract>(
+      () => _i187.ProfileRepositoryImpl(
+        gh<_i1040.ProfileRemoteDataSourceContract>(),
       ),
     );
     gh.factory<_i1038.LoginUseCase>(
@@ -104,6 +131,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i698.LogoutUseCase>(
       () => _i698.LogoutUseCase(gh<_i148.AuthRepositoryContract>()),
     );
+    gh.factory<_i199.EditProfileUseCase>(
+      () => _i199.EditProfileUseCase(gh<_i193.ProfileRepositoryContract>()),
+    );
+    gh.factory<_i967.UploadPhotoUseCase>(
+      () => _i967.UploadPhotoUseCase(gh<_i193.ProfileRepositoryContract>()),
+    );
     gh.factory<_i743.ApplyUseCase>(
       () => _i743.ApplyUseCase(gh<_i148.AuthRepositoryContract>()),
     );
@@ -112,6 +145,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i993.ApplyViewModel>(
       () => _i993.ApplyViewModel(gh<_i743.ApplyUseCase>()),
+    );
+    gh.factory<_i87.EditProfileViewModel>(
+      () => _i87.EditProfileViewModel(
+        gh<_i199.EditProfileUseCase>(),
+        gh<_i967.UploadPhotoUseCase>(),
+      ),
     );
     return this;
   }

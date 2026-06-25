@@ -161,4 +161,20 @@ class AppStrings {
   static String get takePhoto => 'takePhoto'.tr();
 
   static String get chooseFromGallery => 'chooseFromGallery'.tr();
+
+  static String get editProfile => 'editProfile'.tr();
+
+  static String get updateProfile => 'updateProfile'.tr();
+
+  static String get profileUpdatedSuccessfully =>
+      'profileUpdatedSuccessfully'.tr();
+
+  static String get photoUploadedSuccessfully =>
+      'photoUploadedSuccessfully'.tr();
+
+  static String get firstName => 'firstName'.tr();
+
+  static String get lastName => 'lastName'.tr();
+
+  static String get changePassword => 'changePassword'.tr();
 }

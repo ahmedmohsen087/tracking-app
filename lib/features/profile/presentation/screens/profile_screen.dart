@@ -26,10 +26,9 @@ class ProfileScreen extends StatelessWidget {
                   const Center(child: CircularProgressIndicator()),
             );
           }
-      
+
           if (!state.logoutState.isLoading && state.logoutState.msg == null) {
             if (Navigator.canPop(context)) Navigator.pop(context);
-      
             Navigator.pushNamedAndRemoveUntil(
               context,
               AppRoutsName.loginScreen,
@@ -37,7 +36,6 @@ class ProfileScreen extends StatelessWidget {
             );
           } else if (state.logoutState.msg != null) {
             if (Navigator.canPop(context)) Navigator.pop(context);
-      
             AppSnackBar.showError(context, state.logoutState.msg!);
           }
         },
@@ -45,6 +43,14 @@ class ProfileScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              ElevatedButton(
+                onPressed: () => Navigator.pushNamed(
+                  context,
+                  AppRoutsName.editProfileScreen,
+                ),
+                child: Text(AppStrings.editProfile),
+              ),
+              const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
                   final logoutViewModel = context.read<LogoutViewModel>();
