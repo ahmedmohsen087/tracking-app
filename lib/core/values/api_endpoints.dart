@@ -6,4 +6,5 @@ abstract class ApiEndpoints {
   static const String forgetPassword = "$baseUrl/forgotPassword";
   static const String verifyOtp = "$baseUrl/verifyResetCode";
   static const String resetPassword = "$baseUrl/resetPassword";
+  static const String changePassword = "$baseUrl/change-password";
 }

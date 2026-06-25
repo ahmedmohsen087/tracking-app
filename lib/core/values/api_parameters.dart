@@ -4,6 +4,7 @@ abstract class ApiParameters {
   static const String email = 'email';
   static const String password = 'password';
   static const String rePassword = 'rePassword';
+  static const String newPassword = 'newPassword';
   static const String country = 'country';
   static const String firstName = 'firstName';
   static const String lastName = 'lastName';
