@@ -33,7 +33,7 @@ class HomeScreen extends StatelessWidget {
               return const Center(child: CircularProgressIndicator());
             }
 
-            if (ordersState.msg != null) {
+            if (ordersState.msg != null && orders.isEmpty) {
               return Center(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -55,28 +55,47 @@ class HomeScreen extends StatelessWidget {
               return const Center(child: Text('No orders available'));
             }
 
-            return RefreshIndicator(
-              onRefresh: () async => context.read<HomeViewModel>().doEvent(
-                const RefreshHomeEvent(),
-              ),
-              child: ListView.separated(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 10,
-                ),
-                itemCount: orders.length,
-                separatorBuilder: (context, index) =>
-                    const SizedBox(height: 20),
-                itemBuilder: (context, index) {
-                  final order = orders[index];
+            return NotificationListener<ScrollNotification>(
+              onNotification: (notification) {
+                final metrics = notification.metrics;
+                final shouldLoadMore =
+                    metrics.pixels >= metrics.maxScrollExtent - 200;
 
-                  return FlowerOrderItem(
-                    order: order,
-                    onReject: () => context.read<HomeViewModel>().doEvent(
-                      RejectOrderEvent(order.id),
-                    ),
+                if (shouldLoadMore) {
+                  context.read<HomeViewModel>().doEvent(
+                    const LoadMoreOrdersEvent(),
                   );
-                },
+                }
+
+                return false;
+              },
+              child: RefreshIndicator(
+                onRefresh: () async => context.read<HomeViewModel>().doEvent(
+                  const RefreshHomeEvent(),
+                ),
+                child: ListView.separated(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 10,
+                  ),
+                  itemCount: orders.length + (state.isLoadingMore ? 1 : 0),
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(height: 20),
+                  itemBuilder: (context, index) {
+                    if (index == orders.length) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+
+                    final order = orders[index];
+
+                    return FlowerOrderItem(
+                      order: order,
+                      onReject: () => context.read<HomeViewModel>().doEvent(
+                        RejectOrderEvent(order.id),
+                      ),
+                    );
+                  },
+                ),
               ),
             );
           },

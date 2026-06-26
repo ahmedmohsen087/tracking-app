@@ -10,6 +10,10 @@ class RefreshHomeEvent extends GetHomeEvent {
   const RefreshHomeEvent();
 }
 
+class LoadMoreOrdersEvent extends GetHomeEvent {
+  const LoadMoreOrdersEvent();
+}
+
 class RejectOrderEvent extends GetHomeEvent {
   final String? orderId;
 

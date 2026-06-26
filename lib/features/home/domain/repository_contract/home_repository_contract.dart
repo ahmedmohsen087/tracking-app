@@ -1,6 +1,9 @@
 import '../../../../config/base_response/base_response.dart';
-import '../entities/order_entity.dart';
+import '../entities/orders_page_entity.dart';
 
 abstract class HomeRepositoryContract {
-  Future<BaseResponse<List<OrderEntity>>> getOrders();
+  Future<BaseResponse<OrdersPageEntity>> getOrders({
+    required int page,
+    required int limit,
+  });
 }

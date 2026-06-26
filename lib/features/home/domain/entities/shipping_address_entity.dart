@@ -16,11 +16,5 @@ class ShippingAddressEntity extends Equatable {
   });
 
   @override
-  List<Object?> get props => [
-    street,
-    city,
-    phone,
-    lat,
-    long,
-  ];
+  List<Object?> get props => [street, city, phone, lat, long];
 }

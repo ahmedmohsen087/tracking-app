@@ -1,6 +1,7 @@
 import 'package:flowery_rider_app/features/home/domain/entities/user_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'user.g.dart';
+
 @JsonSerializable()
 class User {
   @JsonKey(name: "_id")
@@ -38,7 +39,7 @@ class User {
 
   Map<String, dynamic> toJson() => _$UserToJson(this);
 
-  UserEntity toDomain () {
+  UserEntity toDomain() {
     return UserEntity(
       id: id,
       firstName: firstName,

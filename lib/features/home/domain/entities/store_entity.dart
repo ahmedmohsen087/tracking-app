@@ -16,11 +16,5 @@ class StoreEntity extends Equatable {
   });
 
   @override
-  List<Object?> get props => [
-    name,
-    image,
-    address,
-    phoneNumber,
-    latLong,
-  ];
+  List<Object?> get props => [name, image, address, phoneNumber, latLong];
 }

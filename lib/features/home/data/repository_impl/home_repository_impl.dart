@@ -1,7 +1,7 @@
 import 'package:injectable/injectable.dart';
 
 import '../../../../config/base_response/base_response.dart';
-import '../../domain/entities/order_entity.dart';
+import '../../domain/entities/orders_page_entity.dart';
 import '../../domain/repository_contract/home_repository_contract.dart';
 import '../data_sources_contract/home_remote_data_source_contract.dart';
 import '../models/home_response.dart';
@@ -13,22 +13,27 @@ class HomeRepositoryImpl implements HomeRepositoryContract {
   HomeRepositoryImpl(this.remoteDataSource);
 
   @override
-  Future<BaseResponse<List<OrderEntity>>> getOrders() async {
-    final response = await remoteDataSource.getOrders();
+  Future<BaseResponse<OrdersPageEntity>> getOrders({
+    required int page,
+    required int limit,
+  }) async {
+    final response = await remoteDataSource.getOrders(page: page, limit: limit);
 
     switch (response) {
       case SuccessBaseResponse<HomeResponse>():
         return SuccessBaseResponse(
-          data: response.data.orders
-              ?.map((e) => e.toDomain())
-              .toList() ??
-              [],
+          data: OrdersPageEntity(
+            orders:
+                response.data.orders?.map((e) => e.toDomain()).toList() ?? [],
+            currentPage: response.data.metadata?.currentPage ?? page,
+            totalPages: response.data.metadata?.totalPages ?? page,
+            totalItems: response.data.metadata?.totalItems ?? 0,
+            limit: response.data.metadata?.limit ?? limit,
+          ),
         );
 
       case ErrorBaseResponse<HomeResponse>():
-        return ErrorBaseResponse(
-          errorMessage: response.errorMessage,
-        );
+        return ErrorBaseResponse(errorMessage: response.errorMessage);
     }
   }
 }

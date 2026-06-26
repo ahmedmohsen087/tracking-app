@@ -5,6 +5,7 @@ import 'package:retrofit/error_logger.dart';
 import 'package:retrofit/http.dart';
 import '../../../../core/values/api_endpoints.dart';
 part 'home_api_client.g.dart';
+
 @lazySingleton
 @RestApi()
 abstract class HomeApiClient {
@@ -12,6 +13,8 @@ abstract class HomeApiClient {
   factory HomeApiClient(Dio dio) = _HomeApiClient;
 
   @GET(ApiEndpoints.pendingOrders)
-  Future<HomeResponse> getOrders();
-
+  Future<HomeResponse> getOrders({
+    @Query('page') required int page,
+    @Query('limit') required int limit,
+  });
 }

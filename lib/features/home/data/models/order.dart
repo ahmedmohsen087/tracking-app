@@ -7,6 +7,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 import 'order_item.dart';
 part 'order.g.dart';
+
 @JsonSerializable()
 class Order {
   @JsonKey(name: "_id")
@@ -65,10 +66,7 @@ class Order {
     return OrderEntity(
       id: id,
       user: user?.toDomain(),
-      orderItems: orderItems
-          ?.map((e) => e.toDomain())
-          .toList() ??
-          [],
+      orderItems: orderItems?.map((e) => e.toDomain()).toList() ?? [],
       totalPrice: totalPrice,
       shippingAddress: shippingAddress?.toDomain(),
       paymentType: paymentType?.name,

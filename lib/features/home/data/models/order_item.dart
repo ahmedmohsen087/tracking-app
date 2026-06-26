@@ -3,6 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 import '../../domain/entities/order_item_entity.dart';
 part 'order_item.g.dart';
+
 @JsonSerializable()
 class OrderItem {
   @JsonKey(name: "product")
@@ -14,14 +15,10 @@ class OrderItem {
   @JsonKey(name: "_id")
   String? id;
 
-  OrderItem({
-    this.product,
-    this.price,
-    this.quantity,
-    this.id,
-  });
+  OrderItem({this.product, this.price, this.quantity, this.id});
 
-  factory OrderItem.fromJson(Map<String, dynamic> json) => _$OrderItemFromJson(json);
+  factory OrderItem.fromJson(Map<String, dynamic> json) =>
+      _$OrderItemFromJson(json);
 
   Map<String, dynamic> toJson() => _$OrderItemToJson(this);
   OrderItemEntity toDomain() {

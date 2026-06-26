@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/text_styles.dart';
+import '../../../../core/values/assets.dart';
 
 class AddressItem extends StatelessWidget {
   final String? title;
@@ -37,7 +38,7 @@ class AddressItem extends StatelessWidget {
                   : null,
               child: image?.isNotEmpty == true
                   ? null
-                  : const Icon(Icons.storefront_outlined, size: 20),
+                  : Image.asset(Assets.userLogo),
             ),
           ),
           const SizedBox(width: 12),

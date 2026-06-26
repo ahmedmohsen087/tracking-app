@@ -14,39 +14,37 @@ class ItemSelected extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
-      child:
-
-          Row(
-            spacing: 10,
-            children: [
-              Text(
-                'EGP ${price ?? 0}',
+      child: Row(
+        spacing: 10,
+        children: [
+          Text(
+            'EGP ${price ?? 0}',
+            style: TextStyles.textFieldTextStyle.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          Expanded(
+            child: ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor: WidgetStateProperty.all(AppColors.white),
+              ),
+              onPressed: onReject,
+              child: Text(
+                AppStrings.reject,
                 style: TextStyles.textFieldTextStyle.copyWith(
-                  fontWeight: FontWeight.w600,
+                  color: AppColors.pink,
                 ),
               ),
-              Expanded(
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: WidgetStateProperty.all(AppColors.white),
-                  ),
-                  onPressed: onReject,
-                  child: Text(
-                    AppStrings.reject,
-                    style: TextStyles.textFieldTextStyle.copyWith(
-                      color: AppColors.pink,
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: () {},
-                  child: Text(AppStrings.accept),
-                ),
-              ),
-            ],
-          ),);
-
+            ),
+          ),
+          Expanded(
+            child: ElevatedButton(
+              onPressed: () {},
+              child: Text(AppStrings.accept),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
