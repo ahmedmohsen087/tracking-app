@@ -35,8 +35,8 @@ class ProfileScreen extends StatelessWidget {
               (route) => false,
             );
           } else if (state.logoutState.msg != null) {
-            if (Navigator.canPop(context)) Navigator.pop(context);
             AppSnackBar.showError(context, state.logoutState.msg!);
+            if (Navigator.canPop(context)) Navigator.pop(context);
           }
         },
         child: Center(
@@ -49,6 +49,14 @@ class ProfileScreen extends StatelessWidget {
                   AppRoutsName.editProfileScreen,
                 ),
                 child: Text(AppStrings.editProfile),
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () => Navigator.pushNamed(
+                  context,
+                  AppRoutsName.editVehicleInfoScreen,
+                ),
+                child: Text(AppStrings.editVehicleInfo),
               ),
               const SizedBox(height: 16),
               ElevatedButton(

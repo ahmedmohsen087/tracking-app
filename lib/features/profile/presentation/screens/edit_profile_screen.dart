@@ -36,7 +36,7 @@ class _EditProfileViewState extends State<EditProfileView> {
   final _lastNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
-  String? _selectedImagePath;
+  final ValueNotifier<String?> _selectedImagePath = ValueNotifier(null);
 
   @override
   void dispose() {
@@ -44,6 +44,7 @@ class _EditProfileViewState extends State<EditProfileView> {
     _lastNameController.dispose();
     _emailController.dispose();
     _phoneController.dispose();
+    _selectedImagePath.dispose();
     super.dispose();
   }
 
@@ -52,7 +53,7 @@ class _EditProfileViewState extends State<EditProfileView> {
     final file = await picker.pickImage(source: ImageSource.gallery);
     if (file == null) return;
 
-    setState(() => _selectedImagePath = file.path);
+    _selectedImagePath.value = file.path;
     if (!mounted) return;
 
     context.read<EditProfileViewModel>().doEvent(
@@ -79,46 +80,41 @@ class _EditProfileViewState extends State<EditProfileView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(AppStrings.editProfile)),
-      body: MultiBlocListener(
-        listeners: [
-          BlocListener<EditProfileViewModel, EditProfileState>(
-            listenWhen: (previous, current) =>
-                previous.editProfileState != current.editProfileState &&
-                !current.editProfileState.isLoading,
-            listener: (context, state) {
-              if (state.editProfileState.data != null) {
-                AppSnackBar.showSuccess(
-                  context,
-                  AppStrings.profileUpdatedSuccessfully,
-                );
-              } else if (state.editProfileState.msg != null) {
-                AppSnackBar.showError(context, state.editProfileState.msg!);
-              }
-            },
-          ),
-          BlocListener<EditProfileViewModel, EditProfileState>(
-            listenWhen: (previous, current) =>
-                previous.uploadPhotoState != current.uploadPhotoState &&
-                !current.uploadPhotoState.isLoading,
-            listener: (context, state) {
-              if (state.uploadPhotoState.data != null) {
-                AppSnackBar.showSuccess(
-                  context,
-                  AppStrings.photoUploadedSuccessfully,
-                );
-              } else if (state.uploadPhotoState.msg != null) {
-                AppSnackBar.showError(context, state.uploadPhotoState.msg!);
-              }
-            },
-          ),
-        ],
+      body: BlocListener<EditProfileViewModel, EditProfileState>(
+        listenWhen: (previous, current) =>
+            (previous.editProfileState != current.editProfileState &&
+                !current.editProfileState.isLoading) ||
+            (previous.uploadPhotoState != current.uploadPhotoState &&
+                !current.uploadPhotoState.isLoading),
+        listener: (context, state) {
+          if (state.editProfileState.data != null) {
+            AppSnackBar.showSuccess(
+              context,
+              AppStrings.profileUpdatedSuccessfully,
+            );
+          } else if (state.editProfileState.msg != null) {
+            AppSnackBar.showError(context, state.editProfileState.msg!);
+          }
+
+          if (state.uploadPhotoState.data != null) {
+            AppSnackBar.showSuccess(
+              context,
+              AppStrings.photoUploadedSuccessfully,
+            );
+          } else if (state.uploadPhotoState.msg != null) {
+            AppSnackBar.showError(context, state.uploadPhotoState.msg!);
+          }
+        },
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
           child: Column(
             children: [
-              ProfileAvatarWidget(
-                imagePath: _selectedImagePath,
-                onTap: _pickImage,
+              ValueListenableBuilder<String?>(
+                valueListenable: _selectedImagePath,
+                builder: (context, imagePath, _) => ProfileAvatarWidget(
+                  imagePath: imagePath,
+                  onTap: _pickImage,
+                ),
               ),
               const SizedBox(height: 24),
               EditProfileFormWidget(

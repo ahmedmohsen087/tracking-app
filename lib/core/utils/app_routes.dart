@@ -4,6 +4,7 @@ import 'package:flowery_rider_app/features/auth/presentation/screens/apply_scree
 import 'package:flowery_rider_app/features/auth/presentation/screens/login_screen.dart';
 import 'package:flowery_rider_app/features/auth/presentation/screens/success_apply_screen.dart';
 import 'package:flowery_rider_app/features/profile/presentation/screens/edit_profile_screen.dart';
+import 'package:flowery_rider_app/features/profile/presentation/screens/edit_vehicle_info_screen.dart';
 import 'package:flowery_rider_app/features/splash/presentation/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -24,6 +25,8 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const LoginScreen());
       case AppRoutsName.editProfileScreen:
         return MaterialPageRoute(builder: (_) => const EditProfileScreen());
+      case AppRoutsName.editVehicleInfoScreen:
+        return MaterialPageRoute(builder: (_) => const EditVehicleInfoScreen());
       default:
         return MaterialPageRoute(
           builder: (_) =>

@@ -134,5 +134,7 @@
   "photoUploadedSuccessfully": "تم رفع الصورة بنجاح",
   "firstName": "الاسم الأول",
   "lastName": "اسم العائلة",
-  "changePassword": "تغيير"
+  "changePassword": "تغيير",
+  "vehicleInfoUpdatedSuccessfully": "تم تحديث بيانات المركبة بنجاح",
+  "editVehicleInfo": "تعديل بيانات المركبة"
 }

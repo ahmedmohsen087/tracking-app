@@ -134,5 +134,7 @@
   "photoUploadedSuccessfully": "Photo uploaded successfully",
   "firstName": "First name",
   "lastName": "Last name",
-  "changePassword": "Change"
+  "changePassword": "Change",
+  "vehicleInfoUpdatedSuccessfully": "Vehicle info updated successfully",
+  "editVehicleInfo": "Edit vehicle info"
 }

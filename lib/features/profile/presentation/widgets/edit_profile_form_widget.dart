@@ -32,7 +32,7 @@ class EditProfileFormWidget extends StatelessWidget {
               Expanded(
                 child: TextFormField(
                   controller: firstNameController,
-                  validator: (v) => AppValidations.validateFirstName(v ?? ''),
+                  validator: (v) => AppValidations.validateFirstName(v),
                   decoration: InputDecoration(labelText: AppStrings.firstName),
                 ),
               ),
@@ -40,7 +40,7 @@ class EditProfileFormWidget extends StatelessWidget {
               Expanded(
                 child: TextFormField(
                   controller: lastNameController,
-                  validator: (v) => AppValidations.validateLastName(v ?? ''),
+                  validator: (v) => AppValidations.validateLastName(v),
                   decoration: InputDecoration(labelText: AppStrings.lastName),
                 ),
               ),
@@ -49,14 +49,14 @@ class EditProfileFormWidget extends StatelessWidget {
           const SizedBox(height: 16),
           TextFormField(
             controller: emailController,
-            validator: (v) => AppValidations.validateEmail(v ?? ''),
+            validator: (v) => AppValidations.validateEmail(v),
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(labelText: AppStrings.emailLabel),
           ),
           const SizedBox(height: 16),
           TextFormField(
             controller: phoneController,
-            validator: (v) => AppValidations.validatePhone(v ?? ''),
+            validator: (v) => AppValidations.validatePhone(v),
             keyboardType: TextInputType.phone,
             decoration: InputDecoration(labelText: AppStrings.phoneNumber),
           ),

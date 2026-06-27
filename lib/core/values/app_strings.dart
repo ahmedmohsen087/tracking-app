@@ -177,4 +177,9 @@ class AppStrings {
   static String get lastName => 'lastName'.tr();
 
   static String get changePassword => 'changePassword'.tr();
+
+  static String get vehicleInfoUpdatedSuccessfully =>
+      'vehicleInfoUpdatedSuccessfully'.tr();
+
+  static String get editVehicleInfo => 'editVehicleInfo'.tr();
 }
