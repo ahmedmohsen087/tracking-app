@@ -1,13 +1,22 @@
 import 'package:flowery_rider_app/core/values/app_routs_name.dart';
 import 'package:flowery_rider_app/core/values/app_strings.dart';
+import 'package:flowery_rider_app/features/login/presentation/screens/login_screen.dart';
 import 'package:flowery_rider_app/features/splash/presentation/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
+
+
+import '../../features/section_app/section_app.dart';
 
 class AppRoutes {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case AppRoutsName.splashScreen:
         return MaterialPageRoute(builder: (_) => const SplashScreen());
+      case AppRoutsName.loginScreen:
+        return MaterialPageRoute(builder: (_) => const LoginScreen());
+
+      case AppRoutsName.sectionApp:
+        return MaterialPageRoute(builder: (_) => const SectionApp());
       default:
         return MaterialPageRoute(
           builder: (_) =>

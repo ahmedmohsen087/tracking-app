@@ -9,6 +9,11 @@ class AppStrings {
   static String get close => 'close'.tr();
   static String get error => 'error'.tr();
   static String get retry => 'retry'.tr();
+  static String get home => 'home'.tr();
+  static String get orders => 'orders'.tr();
+  static String get profile => 'profile'.tr();
+
+
 
   // Splash / onboarding
   static String get welcomeToFloweryRiderApp => 'welcomeToFloweryRiderApp'.tr();
@@ -75,4 +80,17 @@ class AppStrings {
   // Logout
   static String get logout => 'logout'.tr();
   static String get confirmLogout => 'confirmLogout'.tr();
+  static String get somethingWentWrong =>
+      'somethingWentWrong'.tr(); // login screen
+  static String get loginTitle => 'Login'.tr();
+  static String get emailLabel => 'Email'.tr();
+  static String get emailHint => 'Enter your email'.tr();
+  static String get passwordLabel => 'Password'.tr();
+  static String get passwordHint => 'Enter your password'.tr();
+  static String get rememberMe => 'Remember me'.tr();
+  static String get forgetPassword => 'Forget password?'.tr();
+  static String get loginButton => 'Login'.tr();
+  static String get continueAsGuest => 'Continue as guest'.tr();
+  static String get dontHaveAccount => "Don't have an account? ".tr();
+  static String get signUp => 'Sign up'.tr();
 }

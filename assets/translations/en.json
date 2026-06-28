@@ -55,5 +55,8 @@
   "connectionTimeout": "Connection timed out, please try again",
   "requestCancelled": "Request was cancelled",
   "badCertificate": "Secure connection failed",
-  "somethingWentWrong": "Something went wrong, please try again"
+  "somethingWentWrong": "Something went wrong, please try again",
+  "home": "Home",
+  "orders": "Orders",
+  "profile": "Profile"
 }
