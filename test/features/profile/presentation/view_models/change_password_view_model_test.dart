@@ -36,7 +36,7 @@ void main() {
   setUp(() {
     mockUseCase = MockChangePasswordUseCase();
     mockAuthManager = MockAuthManager();
-    sut = ChangePasswordViewModel(mockUseCase, mockAuthManager);
+    sut = ChangePasswordViewModel(mockUseCase);
   });
 
   tearDown(() => sut.close());
@@ -62,9 +62,11 @@ void main() {
         when(
           mockUseCase.execute(requestModel: tRequestModel),
         ).thenAnswer((_) async => SuccessBaseResponse(data: tEntity));
+
         when(
           mockAuthManager.setAuthData(token: tToken),
         ).thenAnswer((_) async {});
+
         return sut;
       },
       act: (cubit) => cubit.doEvent(
@@ -78,6 +80,8 @@ void main() {
         ChangePasswordState(changePasswordState: BaseState.success(tEntity)),
       ],
       verify: (_) {
+        verify(mockUseCase.execute(requestModel: tRequestModel)).called(1);
+
         verify(mockAuthManager.setAuthData(token: tToken)).called(1);
       },
     );
@@ -88,6 +92,7 @@ void main() {
         when(
           mockUseCase.execute(requestModel: tRequestModel),
         ).thenAnswer((_) async => SuccessBaseResponse(data: tEntityNoToken));
+
         return sut;
       },
       act: (cubit) => cubit.doEvent(
@@ -103,6 +108,8 @@ void main() {
         ),
       ],
       verify: (_) {
+        verify(mockUseCase.execute(requestModel: tRequestModel)).called(1);
+
         verifyNever(mockAuthManager.setAuthData(token: anyNamed('token')));
       },
     );
@@ -117,6 +124,7 @@ void main() {
             errorMessage: tErrorMessage,
           ),
         );
+
         return sut;
       },
       act: (cubit) => cubit.doEvent(
@@ -132,6 +140,8 @@ void main() {
         ),
       ],
       verify: (_) {
+        verify(mockUseCase.execute(requestModel: tRequestModel)).called(1);
+
         verifyNever(mockAuthManager.setAuthData(token: anyNamed('token')));
       },
     );

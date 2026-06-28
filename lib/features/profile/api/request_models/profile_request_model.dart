@@ -6,13 +6,6 @@ class ProfileRequestModel {
 
   ProfileRequestModel({required this.newPassword, required this.password});
 
-  factory ProfileRequestModel.fromJson(Map<String, dynamic> json) {
-    return ProfileRequestModel(
-      newPassword: json[ApiParameters.newPassword] as String,
-      password: json[ApiParameters.password] as String,
-    );
-  }
-
   Map<String, dynamic> toJson() {
     return {
       ApiParameters.newPassword: newPassword,

@@ -13,9 +13,6 @@ class ChangePasswordUseCase {
   Future<BaseResponse<ProfileResponseEntity>> execute({
     required ProfileRequestModel requestModel,
   }) {
-    return _profileRepositoryConract.changePassword(
-      newPassword: requestModel.newPassword,
-      password: requestModel.password,
-    );
+    return _profileRepositoryConract.changePassword(requestModel: requestModel);
   }
 }

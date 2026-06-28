@@ -15,13 +15,10 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSourceContract {
 
   @override
   Future<BaseResponse<ProfileResponseModel>> changePassword({
-    required String newPassword,
-    required String password,
+    required ProfileRequestModel request,
   }) async {
     try {
-      final response = await _profileApiClient.changePassword(
-        ProfileRequestModel(newPassword: newPassword, password: password),
-      );
+      final response = await _profileApiClient.changePassword(request);
       return SuccessBaseResponse<ProfileResponseModel>(data: response);
     } catch (e) {
       final message = ErrorHandler.handle(e);

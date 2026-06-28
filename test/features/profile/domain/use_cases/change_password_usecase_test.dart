@@ -34,24 +34,20 @@ void main() {
       'Should delegate to repository.changePassword with correct params and return success',
       () async {
         when(
-          mockRepository.changePassword(
-            password: tPassword,
-            newPassword: tNewPassword,
-          ),
+          mockRepository.changePassword(requestModel: tRequestModel),
         ).thenAnswer((_) async => SuccessBaseResponse(data: tEntity));
 
         final result = await sut.execute(requestModel: tRequestModel);
 
         expect(result, isA<SuccessBaseResponse<ProfileResponseEntity>>());
+
         final success = result as SuccessBaseResponse<ProfileResponseEntity>;
         expect(success.data, tEntity);
 
         verify(
-          mockRepository.changePassword(
-            password: tPassword,
-            newPassword: tNewPassword,
-          ),
+          mockRepository.changePassword(requestModel: tRequestModel),
         ).called(1);
+
         verifyNoMoreInteractions(mockRepository);
       },
     );
@@ -60,10 +56,7 @@ void main() {
       'Should return error response when repository returns error',
       () async {
         when(
-          mockRepository.changePassword(
-            password: tPassword,
-            newPassword: tNewPassword,
-          ),
+          mockRepository.changePassword(requestModel: tRequestModel),
         ).thenAnswer(
           (_) async => ErrorBaseResponse<ProfileResponseEntity>(
             errorMessage: tErrorMessage,
@@ -73,6 +66,7 @@ void main() {
         final result = await sut.execute(requestModel: tRequestModel);
 
         expect(result, isA<ErrorBaseResponse<ProfileResponseEntity>>());
+
         final error = result as ErrorBaseResponse<ProfileResponseEntity>;
         expect(error.errorMessage, tErrorMessage);
       },
@@ -80,20 +74,14 @@ void main() {
 
     test('Should call repository exactly once per execute call', () async {
       when(
-        mockRepository.changePassword(
-          password: anyNamed('password'),
-          newPassword: anyNamed('newPassword'),
-        ),
+        mockRepository.changePassword(requestModel: anyNamed('requestModel')),
       ).thenAnswer((_) async => SuccessBaseResponse(data: tEntity));
 
       await sut.execute(requestModel: tRequestModel);
       await sut.execute(requestModel: tRequestModel);
 
       verify(
-        mockRepository.changePassword(
-          password: tPassword,
-          newPassword: tNewPassword,
-        ),
+        mockRepository.changePassword(requestModel: tRequestModel),
       ).called(2);
     });
   });

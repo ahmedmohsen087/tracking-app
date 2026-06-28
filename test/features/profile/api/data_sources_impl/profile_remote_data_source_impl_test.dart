@@ -18,12 +18,15 @@ void main() {
   const tNewPassword = 'NewPass123*';
   const tErrorMessage = 'Something went wrong';
 
+  final tRequest = ProfileRequestModel(
+    password: tPassword,
+    newPassword: tNewPassword,
+  );
+
   final tResponseModel = ProfileResponseModel(
     message: 'ok',
     token: 'token_abc',
   );
-
-  ProfileRequestModel;
 
   setUp(() {
     mockApiClient = MockProfileApiClient();
@@ -38,12 +41,10 @@ void main() {
           mockApiClient.changePassword(any),
         ).thenAnswer((_) async => tResponseModel);
 
-        final result = await sut.changePassword(
-          password: tPassword,
-          newPassword: tNewPassword,
-        );
+        final result = await sut.changePassword(request: tRequest);
 
         expect(result, isA<SuccessBaseResponse<ProfileResponseModel>>());
+
         final success = result as SuccessBaseResponse<ProfileResponseModel>;
         expect(success.data.token, tResponseModel.token);
         expect(success.data.message, tResponseModel.message);
@@ -51,6 +52,7 @@ void main() {
         final captured =
             verify(mockApiClient.changePassword(captureAny)).captured.single
                 as ProfileRequestModel;
+
         expect(captured.password, tPassword);
         expect(captured.newPassword, tNewPassword);
       },
@@ -63,12 +65,10 @@ void main() {
           mockApiClient.changePassword(any),
         ).thenAnswer((_) async => tResponseModel);
 
-        final result = await sut.changePassword(
-          password: tPassword,
-          newPassword: tNewPassword,
-        );
+        final result = await sut.changePassword(request: tRequest);
 
         final data = (result as SuccessBaseResponse<ProfileResponseModel>).data;
+
         expect(data, tResponseModel);
       },
     );
@@ -82,10 +82,7 @@ void main() {
           mockApiClient.changePassword(any),
         ).thenThrow(Exception(tErrorMessage));
 
-        final result = await sut.changePassword(
-          password: tPassword,
-          newPassword: tNewPassword,
-        );
+        final result = await sut.changePassword(request: tRequest);
 
         expect(result, isA<ErrorBaseResponse<ProfileResponseModel>>());
       },
@@ -98,12 +95,10 @@ void main() {
           mockApiClient.changePassword(any),
         ).thenThrow(Exception(tErrorMessage));
 
-        final result = await sut.changePassword(
-          password: tPassword,
-          newPassword: tNewPassword,
-        );
+        final result = await sut.changePassword(request: tRequest);
 
         expect(result, isA<ErrorBaseResponse<ProfileResponseModel>>());
+
         final error = result as ErrorBaseResponse<ProfileResponseModel>;
         expect(error.errorMessage, isNotNull);
         expect(error.errorMessage, isA<String>());
@@ -115,10 +110,7 @@ void main() {
       () async {
         when(mockApiClient.changePassword(any)).thenThrow(Exception('error'));
 
-        final result = await sut.changePassword(
-          password: tPassword,
-          newPassword: tNewPassword,
-        );
+        final result = await sut.changePassword(request: tRequest);
 
         expect(result, isNot(isA<SuccessBaseResponse<ProfileResponseModel>>()));
       },
