@@ -15,6 +15,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart' as _i558;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
+import '../../core/services/media_service.dart' as _i902;
 import '../../features/auth/api/auth_api_client/auth_api_client.dart' as _i474;
 import '../../features/auth/api/data_sources_impl/auth_remote_data_source_impl.dart'
     as _i691;
@@ -45,10 +46,16 @@ import '../../features/profile/domain/repository_contract/profile_repository_con
     as _i193;
 import '../../features/profile/domain/use_cases/edit_profile_use_case.dart'
     as _i199;
+import '../../features/profile/domain/use_cases/edit_vehicle_info_use_case.dart'
+    as _i133;
+import '../../features/profile/domain/use_cases/get_vehicle_types_use_case.dart'
+    as _i191;
 import '../../features/profile/domain/use_cases/upload_photo_use_case.dart'
     as _i967;
 import '../../features/profile/presentation/view_models/edit_profile_view_model/edit_profile_view_model.dart'
     as _i87;
+import '../../features/profile/presentation/view_models/edit_vehicle_info_view_model/edit_vehicle_info_view_model.dart'
+    as _i227;
 import '../auth/auth_interceptor.dart' as _i53;
 import '../auth/auth_manager.dart' as _i692;
 import '../cache/smart_cache_interceptor.dart' as _i276;
@@ -71,6 +78,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i558.FlutterSecureStorage>(
       () => secureStorageModule.secureStorage,
     );
+    gh.factory<_i902.MediaService>(() => _i902.MediaServiceImpl());
     gh.lazySingleton<_i611.SecureStorageService>(
       () => _i611.SecureStorageService(gh<_i558.FlutterSecureStorage>()),
     );
@@ -106,7 +114,10 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i691.AuthRemoteDataSourceImpl(gh<_i474.AuthApiClient>()),
     );
     gh.factory<_i1040.ProfileRemoteDataSourceContract>(
-      () => _i1028.ProfileRemoteDataSourceImpl(gh<_i1000.ProfileApiClient>()),
+      () => _i1028.ProfileRemoteDataSourceImpl(
+        gh<_i1000.ProfileApiClient>(),
+        gh<_i902.MediaService>(),
+      ),
     );
     gh.factory<_i148.AuthRepositoryContract>(
       () => _i954.AuthRepositoryImpl(
@@ -134,6 +145,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i199.EditProfileUseCase>(
       () => _i199.EditProfileUseCase(gh<_i193.ProfileRepositoryContract>()),
     );
+    gh.factory<_i133.EditVehicleInfoUseCase>(
+      () => _i133.EditVehicleInfoUseCase(gh<_i193.ProfileRepositoryContract>()),
+    );
+    gh.factory<_i191.GetVehicleTypesUseCase>(
+      () => _i191.GetVehicleTypesUseCase(gh<_i193.ProfileRepositoryContract>()),
+    );
     gh.factory<_i967.UploadPhotoUseCase>(
       () => _i967.UploadPhotoUseCase(gh<_i193.ProfileRepositoryContract>()),
     );
@@ -145,6 +162,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i993.ApplyViewModel>(
       () => _i993.ApplyViewModel(gh<_i743.ApplyUseCase>()),
+    );
+    gh.factory<_i227.EditVehicleInfoViewModel>(
+      () => _i227.EditVehicleInfoViewModel(
+        gh<_i191.GetVehicleTypesUseCase>(),
+        gh<_i133.EditVehicleInfoUseCase>(),
+      ),
     );
     gh.factory<_i87.EditProfileViewModel>(
       () => _i87.EditProfileViewModel(

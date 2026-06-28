@@ -3,6 +3,7 @@ import 'package:flowery_rider_app/core/values/api_endpoints.dart';
 import 'package:flowery_rider_app/features/profile/api/request_models/edit_profile_request_model.dart';
 import 'package:flowery_rider_app/features/profile/api/responses/edit_profile_response.dart';
 import 'package:flowery_rider_app/features/profile/api/responses/upload_photo_response.dart';
+import 'package:flowery_rider_app/features/profile/api/responses/vehicle_types_response.dart';
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -22,4 +23,11 @@ abstract class ProfileApiClient {
   Future<UploadPhotoResponse> uploadPhoto(
     @Part(name: 'photo') MultipartFile photo,
   );
+
+  @GET(ApiEndpoints.getVehicleTypes)
+  Future<VehicleTypesResponse> getVehicleTypes(
+    @Query('page') int page,
+    @Query('limit') int limit,
+  );
 }
+

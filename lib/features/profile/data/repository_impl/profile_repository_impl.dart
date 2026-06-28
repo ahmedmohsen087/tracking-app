@@ -1,8 +1,12 @@
 import 'package:flowery_rider_app/config/base_response/base_response.dart';
 import 'package:flowery_rider_app/features/profile/api/request_models/edit_profile_request_model.dart';
+import 'package:flowery_rider_app/features/profile/api/request_models/edit_vehicle_info_request_model.dart';
 import 'package:flowery_rider_app/features/profile/api/responses/edit_profile_response.dart';
 import 'package:flowery_rider_app/features/profile/api/responses/upload_photo_response.dart';
+import 'package:flowery_rider_app/features/profile/api/responses/vehicle_types_response.dart';
 import 'package:flowery_rider_app/features/profile/domain/entities/edit_profile_response_entity.dart';
+import 'package:flowery_rider_app/features/profile/domain/entities/vehicle_info_updated_entity.dart';
+import 'package:flowery_rider_app/features/profile/domain/entities/vehicle_types_response_entity.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../domain/repository_contract/profile_repository_contract.dart';
@@ -48,6 +52,55 @@ class ProfileRepositoryImpl implements ProfileRepositoryContract {
         );
       case ErrorBaseResponse<UploadPhotoResponse>():
         return ErrorBaseResponse<String>(
+          errorMessage: response.errorMessage,
+        );
+    }
+  }
+
+  @override
+  Future<BaseResponse<VehicleTypesResponseEntity>> getVehicleTypes({
+    required int page,
+    required int limit,
+  }) async {
+    final response = await _remoteDataSource.getVehicleTypes(
+      page: page,
+      limit: limit,
+    );
+
+    switch (response) {
+      case SuccessBaseResponse<VehicleTypesResponse>():
+        final vehicles =
+            response.data.vehicles?.map((m) => m.toEntity()).toList() ?? [];
+        final entity = VehicleTypesResponseEntity(
+          message: response.data.message,
+          vehicles: vehicles,
+        );
+        return SuccessBaseResponse<VehicleTypesResponseEntity>(data: entity);
+      case ErrorBaseResponse<VehicleTypesResponse>():
+        return ErrorBaseResponse<VehicleTypesResponseEntity>(
+          errorMessage: response.errorMessage,
+        );
+    }
+  }
+
+  @override
+  Future<BaseResponse<VehicleInfoUpdatedEntity>> editVehicleInfo({
+    required EditVehicleInfoRequestModel requestModel,
+  }) async {
+    final response = await _remoteDataSource.editVehicleInfo(
+      requestModel: requestModel,
+    );
+
+    switch (response) {
+      case SuccessBaseResponse<String>():
+        final entity = VehicleInfoUpdatedEntity(
+          vehicleTypeId: requestModel.vehicleTypeId,
+          vehicleNumber: requestModel.vehicleNumber,
+          vehicleLicenseFileName: requestModel.vehicleLicenseFilePath.split('/').last,
+        );
+        return SuccessBaseResponse<VehicleInfoUpdatedEntity>(data: entity);
+      case ErrorBaseResponse<String>():
+        return ErrorBaseResponse<VehicleInfoUpdatedEntity>(
           errorMessage: response.errorMessage,
         );
     }

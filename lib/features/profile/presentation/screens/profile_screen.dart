@@ -52,6 +52,14 @@ class ProfileScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               ElevatedButton(
+                onPressed: () => Navigator.pushNamed(
+                  context,
+                  AppRoutsName.editVehicleInfoScreen,
+                ),
+                child: Text(AppStrings.editVehicleInfo),
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton(
                 onPressed: () {
                   final logoutViewModel = context.read<LogoutViewModel>();
                   LogoutDialog.show(context, logoutViewModel);

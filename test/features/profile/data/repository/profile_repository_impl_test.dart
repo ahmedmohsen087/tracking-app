@@ -1,11 +1,16 @@
 import 'package:flowery_rider_app/config/base_response/base_response.dart';
 import 'package:flowery_rider_app/features/profile/api/request_models/edit_profile_request_model.dart';
+import 'package:flowery_rider_app/features/profile/api/request_models/edit_vehicle_info_request_model.dart';
 import 'package:flowery_rider_app/features/profile/api/responses/edit_profile_response.dart';
 import 'package:flowery_rider_app/features/profile/api/responses/upload_photo_response.dart';
+import 'package:flowery_rider_app/features/profile/api/responses/vehicle_types_response.dart';
 import 'package:flowery_rider_app/features/profile/data/data_sources_contract/profile_remote_data_source_contract.dart';
 import 'package:flowery_rider_app/features/profile/data/models/driver_profile_model.dart';
+import 'package:flowery_rider_app/features/profile/data/models/vehicle_type_model.dart';
 import 'package:flowery_rider_app/features/profile/data/repository_impl/profile_repository_impl.dart';
 import 'package:flowery_rider_app/features/profile/domain/entities/edit_profile_response_entity.dart';
+import 'package:flowery_rider_app/features/profile/domain/entities/vehicle_info_updated_entity.dart';
+import 'package:flowery_rider_app/features/profile/domain/entities/vehicle_types_response_entity.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -32,6 +37,12 @@ void main() {
     );
     provideDummy<BaseResponse<UploadPhotoResponse>>(
       SuccessBaseResponse(data: UploadPhotoResponse()),
+    );
+    provideDummy<BaseResponse<VehicleTypesResponse>>(
+      SuccessBaseResponse(data: VehicleTypesResponse()),
+    );
+    provideDummy<BaseResponse<String>>(
+      SuccessBaseResponse(data: ''),
     );
   });
 
@@ -152,6 +163,141 @@ void main() {
 
         verify(
           mockDataSource.uploadPhoto(filePath: anyNamed('filePath')),
+        ).called(1);
+        verifyNoMoreInteractions(mockDataSource);
+      },
+    );
+  });
+
+  group('getVehicleTypes', () {
+    test(
+      'should return SuccessBaseResponse with mapped entity when data source succeeds',
+      () async {
+        final vehicleModel = VehicleTypeModel(
+          id: 'v-123',
+          type: 'Car',
+          image: 'https://example.com/car.jpg',
+        );
+        final rawResponse = VehicleTypesResponse(
+          message: 'success',
+          vehicles: [vehicleModel],
+        );
+
+        when(
+          mockDataSource.getVehicleTypes(
+            page: anyNamed('page'),
+            limit: anyNamed('limit'),
+          ),
+        ).thenAnswer((_) async => SuccessBaseResponse(data: rawResponse));
+
+        final result = await repository.getVehicleTypes(page: 1, limit: 40);
+
+        expect(result, isA<SuccessBaseResponse<VehicleTypesResponseEntity>>());
+        final entity =
+            (result as SuccessBaseResponse<VehicleTypesResponseEntity>).data;
+        expect(entity.message, 'success');
+        expect(entity.vehicles.length, 1);
+        expect(entity.vehicles.first.id, 'v-123');
+        expect(entity.vehicles.first.type, 'Car');
+
+        verify(
+          mockDataSource.getVehicleTypes(
+            page: anyNamed('page'),
+            limit: anyNamed('limit'),
+          ),
+        ).called(1);
+        verifyNoMoreInteractions(mockDataSource);
+      },
+    );
+
+    test(
+      'should return ErrorBaseResponse when data source getVehicleTypes fails',
+      () async {
+        when(
+          mockDataSource.getVehicleTypes(
+            page: anyNamed('page'),
+            limit: anyNamed('limit'),
+          ),
+        ).thenAnswer(
+          (_) async => ErrorBaseResponse<VehicleTypesResponse>(
+            errorMessage: 'Network error',
+          ),
+        );
+
+        final result = await repository.getVehicleTypes(page: 1, limit: 40);
+
+        expect(result, isA<ErrorBaseResponse<VehicleTypesResponseEntity>>());
+        expect(
+          (result as ErrorBaseResponse<VehicleTypesResponseEntity>).errorMessage,
+          'Network error',
+        );
+
+        verify(
+          mockDataSource.getVehicleTypes(
+            page: anyNamed('page'),
+            limit: anyNamed('limit'),
+          ),
+        ).called(1);
+        verifyNoMoreInteractions(mockDataSource);
+      },
+    );
+  });
+
+  group('editVehicleInfo', () {
+    const tVehicleRequestModel = EditVehicleInfoRequestModel(
+      vehicleTypeId: 'type-123',
+      vehicleNumber: 'UP16DL0007',
+      vehicleLicenseFilePath: '/storage/photos/license.jpg',
+    );
+
+    test(
+      'should return SuccessBaseResponse with entity when data source succeeds',
+      () async {
+        when(
+          mockDataSource.editVehicleInfo(requestModel: anyNamed('requestModel')),
+        ).thenAnswer((_) async => SuccessBaseResponse(data: 'success'));
+
+        final result = await repository.editVehicleInfo(
+          requestModel: tVehicleRequestModel,
+        );
+
+        expect(result, isA<SuccessBaseResponse<VehicleInfoUpdatedEntity>>());
+        final entity =
+            (result as SuccessBaseResponse<VehicleInfoUpdatedEntity>).data;
+        expect(entity.vehicleTypeId, 'type-123');
+        expect(entity.vehicleNumber, 'UP16DL0007');
+        expect(entity.vehicleLicenseFileName, 'license.jpg');
+
+        verify(
+          mockDataSource.editVehicleInfo(requestModel: anyNamed('requestModel')),
+        ).called(1);
+        verifyNoMoreInteractions(mockDataSource);
+      },
+    );
+
+    test(
+      'should return ErrorBaseResponse when data source editVehicleInfo fails',
+      () async {
+        when(
+          mockDataSource.editVehicleInfo(requestModel: anyNamed('requestModel')),
+        ).thenAnswer(
+          (_) async => ErrorBaseResponse<String>(
+            errorMessage: 'Vehicle update failed',
+          ),
+        );
+
+        final result = await repository.editVehicleInfo(
+          requestModel: tVehicleRequestModel,
+        );
+
+        expect(result, isA<ErrorBaseResponse<VehicleInfoUpdatedEntity>>());
+        expect(
+          (result as ErrorBaseResponse<VehicleInfoUpdatedEntity>).errorMessage,
+          'Vehicle update failed',
+        );
+
+        verify(
+          mockDataSource.editVehicleInfo(requestModel: anyNamed('requestModel')),
         ).called(1);
         verifyNoMoreInteractions(mockDataSource);
       },
