@@ -76,6 +76,10 @@ class AppStrings {
   static String get connectionTimeout => 'connectionTimeout'.tr();
   static String get requestCancelled => 'requestCancelled'.tr();
   static String get badCertificate => 'badCertificate'.tr();
+  static String get somethingWentWrong => 'somethingWentWrong'.tr();
+  // Logout
+  static String get logout => 'logout'.tr();
+  static String get confirmLogout => 'confirmLogout'.tr();
   static String get somethingWentWrong =>
       'somethingWentWrong'.tr(); // login screen
   static String get loginTitle => 'Login'.tr();
