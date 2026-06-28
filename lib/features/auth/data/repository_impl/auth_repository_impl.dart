@@ -1,5 +1,6 @@
 import 'package:flowery_rider_app/config/auth/auth_manager.dart';
 import 'package:flowery_rider_app/config/base_response/base_response.dart';
+import 'package:flowery_rider_app/features/auth/api/request_models/login_request_model.dart';
 import 'package:flowery_rider_app/features/auth/domain/entities/auth_response_entity.dart';
 import 'package:flowery_rider_app/features/auth/domain/mappers/auth_response_model_mapper.dart';
 import 'package:flowery_rider_app/features/auth/data/models/auth_response_model.dart';
@@ -17,12 +18,10 @@ class AuthRepositoryImpl implements AuthRepositoryContract {
 
   @override
   Future<BaseResponse<AuthResponseEntity>> login({
-    required String email,
-    required String password,
+    required LoginRequestModel loginRequestModel,
   }) async {
     final response = await _remoteDataSource.login(
-      email: email,
-      password: password,
+      loginRequestModel: loginRequestModel,
     );
     switch (response) {
       case SuccessBaseResponse<AuthResponseModel>():
@@ -40,9 +39,11 @@ class AuthRepositoryImpl implements AuthRepositoryContract {
 
   @override
   Future<BaseResponse<AuthResponseEntity>> apply({
-    required ApplyRequestModel requestModel,
+    required ApplyRequestModel applyRequestModel,
   }) async {
-    final response = await _remoteDataSource.apply(requestModel: requestModel);
+    final response = await _remoteDataSource.apply(
+      applyRequestModel: applyRequestModel,
+    );
 
     switch (response) {
       case SuccessBaseResponse<AuthResponseModel>():

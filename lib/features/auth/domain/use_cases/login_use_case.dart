@@ -11,11 +11,8 @@ class LoginUseCase {
   LoginUseCase(this._loginRepository);
 
   Future<BaseResponse<AuthResponseEntity>> execute({
-    required LoginRequestModel requestModel,
+    required LoginRequestModel loginRequestModel,
   }) {
-    return _loginRepository.login(
-      email: requestModel.email,
-      password: requestModel.password,
-    );
+    return _loginRepository.login(loginRequestModel: loginRequestModel);
   }
 }
