@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/text_styles.dart';
 
@@ -7,6 +8,7 @@ class PersonalInformationCard extends StatelessWidget {
   final String? email;
   final String? phone;
   final String? photo;
+  final VoidCallback? onTap;
 
   const PersonalInformationCard({
     super.key,
@@ -14,11 +16,15 @@ class PersonalInformationCard extends StatelessWidget {
     this.email,
     this.phone,
     this.photo,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(10),
+      child: Container(
       height: 108,
       width: double.infinity,
       decoration: BoxDecoration(
@@ -71,6 +77,7 @@ class PersonalInformationCard extends StatelessWidget {
 
           ],
         ),
+      ),
       ),
     );
   }

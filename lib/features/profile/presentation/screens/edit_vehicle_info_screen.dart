@@ -2,6 +2,7 @@ import 'package:flowery_rider_app/config/di/di.dart';
 import 'package:flowery_rider_app/core/reusable_widgets/app_snack_bar.dart';
 import 'package:flowery_rider_app/core/values/app_strings.dart';
 import 'package:flowery_rider_app/features/profile/api/request_models/edit_vehicle_info_request_model.dart';
+import 'package:flowery_rider_app/features/profile/domain/entities/profile_driver_entity.dart';
 import 'package:flowery_rider_app/features/profile/presentation/view_models/edit_vehicle_info_view_model/edit_vehicle_info_events.dart';
 import 'package:flowery_rider_app/features/profile/presentation/view_models/edit_vehicle_info_view_model/edit_vehicle_info_state.dart';
 import 'package:flowery_rider_app/features/profile/presentation/view_models/edit_vehicle_info_view_model/edit_vehicle_info_view_model.dart';
@@ -15,16 +16,20 @@ class EditVehicleInfoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final driver =
+        ModalRoute.of(context)?.settings.arguments as ProfileDriverEntity?;
     return BlocProvider(
       create: (_) =>
           getIt<EditVehicleInfoViewModel>()..doEvent(GetVehicleTypesEvent()),
-      child: const EditVehicleInfoView(),
+      child: EditVehicleInfoView(driver: driver),
     );
   }
 }
 
 class EditVehicleInfoView extends StatefulWidget {
-  const EditVehicleInfoView({super.key});
+  final ProfileDriverEntity? driver;
+
+  const EditVehicleInfoView({super.key, this.driver});
 
   @override
   State<EditVehicleInfoView> createState() => _EditVehicleInfoViewState();
@@ -37,6 +42,15 @@ class _EditVehicleInfoViewState extends State<EditVehicleInfoView> {
   final ValueNotifier<String?> _selectedVehicleTypeId = ValueNotifier(null);
   final ValueNotifier<String?> _selectedLicenseFilePath = ValueNotifier(null);
   final ValueNotifier<String?> _selectedLicenseFileName = ValueNotifier(null);
+
+  @override
+  void initState() {
+    super.initState();
+    final driver = widget.driver;
+    if (driver != null) {
+      _vehicleNumberController.text = driver.vehicleNumber;
+    }
+  }
 
   @override
   void dispose() {

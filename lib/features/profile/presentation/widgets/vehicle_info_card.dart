@@ -7,15 +7,20 @@ import '../../../../core/values/app_strings.dart';
 class VehicleInfoCard extends StatelessWidget {
   final String? kindOfVehicle;
   final String? vehicleNumber;
+  final VoidCallback? onTap;
   const VehicleInfoCard({
     super.key,
     this.kindOfVehicle,
     this.vehicleNumber,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(10),
+      child: Container(
       height: 108,
       width: double.infinity,
       decoration: BoxDecoration(
@@ -53,7 +58,8 @@ class VehicleInfoCard extends StatelessWidget {
             Icon(Icons.arrow_forward_ios,),
           ],
         ),
-      ) ,
+      ),
+      ),
     );
   }
 }

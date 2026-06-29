@@ -1,4 +1,5 @@
 import 'package:flowery_rider_app/core/theme/text_styles.dart';
+import 'package:flowery_rider_app/core/values/app_routs_name.dart';
 import 'package:flowery_rider_app/core/values/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -55,10 +56,22 @@ class ProfileScreen extends StatelessWidget {
                     email: driver.email,
                     phone: driver.phone,
                     photo: driver.photo,
+                    onTap: () =>
+                        Navigator.pushNamed(
+                          context,
+                          AppRoutsName.editProfileScreen,
+                          arguments: driver,
+                        ),
                   ),
                   VehicleInfoCard(
                     kindOfVehicle: driver.vehicleType,
                     vehicleNumber: driver.vehicleNumber,
+                    onTap: () =>
+                        Navigator.pushNamed(
+                          context,
+                          AppRoutsName.editVehicleInfoScreen,
+                          arguments: driver,
+                        ),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),

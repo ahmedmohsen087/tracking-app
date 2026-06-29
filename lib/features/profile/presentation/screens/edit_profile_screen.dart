@@ -2,6 +2,7 @@ import 'package:flowery_rider_app/config/di/di.dart';
 import 'package:flowery_rider_app/core/reusable_widgets/app_snack_bar.dart';
 import 'package:flowery_rider_app/core/values/app_strings.dart';
 import 'package:flowery_rider_app/features/profile/api/request_models/edit_profile_request_model.dart';
+import 'package:flowery_rider_app/features/profile/domain/entities/profile_driver_entity.dart';
 import 'package:flowery_rider_app/features/profile/presentation/view_models/edit_profile_view_model/edit_profile_events.dart';
 import 'package:flowery_rider_app/features/profile/presentation/view_models/edit_profile_view_model/edit_profile_state.dart';
 import 'package:flowery_rider_app/features/profile/presentation/view_models/edit_profile_view_model/edit_profile_view_model.dart';
@@ -16,15 +17,19 @@ class EditProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final driver =
+        ModalRoute.of(context)?.settings.arguments as ProfileDriverEntity?;
     return BlocProvider(
       create: (_) => getIt<EditProfileViewModel>(),
-      child: const EditProfileView(),
+      child: EditProfileView(driver: driver),
     );
   }
 }
 
 class EditProfileView extends StatefulWidget {
-  const EditProfileView({super.key});
+  final ProfileDriverEntity? driver;
+
+  const EditProfileView({super.key, this.driver});
 
   @override
   State<EditProfileView> createState() => _EditProfileViewState();
@@ -37,6 +42,18 @@ class _EditProfileViewState extends State<EditProfileView> {
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
   final ValueNotifier<String?> _selectedImagePath = ValueNotifier(null);
+
+  @override
+  void initState() {
+    super.initState();
+    final driver = widget.driver;
+    if (driver != null) {
+      _firstNameController.text = driver.firstName;
+      _lastNameController.text = driver.lastName;
+      _emailController.text = driver.email;
+      _phoneController.text = driver.phone;
+    }
+  }
 
   @override
   void dispose() {

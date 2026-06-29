@@ -140,16 +140,17 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i902.MediaService>(),
       ),
     );
+    gh.factory<_i193.ProfileRepositoryContract>(
+      () => _i187.ProfileRepositoryImpl(
+        gh<_i1040.ProfileRemoteDataSourceContract>(),
+        gh<_i692.AuthManager>(),
+      ),
+    );
     gh.factory<_i95.AuthRemoteDataSourceContract>(
       () => _i691.AuthRemoteDataSourceImpl(gh<_i474.AuthApiClient>()),
     );
     gh.factory<_i830.HomeRemoteDataSourceContract>(
       () => _i938.HomeRemoteDataSourceImpl(gh<_i866.HomeApiClient>()),
-    );
-    gh.factory<_i193.ProfileRepositoryContract>(
-      () => _i187.ProfileRepositoryImpl(
-        gh<_i1040.ProfileRemoteDataSourceContract>(),
-      ),
     );
     gh.factory<_i845.HomeRepositoryContract>(
       () => _i60.HomeRepositoryImpl(gh<_i830.HomeRemoteDataSourceContract>()),
