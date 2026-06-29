@@ -4,6 +4,7 @@ import 'package:flowery_rider_app/core/values/app_strings.dart';
 import 'package:flowery_rider_app/features/auth/presentation/screens/apply_screen.dart';
 import 'package:flowery_rider_app/features/auth/presentation/screens/login_screen.dart';
 import 'package:flowery_rider_app/features/auth/presentation/screens/success_apply_screen.dart';
+import 'package:flowery_rider_app/features/profile/domain/entities/profile_driver_entity.dart';
 import 'package:flowery_rider_app/features/profile/presentation/screens/change_password_screen.dart';
 import 'package:flowery_rider_app/features/profile/presentation/screens/edit_profile_screen.dart';
 import 'package:flowery_rider_app/features/profile/presentation/screens/edit_vehicle_info_screen.dart';
@@ -11,6 +12,7 @@ import 'package:flowery_rider_app/features/profile/presentation/view_models/chan
 import 'package:flowery_rider_app/features/splash/presentation/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../features/home/presentation/view_model/home_events.dart';
 import '../../features/home/presentation/view_model/home_view_model.dart';
 import '../../features/profile/presentation/view_models/get_profile_view_model/get_profile_event.dart';
@@ -54,9 +56,15 @@ class AppRoutes {
         );
 
       case AppRoutsName.editProfileScreen:
-        return MaterialPageRoute(builder: (_) => const EditProfileScreen());
+        final driver = settings.arguments as ProfileDriverEntity?;
+        return MaterialPageRoute(
+          builder: (_) => EditProfileScreen(driver: driver),
+        );
       case AppRoutsName.editVehicleInfoScreen:
-        return MaterialPageRoute(builder: (_) => const EditVehicleInfoScreen());
+        final vehicleDriver = settings.arguments as ProfileDriverEntity?;
+        return MaterialPageRoute(
+          builder: (_) => EditVehicleInfoScreen(driver: vehicleDriver),
+        );
       default:
         return MaterialPageRoute(
           builder: (_) =>

@@ -12,12 +12,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
 class EditVehicleInfoScreen extends StatelessWidget {
-  const EditVehicleInfoScreen({super.key});
+  final ProfileDriverEntity? driver;
+
+  const EditVehicleInfoScreen({super.key, this.driver});
 
   @override
   Widget build(BuildContext context) {
-    final driver =
-        ModalRoute.of(context)?.settings.arguments as ProfileDriverEntity?;
     return BlocProvider(
       create: (_) =>
           getIt<EditVehicleInfoViewModel>()..doEvent(GetVehicleTypesEvent()),
