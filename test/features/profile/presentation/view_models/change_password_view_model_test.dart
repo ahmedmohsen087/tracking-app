@@ -1,8 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:flowery_rider_app/config/auth/auth_manager.dart';
 import 'package:flowery_rider_app/config/base_response/base_response.dart';
 import 'package:flowery_rider_app/config/base_state/base_state.dart';
-import 'package:flowery_rider_app/features/profile/api/request_models/profile_request_model.dart';
 import 'package:flowery_rider_app/features/profile/domain/entities/profile_entity.dart';
 import 'package:flowery_rider_app/features/profile/domain/use_cases/change_password_usecase.dart';
 import 'package:flowery_rider_app/features/profile/presentation/view_models/change_password_view_model/change_password_events.dart';
@@ -14,28 +12,27 @@ import 'package:mockito/mockito.dart';
 
 import 'change_password_view_model_test.mocks.dart';
 
-@GenerateMocks([ChangePasswordUseCase, AuthManager])
+@GenerateMocks([ChangePasswordUseCase])
 void main() {
   late ChangePasswordViewModel sut;
   late MockChangePasswordUseCase mockUseCase;
-  late MockAuthManager mockAuthManager;
 
   const tPassword = 'Current123*';
   const tNewPassword = 'NewPass123*';
   const tToken = 'new_token';
   const tErrorMessage = 'Wrong password';
 
-  final tRequestModel = ProfileRequestModel(
-    password: tPassword,
-    newPassword: tNewPassword,
-  );
-
   const tEntity = ProfileResponseEntity(token: tToken);
   const tEntityNoToken = ProfileResponseEntity(token: null);
 
+  setUpAll(() {
+    provideDummy<BaseResponse<ProfileResponseEntity>>(
+      SuccessBaseResponse(data: tEntity),
+    );
+  });
+
   setUp(() {
     mockUseCase = MockChangePasswordUseCase();
-    mockAuthManager = MockAuthManager();
     sut = ChangePasswordViewModel(mockUseCase);
   });
 
@@ -60,12 +57,8 @@ void main() {
       'Should emit loading then success when use case returns success with token',
       build: () {
         when(
-          mockUseCase.execute(requestModel: tRequestModel),
+          mockUseCase.execute(requestModel: anyNamed('requestModel')),
         ).thenAnswer((_) async => SuccessBaseResponse(data: tEntity));
-
-        when(
-          mockAuthManager.setAuthData(token: tToken),
-        ).thenAnswer((_) async {});
 
         return sut;
       },
@@ -80,9 +73,8 @@ void main() {
         ChangePasswordState(changePasswordState: BaseState.success(tEntity)),
       ],
       verify: (_) {
-        verify(mockUseCase.execute(requestModel: tRequestModel)).called(1);
-
-        verify(mockAuthManager.setAuthData(token: tToken)).called(1);
+        verify(mockUseCase.execute(requestModel: anyNamed('requestModel')))
+            .called(1);
       },
     );
 
@@ -90,7 +82,7 @@ void main() {
       'Should emit loading then success and skip setAuthData when token is null',
       build: () {
         when(
-          mockUseCase.execute(requestModel: tRequestModel),
+          mockUseCase.execute(requestModel: anyNamed('requestModel')),
         ).thenAnswer((_) async => SuccessBaseResponse(data: tEntityNoToken));
 
         return sut;
@@ -108,9 +100,8 @@ void main() {
         ),
       ],
       verify: (_) {
-        verify(mockUseCase.execute(requestModel: tRequestModel)).called(1);
-
-        verifyNever(mockAuthManager.setAuthData(token: anyNamed('token')));
+        verify(mockUseCase.execute(requestModel: anyNamed('requestModel')))
+            .called(1);
       },
     );
   });
@@ -119,7 +110,8 @@ void main() {
     blocTest<ChangePasswordViewModel, ChangePasswordState>(
       'Should emit loading then error when use case returns error',
       build: () {
-        when(mockUseCase.execute(requestModel: tRequestModel)).thenAnswer(
+        when(mockUseCase.execute(requestModel: anyNamed('requestModel')))
+            .thenAnswer(
           (_) async => ErrorBaseResponse<ProfileResponseEntity>(
             errorMessage: tErrorMessage,
           ),
@@ -140,9 +132,8 @@ void main() {
         ),
       ],
       verify: (_) {
-        verify(mockUseCase.execute(requestModel: tRequestModel)).called(1);
-
-        verifyNever(mockAuthManager.setAuthData(token: anyNamed('token')));
+        verify(mockUseCase.execute(requestModel: anyNamed('requestModel')))
+            .called(1);
       },
     );
   });

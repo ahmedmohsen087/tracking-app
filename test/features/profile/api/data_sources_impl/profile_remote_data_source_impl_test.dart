@@ -1,4 +1,5 @@
 import 'package:flowery_rider_app/config/base_response/base_response.dart';
+import 'package:flowery_rider_app/core/services/media_service.dart';
 import 'package:flowery_rider_app/features/profile/api/data_sources_impl/profile_remote_data_source_impl.dart';
 import 'package:flowery_rider_app/features/profile/api/profile_api_client/profile_api_client.dart';
 import 'package:flowery_rider_app/features/profile/api/request_models/profile_request_model.dart';
@@ -9,10 +10,11 @@ import 'package:mockito/mockito.dart';
 
 import 'profile_remote_data_source_impl_test.mocks.dart';
 
-@GenerateMocks([ProfileApiClient])
+@GenerateMocks([ProfileApiClient, MediaService])
 void main() {
   late ProfileRemoteDataSourceImpl sut;
   late MockProfileApiClient mockApiClient;
+  late MockMediaService mockMediaService;
 
   const tPassword = 'Current123*';
   const tNewPassword = 'NewPass123*';
@@ -30,7 +32,8 @@ void main() {
 
   setUp(() {
     mockApiClient = MockProfileApiClient();
-    sut = ProfileRemoteDataSourceImpl(mockApiClient);
+    mockMediaService = MockMediaService();
+    sut = ProfileRemoteDataSourceImpl(mockApiClient, mockMediaService);
   });
 
   group('ProfileRemoteDataSourceImpl — changePassword (success)', () {

@@ -64,7 +64,7 @@ void main() {
       final response = AuthResponseModel();
       when(mockApiClient.applyAsDriver(any)).thenAnswer((_) async => response);
 
-      final result = await dataSource.apply(requestModel: requestModel);
+      final result = await dataSource.apply(applyRequestModel: requestModel);
 
       expect(result, isA<SuccessBaseResponse<AuthResponseModel>>());
       verify(mockApiClient.applyAsDriver(any)).called(1);
@@ -83,7 +83,7 @@ void main() {
       ),
     );
 
-    final result = await dataSource.apply(requestModel: requestModel);
+    final result = await dataSource.apply(applyRequestModel: requestModel);
 
     expect(result, isA<ErrorBaseResponse<AuthResponseModel>>());
     expect((result as ErrorBaseResponse).errorMessage, 'Server error');

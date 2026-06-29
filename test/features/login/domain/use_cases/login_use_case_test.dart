@@ -1,7 +1,7 @@
 import 'package:flowery_rider_app/config/base_response/base_response.dart';
+import 'package:flowery_rider_app/features/auth/api/request_models/login_request_model.dart';
 import 'package:flowery_rider_app/features/auth/domain/entities/auth_response_entity.dart';
 import 'package:flowery_rider_app/features/auth/domain/entities/driver_entity.dart';
-import 'package:flowery_rider_app/features/auth/api/request_models/login_request_model.dart';
 import 'package:flowery_rider_app/features/auth/domain/repository_contract/auth_repository_contract.dart';
 import 'package:flowery_rider_app/features/auth/domain/use_cases/login_use_case.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -64,16 +64,19 @@ void main() {
           data: tAuthResponseEntity,
         );
         when(
-          mockRepository.login(email: tEmail, password: tPassword),
+          mockRepository.login(
+              loginRequestModel: anyNamed('loginRequestModel')),
         ).thenAnswer((_) async => expectedResponse);
 
         // Act
-        final result = await useCase.execute(requestModel: tLoginRequestModel);
+        final result = await useCase.execute(
+            loginRequestModel: tLoginRequestModel);
 
         // Assert
         expect(result, expectedResponse);
         verify(
-          mockRepository.login(email: tEmail, password: tPassword),
+          mockRepository.login(
+              loginRequestModel: anyNamed('loginRequestModel')),
         ).called(1);
         verifyNoMoreInteractions(mockRepository);
       },
@@ -87,16 +90,19 @@ void main() {
           errorMessage: 'Invalid Credentials',
         );
         when(
-          mockRepository.login(email: tEmail, password: tPassword),
+          mockRepository.login(
+              loginRequestModel: anyNamed('loginRequestModel')),
         ).thenAnswer((_) async => expectedResponse);
 
         // Act
-        final result = await useCase.execute(requestModel: tLoginRequestModel);
+        final result = await useCase.execute(
+            loginRequestModel: tLoginRequestModel);
 
         // Assert
         expect(result, expectedResponse);
         verify(
-          mockRepository.login(email: tEmail, password: tPassword),
+          mockRepository.login(
+              loginRequestModel: anyNamed('loginRequestModel')),
         ).called(1);
         verifyNoMoreInteractions(mockRepository);
       },

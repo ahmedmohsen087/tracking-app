@@ -1,13 +1,13 @@
 import 'package:bloc_test/bloc_test.dart';
+import 'package:flowery_rider_app/config/auth/auth_manager.dart';
 import 'package:flowery_rider_app/config/base_response/base_response.dart';
 import 'package:flowery_rider_app/config/base_state/base_state.dart';
+import 'package:flowery_rider_app/features/auth/api/request_models/login_request_model.dart';
 import 'package:flowery_rider_app/features/auth/domain/entities/auth_response_entity.dart';
 import 'package:flowery_rider_app/features/auth/domain/entities/driver_entity.dart';
-import 'package:flowery_rider_app/features/auth/api/request_models/login_request_model.dart';
 import 'package:flowery_rider_app/features/auth/domain/use_cases/login_use_case.dart';
 import 'package:flowery_rider_app/features/auth/presentation/view_models/login_view_model/login_events.dart';
 import 'package:flowery_rider_app/features/auth/presentation/view_models/login_view_model/login_state.dart';
-import 'package:flowery_rider_app/config/auth/auth_manager.dart';
 import 'package:flowery_rider_app/features/auth/presentation/view_models/login_view_model/login_view_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -56,14 +56,16 @@ void main() {
   );
 
   void stubLoginSuccess() {
-    when(mockLoginUseCase.execute(requestModel: tLoginRequestModel)).thenAnswer(
+    when(mockLoginUseCase.execute(loginRequestModel: tLoginRequestModel))
+        .thenAnswer(
       (_) async =>
           SuccessBaseResponse<AuthResponseEntity>(data: tAuthResponseEntity),
     );
   }
 
   void stubLoginError(String message) {
-    when(mockLoginUseCase.execute(requestModel: tLoginRequestModel)).thenAnswer(
+    when(mockLoginUseCase.execute(loginRequestModel: tLoginRequestModel))
+        .thenAnswer(
       (_) async => ErrorBaseResponse<AuthResponseEntity>(
         errorMessage: message,
       ),
@@ -114,7 +116,7 @@ void main() {
       ],
       verify: (_) {
         verify(
-          mockLoginUseCase.execute(requestModel: tLoginRequestModel),
+          mockLoginUseCase.execute(loginRequestModel: tLoginRequestModel),
         ).called(1);
         verifyNoMoreInteractions(mockLoginUseCase);
       },
@@ -163,7 +165,7 @@ void main() {
       ],
       verify: (_) {
         verify(
-          mockLoginUseCase.execute(requestModel: tLoginRequestModel),
+          mockLoginUseCase.execute(loginRequestModel: tLoginRequestModel),
         ).called(1);
         verifyNoMoreInteractions(mockLoginUseCase);
       },

@@ -9,7 +9,6 @@ import 'package:flowery_rider_app/features/profile/presentation/view_models/chan
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
 
 class MockChangePasswordViewModel extends MockCubit<ChangePasswordState>
     implements ChangePasswordViewModel {}
@@ -33,8 +32,11 @@ void main() {
       changePasswordState: BaseState(),
       autoValidate: false,
     );
-    when(mockViewModel.state).thenReturn(initialState);
-    when(mockViewModel.stream).thenAnswer((_) => Stream.value(initialState));
+    whenListen(
+      mockViewModel,
+      const Stream<ChangePasswordState>.empty(),
+      initialState: initialState,
+    );
   });
 
   Widget createWidgetUnderTest() {
@@ -263,10 +265,11 @@ void main() {
           changePasswordState: BaseState.loading(),
           autoValidate: false,
         );
-        when(mockViewModel.state).thenReturn(loadingState);
-        when(
-          mockViewModel.stream,
-        ).thenAnswer((_) => Stream.value(loadingState));
+        whenListen(
+          mockViewModel,
+          const Stream<ChangePasswordState>.empty(),
+          initialState: loadingState,
+        );
 
         await tester.pumpWidget(createWidgetUnderTest());
 
@@ -282,16 +285,17 @@ void main() {
           changePasswordState: BaseState.loading(),
           autoValidate: false,
         );
-        when(mockViewModel.state).thenReturn(loadingState);
-        when(
-          mockViewModel.stream,
-        ).thenAnswer((_) => Stream.value(loadingState));
+        whenListen(
+          mockViewModel,
+          const Stream<ChangePasswordState>.empty(),
+          initialState: loadingState,
+        );
 
         await tester.pumpWidget(createWidgetUnderTest());
         await tester.enterText(find.byType(TextFormField).at(0), 'Current123*');
         await tester.enterText(find.byType(TextFormField).at(1), 'NewPass123*');
         await tester.enterText(find.byType(TextFormField).at(2), 'NewPass123*');
-        await tester.pumpAndSettle();
+        await tester.pump();
 
         final btn = tester.widget<ElevatedButton>(find.byType(ElevatedButton));
         expect(btn.onPressed, isNull);
@@ -309,10 +313,11 @@ void main() {
           autoValidate: false,
         );
 
-        when(mockViewModel.state).thenReturn(initialState);
-        when(
-          mockViewModel.stream,
-        ).thenAnswer((_) => Stream.fromIterable([initialState, successState]));
+        whenListen(
+          mockViewModel,
+          Stream.fromIterable([successState]),
+          initialState: initialState,
+        );
 
         await tester.pumpWidget(createWidgetUnderTest());
         await tester.pump();
@@ -332,10 +337,11 @@ void main() {
         autoValidate: false,
       );
 
-      when(mockViewModel.state).thenReturn(initialState);
-      when(
-        mockViewModel.stream,
-      ).thenAnswer((_) => Stream.fromIterable([initialState, errorState]));
+      whenListen(
+        mockViewModel,
+        Stream.fromIterable([errorState]),
+        initialState: initialState,
+      );
 
       await tester.pumpWidget(createWidgetUnderTest());
       await tester.pump();

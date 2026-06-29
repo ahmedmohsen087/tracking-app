@@ -15,40 +15,40 @@ class ApplyGenderRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Text(AppStrings.gender, style: TextStyles.bodyRegular14),
-        const SizedBox(width: 16),
-        InkWell(
-          onTap: () => onChanged('female'),
-          child: Row(
-            children: [
-              Radio<String>(
-                value: 'female',
-                groupValue: selected,
-                onChanged: onChanged,
-                activeColor: AppColors.pink,
-              ),
-              Text(AppStrings.female, style: TextStyles.bodyRegular14),
-            ],
+    return RadioGroup<String>(
+      groupValue: selected,
+      onChanged: onChanged,
+      child: Row(
+        children: [
+          Text(AppStrings.gender, style: TextStyles.bodyRegular14),
+          const SizedBox(width: 16),
+          InkWell(
+            onTap: () => onChanged('female'),
+            child: Row(
+              children: [
+                Radio<String>(
+                  value: 'female',
+                  activeColor: AppColors.pink,
+                ),
+                Text(AppStrings.female, style: TextStyles.bodyRegular14),
+              ],
+            ),
           ),
-        ),
-        const SizedBox(width: 8),
-        InkWell(
-          onTap: () => onChanged('male'),
-          child: Row(
-            children: [
-              Radio<String>(
-                value: 'male',
-                groupValue: selected,
-                onChanged: onChanged,
-                activeColor: AppColors.pink,
-              ),
-              Text(AppStrings.male, style: TextStyles.bodyRegular14),
-            ],
+          const SizedBox(width: 8),
+          InkWell(
+            onTap: () => onChanged('male'),
+            child: Row(
+              children: [
+                Radio<String>(
+                  value: 'male',
+                  activeColor: AppColors.pink,
+                ),
+                Text(AppStrings.male, style: TextStyles.bodyRegular14),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

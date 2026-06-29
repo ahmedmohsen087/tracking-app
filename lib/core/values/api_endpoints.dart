@@ -7,4 +7,8 @@ abstract class ApiEndpoints {
   static const String verifyOtp = "$baseUrl/verifyResetCode";
   static const String resetPassword = "$baseUrl/resetPassword";
   static const String changePassword = "$baseUrl/change-password";
+  static const String editProfile = "$baseUrl/editProfile";
+  static const String uploadPhoto = "$baseUrl/upload-photo";
+  static const String getVehicleTypes =
+      "https://flower.elevateegy.com/api/v1/vehicles";
 }

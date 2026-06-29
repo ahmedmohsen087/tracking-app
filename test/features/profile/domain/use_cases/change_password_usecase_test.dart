@@ -24,6 +24,12 @@ void main() {
     newPassword: tNewPassword,
   );
 
+  setUpAll(() {
+    provideDummy<BaseResponse<ProfileResponseEntity>>(
+      SuccessBaseResponse(data: tEntity),
+    );
+  });
+
   setUp(() {
     mockRepository = MockProfileRepositoryContract();
     sut = ChangePasswordUseCase(mockRepository);

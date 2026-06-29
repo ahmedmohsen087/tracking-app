@@ -31,6 +31,12 @@ void main() {
 
   final tModelNoToken = ProfileResponseModel(message: 'ok', token: null);
 
+  setUpAll(() {
+    provideDummy<BaseResponse<ProfileResponseModel>>(
+      SuccessBaseResponse(data: tModel),
+    );
+  });
+
   setUp(() {
     mockDataSource = MockProfileRemoteDataSourceContract();
     mockAuthManager = MockAuthManager();
