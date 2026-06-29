@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
 
-import 'order_entity.dart';
+import 'home_order_entity.dart';
 
 class OrdersPageEntity extends Equatable {
-  final List<OrderEntity> orders;
+  final List<HomeOrderEntity> orders;
   final int currentPage;
   final int totalPages;
   final int totalItems;

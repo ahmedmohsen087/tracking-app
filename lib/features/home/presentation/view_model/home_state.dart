@@ -1,15 +1,15 @@
 import '../../../../config/base_state/base_state.dart';
-import '../../domain/entities/order_entity.dart';
+import '../../domain/entities/home_order_entity.dart';
 
 class HomeState {
-  final BaseState<List<OrderEntity>> getOrdersState;
+  final BaseState<List<HomeOrderEntity>> getOrdersState;
   final int currentPage;
   final int totalPages;
   final int limit;
   final bool isLoadingMore;
 
   const HomeState({
-    this.getOrdersState = const BaseState<List<OrderEntity>>(),
+    this.getOrdersState = const BaseState<List<HomeOrderEntity>>(),
     this.currentPage = 0,
     this.totalPages = 1,
     this.limit = 10,
@@ -19,7 +19,7 @@ class HomeState {
   bool get hasMorePages => currentPage < totalPages;
 
   HomeState copyWith({
-    BaseState<List<OrderEntity>>? getOrdersState,
+    BaseState<List<HomeOrderEntity>>? getOrdersState,
     int? currentPage,
     int? totalPages,
     int? limit,

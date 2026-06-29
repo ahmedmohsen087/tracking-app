@@ -1,6 +1,7 @@
 import 'package:injectable/injectable.dart';
 
 import '../../../../config/base_response/base_response.dart';
+import '../../api/request_models/get_orders_request.dart';
 import '../entities/orders_page_entity.dart';
 import '../repository_contract/home_repository_contract.dart';
 
@@ -11,9 +12,10 @@ class GetOrdersUseCase {
   GetOrdersUseCase(this.repository);
 
   Future<BaseResponse<OrdersPageEntity>> call({
-    required int page,
-    required int limit,
+    required GetOrdersRequest request,
   }) {
-    return repository.getOrders(page: page, limit: limit);
+    return repository.getOrders(
+      request: request,
+    );
   }
 }

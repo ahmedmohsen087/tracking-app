@@ -2,14 +2,17 @@ import 'package:flowery_rider_app/features/home/data/models/product.dart';
 import 'package:flowery_rider_app/features/home/data/models/shipping_address.dart';
 import 'package:flowery_rider_app/features/home/data/models/store.dart';
 import 'package:flowery_rider_app/features/home/data/models/user.dart';
-import 'package:flowery_rider_app/features/home/domain/entities/order_entity.dart';
+import 'package:flowery_rider_app/features/home/domain/entities/home_order_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import '../../domain/entities/shipping_address_entity.dart';
+import '../../domain/entities/store_entity.dart';
+import '../../domain/entities/user_entity.dart';
 import 'order_item.dart';
-part 'order.g.dart';
+part 'home_order.g.dart';
 
 @JsonSerializable()
-class Order {
+class HomeOrder {
   @JsonKey(name: "_id")
   String? id;
   @JsonKey(name: "user")
@@ -41,7 +44,7 @@ class Order {
   @JsonKey(name: "paidAt")
   DateTime? paidAt;
 
-  Order({
+  HomeOrder({
     this.id,
     this.user,
     this.orderItems,
@@ -59,24 +62,24 @@ class Order {
     this.paidAt,
   });
 
-  factory Order.fromJson(Map<String, dynamic> json) => _$OrderFromJson(json);
+  factory HomeOrder.fromJson(Map<String, dynamic> json) => _$HomeOrderFromJson(json);
 
-  Map<String, dynamic> toJson() => _$OrderToJson(this);
-  OrderEntity toDomain() {
-    return OrderEntity(
-      id: id,
-      user: user?.toDomain(),
+  Map<String, dynamic> toJson() => _$HomeOrderToJson(this);
+  HomeOrderEntity toDomain() {
+    return HomeOrderEntity(
+      id: id ?? '',
+      user: user?.toDomain() ?? UserEntity(),
       orderItems: orderItems?.map((e) => e.toDomain()).toList() ?? [],
-      totalPrice: totalPrice,
-      shippingAddress: shippingAddress?.toDomain(),
-      paymentType: paymentType?.name,
-      isPaid: isPaid,
-      isDelivered: isDelivered,
-      state: state?.name,
-      createdAt: createdAt,
-      updatedAt: updatedAt,
-      orderNumber: orderNumber,
-      store: store?.toDomain(),
+      totalPrice: totalPrice ?? 0.0,
+      shippingAddress: shippingAddress?.toDomain() ?? ShippingAddressEntity(),
+      paymentType: paymentType?.name ?? '',
+      isPaid: isPaid ?? false,
+      isDelivered: isDelivered ?? false,
+      state: state?.name ?? '',
+      createdAt: createdAt ?? DateTime.now(),
+      updatedAt: updatedAt ?? DateTime.now(),
+      orderNumber: orderNumber ?? '',
+      store: store?.toDomain() ?? StoreEntity(),
     );
   }
 }

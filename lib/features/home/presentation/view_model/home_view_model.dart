@@ -4,7 +4,8 @@ import 'package:injectable/injectable.dart';
 import '../../../../../config/base_response/base_response.dart';
 import '../../../../../config/base_state/base_state.dart';
 
-import '../../domain/entities/order_entity.dart';
+import '../../api/request_models/get_orders_request.dart';
+import '../../domain/entities/home_order_entity.dart';
 import '../../domain/entities/orders_page_entity.dart';
 import '../../domain/use_cases/get_orders_use_case.dart';
 import 'home_events.dart';
@@ -60,7 +61,7 @@ class HomeViewModel extends Cubit<HomeState> {
 
     emit(
       state.copyWith(
-        getOrdersState: BaseState<List<OrderEntity>>.success(updatedOrders),
+        getOrdersState: BaseState<List<HomeOrderEntity>>.success(updatedOrders),
       ),
     );
   }
@@ -71,24 +72,29 @@ class HomeViewModel extends Cubit<HomeState> {
     emit(
       state.copyWith(
         getOrdersState: isFirstPage
-            ? BaseState<List<OrderEntity>>.loading()
+            ? BaseState<List<HomeOrderEntity>>.loading()
             : state.getOrdersState,
         isLoadingMore: !isFirstPage,
       ),
     );
 
-    final response = await _getOrdersUseCase(page: page, limit: state.limit);
+    final response = await _getOrdersUseCase(
+      request: GetOrdersRequest(
+        page: page,
+        limit: state.limit,
+      ),
+    );
 
     switch (response) {
       case SuccessBaseResponse<OrdersPageEntity>():
         final currentOrders = refresh
-            ? <OrderEntity>[]
-            : state.getOrdersState.data ?? <OrderEntity>[];
+            ? <HomeOrderEntity>[]
+            : state.getOrdersState.data ?? <HomeOrderEntity>[];
         final orders = [...currentOrders, ...response.data.orders];
 
         emit(
           state.copyWith(
-            getOrdersState: BaseState<List<OrderEntity>>.success(orders),
+            getOrdersState: BaseState<List<HomeOrderEntity>>.success(orders),
             currentPage: response.data.currentPage,
             totalPages: response.data.totalPages,
             limit: response.data.limit,
@@ -97,13 +103,13 @@ class HomeViewModel extends Cubit<HomeState> {
         );
 
       case ErrorBaseResponse<OrdersPageEntity>():
-        final currentOrders = state.getOrdersState.data ?? <OrderEntity>[];
+        final currentOrders = state.getOrdersState.data ?? <HomeOrderEntity>[];
 
         emit(
           state.copyWith(
             getOrdersState: isFirstPage
-                ? BaseState<List<OrderEntity>>.error(response.errorMessage)
-                : BaseState<List<OrderEntity>>(
+                ? BaseState<List<HomeOrderEntity>>.error(response.errorMessage)
+                : BaseState<List<HomeOrderEntity>>(
                     data: currentOrders,
                     msg: response.errorMessage,
                   ),

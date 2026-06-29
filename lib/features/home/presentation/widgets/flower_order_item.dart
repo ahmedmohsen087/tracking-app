@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/text_styles.dart';
-import '../../domain/entities/order_entity.dart';
+import '../../domain/entities/home_order_entity.dart';
 import 'address_item.dart';
 import 'item_selected.dart';
 
 class FlowerOrderItem extends StatelessWidget {
-  final OrderEntity order;
+  final HomeOrderEntity order;
   final VoidCallback onReject;
 
   const FlowerOrderItem({
