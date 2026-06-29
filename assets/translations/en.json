@@ -127,11 +127,23 @@
   "cameraDenied": "Camera access was denied. Please allow it to take photos.",
   "chooseImageSource": "Choose Image Source",
   "takePhoto": "Take Photo",
-  "chooseFromGallery": "Choose from Gallery",
 
   "flowerOrder": "Flower Order",
   "pickupAddress": "Pickup Address",
   "userAddress": "User Address",
   "accept": "Accept",
-  "reject": "Reject"
+  "reject": "Reject",
+  "chooseFromGallery": "Choose from Gallery",
+  "passwordUpdated" : "Password Updated",
+  "currentPassword" : "Current Password",
+  "changePassword" : "Change Password",
+  "update": "Update",
+  "editProfile": "Edit Profile",
+  "updateProfile": "Update",
+  "profileUpdatedSuccessfully": "Profile updated successfully",
+  "photoUploadedSuccessfully": "Photo uploaded successfully",
+  "firstName": "First name",
+  "lastName": "Last name",
+  "vehicleInfoUpdatedSuccessfully": "Vehicle info updated successfully",
+  "editVehicleInfo": "Edit vehicle info"
 }

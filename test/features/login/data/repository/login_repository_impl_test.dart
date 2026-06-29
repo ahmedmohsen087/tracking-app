@@ -1,5 +1,6 @@
 import 'package:flowery_rider_app/config/auth/auth_manager.dart';
 import 'package:flowery_rider_app/config/base_response/base_response.dart';
+import 'package:flowery_rider_app/features/auth/api/request_models/login_request_model.dart';
 import 'package:flowery_rider_app/features/auth/data/data_sources_contract/auth_remote_data_source_contract.dart';
 import 'package:flowery_rider_app/features/auth/data/models/auth_response_model.dart';
 import 'package:flowery_rider_app/features/auth/data/repository_impl/auth_repository_impl.dart';
@@ -19,6 +20,8 @@ void main() {
   const tEmail = 'test@example.com';
   const tPassword = 'password123';
   const tToken = 'mocked_jwt_token';
+  final tLoginRequestModel = LoginRequestModel(
+      email: tEmail, password: tPassword);
 
   setUpAll(() {
     provideDummy<BaseResponse<AuthResponseModel>>(
@@ -39,7 +42,8 @@ void main() {
         // Arrange
         final response = AuthResponseModel(message: 'Success', token: tToken);
         when(
-          mockDataSource.login(email: anyNamed('email'), password: anyNamed('password')),
+          mockDataSource.login(
+              loginRequestModel: anyNamed('loginRequestModel')),
         ).thenAnswer((_) async => SuccessBaseResponse(data: response));
 
         when(
@@ -47,7 +51,8 @@ void main() {
         ).thenAnswer((_) async {});
 
         // Act
-        final result = await repository.login(email: tEmail, password: tPassword);
+        final result = await repository.login(
+            loginRequestModel: tLoginRequestModel);
 
         // Assert
         expect(result, isA<SuccessBaseResponse<AuthResponseEntity>>());
@@ -57,7 +62,8 @@ void main() {
         );
 
         verify(
-          mockDataSource.login(email: anyNamed('email'), password: anyNamed('password')),
+          mockDataSource.login(
+              loginRequestModel: anyNamed('loginRequestModel')),
         ).called(1);
         verify(mockAuthManager.setAuthData(token: tToken)).called(1);
         verifyNoMoreInteractions(mockDataSource);
@@ -70,13 +76,15 @@ void main() {
       () async {
         // Arrange
         when(
-          mockDataSource.login(email: anyNamed('email'), password: anyNamed('password')),
+          mockDataSource.login(
+              loginRequestModel: anyNamed('loginRequestModel')),
         ).thenAnswer(
           (_) async => ErrorBaseResponse(errorMessage: 'Network Failure'),
         );
 
         // Act
-        final result = await repository.login(email: tEmail, password: tPassword);
+        final result = await repository.login(
+            loginRequestModel: tLoginRequestModel);
 
         // Assert
         expect(result, isA<ErrorBaseResponse<AuthResponseEntity>>());
@@ -86,7 +94,8 @@ void main() {
         );
 
         verify(
-          mockDataSource.login(email: anyNamed('email'), password: anyNamed('password')),
+          mockDataSource.login(
+              loginRequestModel: anyNamed('loginRequestModel')),
         ).called(1);
         verifyNever(mockAuthManager.setAuthData(token: anyNamed('token')));
       },

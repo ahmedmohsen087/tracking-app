@@ -1,6 +1,7 @@
 import 'package:flowery_rider_app/config/base_response/base_response.dart';
 import 'package:flowery_rider_app/features/auth/api/auth_api_client/auth_api_client.dart';
 import 'package:flowery_rider_app/features/auth/api/data_sources_impl/auth_remote_data_source_impl.dart';
+import 'package:flowery_rider_app/features/auth/api/request_models/login_request_model.dart';
 import 'package:flowery_rider_app/features/auth/data/models/auth_response_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -15,6 +16,8 @@ void main() {
 
   const tEmail = 'test@example.com';
   const tPassword = 'password123';
+  final tLoginRequestModel = LoginRequestModel(
+      email: tEmail, password: tPassword);
 
   final tAuthResponse = AuthResponseModel(
     token: 'mocked_jwt_token_for_testing',
@@ -41,8 +44,7 @@ void main() {
 
         // Act
         final result = await datasource.login(
-          email: tEmail,
-          password: tPassword,
+          loginRequestModel: tLoginRequestModel,
         );
 
         // Assert
@@ -65,8 +67,7 @@ void main() {
 
         // Act
         final result = await datasource.login(
-          email: tEmail,
-          password: tPassword,
+          loginRequestModel: tLoginRequestModel,
         );
 
         // Assert

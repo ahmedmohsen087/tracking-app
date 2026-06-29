@@ -55,10 +55,10 @@ void main() {
         driver: Driver(id: 'id123', firstName: 'John', lastName: 'Doe'),
       );
       when(
-        mockDataSource.apply(requestModel: anyNamed('requestModel')),
+        mockDataSource.apply(applyRequestModel: anyNamed('applyRequestModel')),
       ).thenAnswer((_) async => SuccessBaseResponse(data: response));
 
-      final result = await repository.apply(requestModel: requestModel);
+      final result = await repository.apply(applyRequestModel: requestModel);
 
       expect(result, isA<SuccessBaseResponse<AuthResponseEntity>>());
       final data = (result as SuccessBaseResponse<AuthResponseEntity>).data;
@@ -66,19 +66,19 @@ void main() {
       expect(data.token, 'token123');
       expect(data.driver?.id, 'id123');
       verify(
-        mockDataSource.apply(requestModel: anyNamed('requestModel')),
+        mockDataSource.apply(applyRequestModel: anyNamed('applyRequestModel')),
       ).called(1);
     },
   );
 
   test('should return ErrorBaseResponse on failed apply', () async {
     when(
-      mockDataSource.apply(requestModel: anyNamed('requestModel')),
+      mockDataSource.apply(applyRequestModel: anyNamed('applyRequestModel')),
     ).thenAnswer(
       (_) async => ErrorBaseResponse(errorMessage: 'Error occurred'),
     );
 
-    final result = await repository.apply(requestModel: requestModel);
+    final result = await repository.apply(applyRequestModel: requestModel);
 
     expect(result, isA<ErrorBaseResponse<AuthResponseEntity>>());
     expect((result as ErrorBaseResponse).errorMessage, 'Error occurred');

@@ -133,7 +133,19 @@
   "pickupAddress": "عنوان الآستلام",
   "userAddress": " عنوان المستخدم ",
   "accept": "قبول",
-  "reject": "رفض"
+  "reject": "رفض",
 
 
+  "passwordUpdated" : "تم تعديل الباسورد",
+  "currentPassword" : "الباسورد الحالي",
+  "changePassword" : "تغيير الباسورد",
+  "update": "تحديث",
+  "editProfile": "تعديل الملف الشخصي",
+  "updateProfile": "تحديث",
+  "profileUpdatedSuccessfully": "تم تحديث الملف الشخصي بنجاح",
+  "photoUploadedSuccessfully": "تم رفع الصورة بنجاح",
+  "firstName": "الاسم الأول",
+  "lastName": "اسم العائلة",
+  "vehicleInfoUpdatedSuccessfully": "تم تحديث بيانات المركبة بنجاح",
+  "editVehicleInfo": "تعديل بيانات المركبة"
 }

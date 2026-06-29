@@ -44,23 +44,23 @@ void main() {
   test('should return SuccessBaseResponse from repository', () async {
     final responseEntity = AuthResponseEntity(message: 'Success');
     when(
-      mockRepository.apply(requestModel: anyNamed('requestModel')),
+      mockRepository.apply(applyRequestModel: anyNamed('applyRequestModel')),
     ).thenAnswer((_) async => SuccessBaseResponse(data: responseEntity));
 
-    final result = await useCase.execute(requestModel: requestModel);
+    final result = await useCase.execute(applyRequestModel: requestModel);
 
     expect(result, isA<SuccessBaseResponse<AuthResponseEntity>>());
     verify(
-      mockRepository.apply(requestModel: anyNamed('requestModel')),
+      mockRepository.apply(applyRequestModel: anyNamed('applyRequestModel')),
     ).called(1);
   });
 
   test('should return ErrorBaseResponse from repository', () async {
     when(
-      mockRepository.apply(requestModel: anyNamed('requestModel')),
+      mockRepository.apply(applyRequestModel: anyNamed('applyRequestModel')),
     ).thenAnswer((_) async => ErrorBaseResponse(errorMessage: 'Error'));
 
-    final result = await useCase.execute(requestModel: requestModel);
+    final result = await useCase.execute(applyRequestModel: requestModel);
 
     expect(result, isA<ErrorBaseResponse<AuthResponseEntity>>());
     expect((result as ErrorBaseResponse).errorMessage, 'Error');

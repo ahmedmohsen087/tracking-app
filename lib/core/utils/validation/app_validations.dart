@@ -2,8 +2,8 @@ import 'package:flowery_rider_app/core/utils/validation/app_regex.dart';
 import 'package:flowery_rider_app/core/values/app_strings.dart';
 
 abstract class AppValidations {
-  static String? validateFirstName(String firstName) {
-    if (!AppRegex.isNotEmpty(firstName)) {
+  static String? validateFirstName(String? firstName) {
+    if (firstName == null || !AppRegex.isNotEmpty(firstName)) {
       return AppStrings.firstNameRequired;
     }
 
@@ -22,8 +22,8 @@ abstract class AppValidations {
     return null;
   }
 
-  static String? validateLastName(String lastName) {
-    if (!AppRegex.isNotEmpty(lastName)) {
+  static String? validateLastName(String? lastName) {
+    if (lastName == null || !AppRegex.isNotEmpty(lastName)) {
       return AppStrings.lastNameRequired;
     }
 
@@ -42,8 +42,8 @@ abstract class AppValidations {
     return null;
   }
 
-  static String? validateEmail(String email) {
-    if (!AppRegex.isNotEmpty(email)) {
+  static String? validateEmail(String? email) {
+    if (email == null || !AppRegex.isNotEmpty(email)) {
       return AppStrings.emailRequired;
     }
 
@@ -54,8 +54,8 @@ abstract class AppValidations {
     return null;
   }
 
-  static String? validatePhone(String phone) {
-    if (!AppRegex.isNotEmpty(phone)) {
+  static String? validatePhone(String? phone) {
+    if (phone == null || !AppRegex.isNotEmpty(phone)) {
       return AppStrings.phoneRequired;
     }
 
@@ -66,8 +66,8 @@ abstract class AppValidations {
     return null;
   }
 
-  static String? validatePassword(String password) {
-    if (!AppRegex.isNotEmpty(password)) {
+  static String? validatePassword(String? password) {
+    if (password == null || !AppRegex.isNotEmpty(password)) {
       return AppStrings.passwordRequired;
     }
 
@@ -79,22 +79,23 @@ abstract class AppValidations {
   }
 
   static String? validateConfirmPassword(
-    String password,
-    String confirmPassword,
+    String? password,
+    String? confirmPassword,
   ) {
-    if (!AppRegex.isNotEmpty(confirmPassword)) {
+    if (confirmPassword == null || !AppRegex.isNotEmpty(confirmPassword)) {
       return AppStrings.confirmPasswordRequired;
     }
 
-    if (!AppRegex.isPasswordMatch(password, confirmPassword)) {
+    if (password == null ||
+        !AppRegex.isPasswordMatch(password, confirmPassword)) {
       return AppStrings.passwordDoNotMatch;
     }
 
     return null;
   }
 
-  static String? validateOtp(String otp) {
-    if (!AppRegex.isNotEmpty(otp)) {
+  static String? validateOtp(String? otp) {
+    if (otp == null || !AppRegex.isNotEmpty(otp)) {
       return AppStrings.otpEmpty;
     }
 
@@ -109,15 +110,15 @@ abstract class AppValidations {
     return null;
   }
 
-  static String? validateRequired(String value, String errorMessage) {
-    if (!AppRegex.isNotEmpty(value)) {
+  static String? validateRequired(String? value, String errorMessage) {
+    if (value == null || !AppRegex.isNotEmpty(value)) {
       return errorMessage;
     }
     return null;
   }
 
-  static String? validateNid(String nid) {
-    if (!AppRegex.isNotEmpty(nid)) {
+  static String? validateNid(String? nid) {
+    if (nid == null || !AppRegex.isNotEmpty(nid)) {
       return AppStrings.idNumberRequired;
     }
     if (!RegExp(r'^[0-9]{14}$').hasMatch(nid.trim())) {

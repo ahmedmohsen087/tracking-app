@@ -10,4 +10,6 @@ abstract class AppRoutsName {
   static const String resetPassword = '/resetPassword';
   static const String ordersScreen = '/ordersScreen';
   static const String profileScreen = '/profileScreen';
+  static const String editProfileScreen = '/editProfileScreen';
+  static const String editVehicleInfoScreen = '/editVehicleInfoScreen';
 }

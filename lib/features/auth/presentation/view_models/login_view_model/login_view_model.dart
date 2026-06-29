@@ -20,7 +20,7 @@ class LoginViewModel extends Cubit<LoginState> {
   void doEvent(LoginEvents event) {
     switch (event) {
       case LoginRequestEvent():
-        _loginUser(requestModel: event.requestModel);
+        _loginUser(loginRequestModel: event.requestModel);
         break;
       case RememberMeEvent():
         _rememberMe(event.rememberMe);
@@ -28,9 +28,13 @@ class LoginViewModel extends Cubit<LoginState> {
     }
   }
 
-  Future<void> _loginUser({required LoginRequestModel requestModel}) async {
+  Future<void> _loginUser({
+    required LoginRequestModel loginRequestModel,
+  }) async {
     emit(state.copyWith(loginState: BaseState.loading()));
-    final response = await _loginUseCase.execute(requestModel: requestModel);
+    final response = await _loginUseCase.execute(
+      loginRequestModel: loginRequestModel,
+    );
     switch (response) {
       case SuccessBaseResponse<AuthResponseEntity>():
         emit(state.copyWith(loginState: BaseState.success(response.data)));

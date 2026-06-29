@@ -11,6 +11,6 @@ class ApplyUseCase {
   ApplyUseCase(this._repository);
 
   Future<BaseResponse<AuthResponseEntity>> execute({
-    required ApplyRequestModel requestModel,
-  }) => _repository.apply(requestModel: requestModel);
+    required ApplyRequestModel applyRequestModel,
+  }) => _repository.apply(applyRequestModel: applyRequestModel);
 }

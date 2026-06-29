@@ -29,7 +29,7 @@ class ApplyViewModel extends Cubit<ApplyState> {
 
     try {
       final response = await _applyUseCase
-          .execute(requestModel: event.requestModel)
+          .execute(applyRequestModel: event.requestModel)
           .timeout(const Duration(seconds: 60));
 
       switch (response) {

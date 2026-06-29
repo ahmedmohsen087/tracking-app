@@ -15,13 +15,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSourceContract {
 
   @override
   Future<BaseResponse<AuthResponseModel>> login({
-    required String email,
-    required String password,
+    required LoginRequestModel loginRequestModel,
   }) async {
     try {
-      final response = await _authApiClient.login(
-        LoginRequestModel(email: email, password: password),
-      );
+      final response = await _authApiClient.login(loginRequestModel);
       return SuccessBaseResponse<AuthResponseModel>(data: response);
     } catch (e) {
       final message = ErrorHandler.handle(e);
@@ -31,11 +28,11 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSourceContract {
 
   @override
   Future<BaseResponse<AuthResponseModel>> apply({
-    required ApplyRequestModel requestModel,
+    required ApplyRequestModel applyRequestModel,
   }) async {
     try {
       final response = await _authApiClient.applyAsDriver(
-        await requestModel.toFormData(),
+        await applyRequestModel.toFormData(),
       );
       return SuccessBaseResponse(data: response);
     } catch (e) {

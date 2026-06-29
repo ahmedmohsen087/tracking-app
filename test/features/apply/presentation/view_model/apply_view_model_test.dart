@@ -57,7 +57,7 @@ void main() {
     'emits [loading, success] when apply is successful',
     build: () {
       when(
-        mockUseCase.execute(requestModel: anyNamed('requestModel')),
+        mockUseCase.execute(applyRequestModel: anyNamed('applyRequestModel')),
       ).thenAnswer((_) async => SuccessBaseResponse(data: successResponse));
       return viewModel;
     },
@@ -70,7 +70,7 @@ void main() {
     ],
     verify: (_) {
       verify(
-        mockUseCase.execute(requestModel: anyNamed('requestModel')),
+        mockUseCase.execute(applyRequestModel: anyNamed('applyRequestModel')),
       ).called(1);
     },
   );
@@ -79,7 +79,7 @@ void main() {
     'emits [loading, error] when apply fails',
     build: () {
       when(
-        mockUseCase.execute(requestModel: anyNamed('requestModel')),
+        mockUseCase.execute(applyRequestModel: anyNamed('applyRequestModel')),
       ).thenAnswer(
         (_) async => ErrorBaseResponse(errorMessage: 'Error occurred'),
       );
