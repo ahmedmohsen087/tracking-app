@@ -1,17 +1,20 @@
-import 'package:flowery_rider_app/config/base_response/base_response.dart';
-import 'package:flowery_rider_app/core/services/media_service.dart';
-import 'package:flowery_rider_app/core/utils/error/error_handler.dart';
-import 'package:flowery_rider_app/features/profile/api/profile_api_client/profile_api_client.dart';
-import 'package:flowery_rider_app/features/profile/api/request_models/edit_profile_request_model.dart';
-import 'package:flowery_rider_app/features/profile/api/request_models/edit_vehicle_info_request_model.dart';
-import 'package:flowery_rider_app/features/profile/api/request_models/profile_request_model.dart';
-import 'package:flowery_rider_app/features/profile/api/responses/edit_profile_response.dart';
-import 'package:flowery_rider_app/features/profile/api/responses/upload_photo_response.dart';
-import 'package:flowery_rider_app/features/profile/api/responses/vehicle_types_response.dart';
-import 'package:flowery_rider_app/features/profile/data/models/profile_response_model.dart';
-import 'package:injectable/injectable.dart';
-
 import '../../data/data_sources_contract/profile_remote_data_source_contract.dart';
+import '../profile_api_client/profile_api_client.dart';
+
+@Injectable(as: ProfileRemoteDataSourceContract)
+class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSourceContract {
+  final ProfileApiClient profileApiClient;
+  ProfileRemoteDataSourceImpl(this.profileApiClient);
+
+  @override
+  Future<BaseResponse<GetProfileResponse>> getProfile() async{
+
+    try {
+      final response = profileApiClient.getProfile();
+      return SuccessBaseResponse<GetProfileResponse>(data: await response);
+    } catch (e) {
+      final message = ErrorHandler.handle(e);
+      return ErrorBaseResponse<GetProfileResponse>(errorMessage: message);
 
 @Injectable(as: ProfileRemoteDataSourceContract)
 class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSourceContract {
@@ -87,5 +90,9 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSourceContract {
     } catch (e) {
       return ErrorBaseResponse<String>(errorMessage: e.toString());
     }
+  }
+}
+    }
+
   }
 }

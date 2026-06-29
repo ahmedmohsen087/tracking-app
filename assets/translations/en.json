@@ -42,7 +42,7 @@
   "emailVerification": "Email verification",
   "pleaseEnterYourEmailAssociated": "Please enter your email associated to \n your account",
   "pleaseEnterYourCode": "Please enter your code that send to your \n email address",
-  "didntReceiveCode": "Didn't receive code? ",
+  "didn'tReceiveCode": "Didn't receive code? ",
   "resend": "Resend",
 
   "phoneRequired": "Phone number is required",
@@ -114,7 +114,7 @@
   "rememberMe": "Remember me",
   "loginButton": "Login",
   "continueAsGuest": "Continue as guest",
-  "dontHaveAccount": "Don't have an account? ",
+  "don'tHaveAccount": "Don't have an account? ",
   "signUp": "Sign up",
 
   "logout": "Logout",
@@ -145,5 +145,9 @@
   "firstName": "First name",
   "lastName": "Last name",
   "vehicleInfoUpdatedSuccessfully": "Vehicle info updated successfully",
-  "editVehicleInfo": "Edit vehicle info"
+  "editVehicleInfo": "Edit vehicle info",
+  "vehicleInfo": "Vehicle Info",
+  "language": "Language",
+  "English": "English",
+  "noProfileDataAvailable": "No profile data available"
 }

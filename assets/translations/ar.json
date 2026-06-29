@@ -42,7 +42,7 @@
   "emailVerification": "التحقق من البريد الإلكتروني",
   "pleaseEnterYourEmailAssociated": "الرجاء إدخال بريدك الإلكتروني المرتبط بحسابك",
   "pleaseEnterYourCode": "الرجاء إدخال الرمز الذي تم إرساله إلى عنوان بريدك الإلكتروني",
-  "didntReceiveCode": "لم يتم استلام الرمز؟",
+  "didn'tReceiveCode": "لم يتم استلام الرمز؟",
   "resend": "إعادة الإرسال",
 
   "phoneRequired": "رقم الهاتف مطلوب",
@@ -114,7 +114,7 @@
   "rememberMe": "تذكرني",
   "loginButton": "تسجيل الدخول",
   "continueAsGuest": "الاستمرار كزائر",
-  "dontHaveAccount": "ليس لديك حساب؟ ",
+  "don'tHaveAccount": "ليس لديك حساب؟ ",
   "signUp": "إنشاء حساب",
 
   "logout": "تسجيل الخروج",
@@ -127,7 +127,6 @@
   "cameraDenied": "تم رفض الوصول للكاميرا. من فضلك سمح بالوصول لتصوير الصور.",
   "chooseImageSource": "اختر مصدر الصورة",
   "takePhoto": "تصوير بالكاميرا",
-  "chooseFromGallery": "اختيار من المعرض",
 
   "flowerOrder": "الاوردرات ",
   "pickupAddress": "عنوان الآستلام",
@@ -147,5 +146,13 @@
   "firstName": "الاسم الأول",
   "lastName": "اسم العائلة",
   "vehicleInfoUpdatedSuccessfully": "تم تحديث بيانات المركبة بنجاح",
-  "editVehicleInfo": "تعديل بيانات المركبة"
+  "editVehicleInfo": "تعديل بيانات المركبة",
+  "chooseFromGallery": "اختيار من المعرض",
+  "vehicleInfo" : "معلومات المركبة",
+  "language": "اللغة",
+  "English": "الآنجليزية",
+  "noProfileDataAvailable": "لا تتوفر بيانات للملف الشخصي"
+
+
+
 }

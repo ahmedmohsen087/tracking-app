@@ -192,4 +192,9 @@ class AppStrings {
   static String get reject => 'reject'.tr();
   static String get accept => 'accept'.tr();
 
+  // profile
+  static String get vehicleInfo => 'vehicleInfo'.tr();
+  static String get language => 'language'.tr();
+  static String get english => 'English'.tr();
+  static String get noProfileDataAvailable => 'noProfileDataAvailable'.tr();
 }

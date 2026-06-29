@@ -10,6 +10,8 @@ import 'package:flowery_rider_app/features/profile/data/models/profile_response_
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/retrofit.dart';
 
+import '../../data/models/get_profile_response.dart';
+
 part 'profile_api_client.g.dart';
 
 @lazySingleton
@@ -35,4 +37,8 @@ abstract class ProfileApiClient {
     @Query('page') int page,
     @Query('limit') int limit,
   );
+  @GET(ApiEndpoints.profile)
+  Future<GetProfileResponse> getProfile() ;
 }
+
+

@@ -1,11 +1,12 @@
-import 'package:flowery_rider_app/core/reusable_widgets/app_snack_bar.dart';
-import 'package:flowery_rider_app/core/values/app_routs_name.dart';
+import 'package:flowery_rider_app/core/theme/text_styles.dart';
 import 'package:flowery_rider_app/core/values/app_strings.dart';
-import 'package:flowery_rider_app/features/auth/presentation/view_models/logout_view_model/logout_state.dart';
-import 'package:flowery_rider_app/features/auth/presentation/view_models/logout_view_model/logout_view_model.dart';
-import 'package:flowery_rider_app/features/auth/presentation/widgets/logout_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../view_models/get_profile_view_model/get_profile_state.dart';
+import '../view_models/get_profile_view_model/get_profile_view_model.dart';
+import '../widgets/personal_information_card.dart';
+import '../widgets/vehicle_info_card.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -13,62 +14,90 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(AppStrings.profile)),
-      body: BlocListener<LogoutViewModel, LogoutState>(
-        listenWhen: (previous, current) =>
-            previous.logoutState != current.logoutState,
-        listener: (context, state) {
-          if (state.logoutState.isLoading) {
-            showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (context) =>
-                  const Center(child: CircularProgressIndicator()),
-            );
-          }
+      appBar: AppBar(
+        title: Text(AppStrings.profile),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: BlocBuilder<GetProfileViewModel, GetProfileState>(
+          builder: (context, state) {
+            final profileState = state.getProfileState;
 
-          if (!state.logoutState.isLoading && state.logoutState.msg == null) {
-            if (Navigator.canPop(context)) Navigator.pop(context);
-            Navigator.pushNamedAndRemoveUntil(
-              context,
-              AppRoutsName.loginScreen,
-              (route) => false,
-            );
-          } else if (state.logoutState.msg != null) {
-            AppSnackBar.showError(context, state.logoutState.msg!);
-            if (Navigator.canPop(context)) Navigator.pop(context);
-          }
-        },
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                onPressed: () => Navigator.pushNamed(
-                  context,
-                  AppRoutsName.editProfileScreen,
-                ),
-                child: Text(AppStrings.editProfile),
-              ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () => Navigator.pushNamed(
-                  context,
-                  AppRoutsName.editVehicleInfoScreen,
-                ),
-                child: Text(AppStrings.editVehicleInfo),
-              ),
-              const SizedBox(height: 16),
+            if (profileState.isLoading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
 
-              ElevatedButton(
-                onPressed: () {
-                  final logoutViewModel = context.read<LogoutViewModel>();
-                  LogoutDialog.show(context, logoutViewModel);
-                },
-                child: Text(AppStrings.logout),
-              ),
-            ],
-          ),
+            if (profileState.msg != null) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+
+                  ],
+                ),
+              );
+            }
+
+            final driver = profileState.data;
+
+            if (driver == null) {
+              return  Center(
+                child: Text(AppStrings.noProfileDataAvailable),
+              );
+            }
+
+            return Column(
+              spacing: 30,
+              children: [
+                PersonalInformationCard(
+                  name:
+                  '${driver.firstName } ${driver.lastName }',
+                  email: driver.email,
+                  phone: driver.phone,
+                  photo: driver.photo  ,
+                ),
+                VehicleInfoCard(
+                  kindOfVehicle: driver.vehicleType ,
+                  vehicleNumber: driver.vehicleNumber ,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    spacing: 10,
+                    children: [
+                      const Icon(Icons.translate),
+                      Text(
+                        AppStrings.language,
+                        style: TextStyles.bodyRegular13,
+                      ),
+                      const Spacer(),
+                      Text(
+                        AppStrings.english,
+                        style: TextStyles.bodyRegularPink11,
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    spacing: 10,
+                    children: [
+                      const Icon(Icons.logout),
+                      Text(
+                        AppStrings.logout,
+                        style: TextStyles.bodyRegular13,
+                      ),
+                      const Spacer(),
+                      const Icon(Icons.logout),
+                    ],
+                  ),
+                ),
+              ],
+            );
+          },
         ),
       ),
     );
