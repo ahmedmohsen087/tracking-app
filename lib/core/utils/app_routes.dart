@@ -11,6 +11,8 @@ import 'package:flowery_rider_app/features/profile/presentation/view_models/chan
 import 'package:flowery_rider_app/features/splash/presentation/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../features/home/presentation/view_model/home_events.dart';
+import '../../features/home/presentation/view_model/home_view_model.dart';
 import '../../features/profile/presentation/view_models/get_profile_view_model/get_profile_event.dart';
 import '../../features/profile/presentation/view_models/get_profile_view_model/get_profile_view_model.dart';
 import '../../features/section_app/section_app.dart';
@@ -31,10 +33,10 @@ class AppRoutes {
         return MaterialPageRoute(
           builder: (_) => MultiBlocProvider(
             providers: [
-              // BlocProvider(
-              //   create: (_) => getIt<HomeViewModel>()
-              //     ..doEvent(const LoadHomeDataEvent()),
-              // ),
+               BlocProvider(
+                 create: (_) => getIt<HomeViewModel>()
+                   ..doEvent(const LoadHomeDataEvent()),
+               ),
               BlocProvider(
                 create: (_) => getIt<GetProfileViewModel>()
                   ..doEvent(const RefreshProfileEvent()),

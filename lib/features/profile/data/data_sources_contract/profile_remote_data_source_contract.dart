@@ -7,10 +7,13 @@ import 'package:flowery_rider_app/features/profile/api/responses/upload_photo_re
 import 'package:flowery_rider_app/features/profile/api/responses/vehicle_types_response.dart';
 import 'package:flowery_rider_app/features/profile/data/models/profile_response_model.dart';
 
+import '../models/get_profile_response.dart';
+
 abstract interface class ProfileRemoteDataSourceContract {
   Future<BaseResponse<EditProfileResponse>> editProfile({
     required EditProfileRequestModel requestModel,
   });
+  Future<BaseResponse<GetProfileResponse>> getProfile();
 
   Future<BaseResponse<UploadPhotoResponse>> uploadPhoto({
     required String filePath,

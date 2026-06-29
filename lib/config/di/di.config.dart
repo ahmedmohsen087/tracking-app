@@ -63,6 +63,8 @@ import '../../features/profile/domain/use_cases/edit_profile_use_case.dart'
     as _i199;
 import '../../features/profile/domain/use_cases/edit_vehicle_info_use_case.dart'
     as _i133;
+import '../../features/profile/domain/use_cases/get_profile_use_case.dart'
+    as _i110;
 import '../../features/profile/domain/use_cases/get_vehicle_types_use_case.dart'
     as _i191;
 import '../../features/profile/domain/use_cases/upload_photo_use_case.dart'
@@ -73,6 +75,8 @@ import '../../features/profile/presentation/view_models/edit_profile_view_model/
     as _i87;
 import '../../features/profile/presentation/view_models/edit_vehicle_info_view_model/edit_vehicle_info_view_model.dart'
     as _i227;
+import '../../features/profile/presentation/view_models/get_profile_view_model/get_profile_view_model.dart'
+    as _i530;
 import '../auth/auth_interceptor.dart' as _i53;
 import '../auth/auth_manager.dart' as _i692;
 import '../cache/smart_cache_interceptor.dart' as _i276;
@@ -95,6 +99,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i558.FlutterSecureStorage>(
       () => secureStorageModule.secureStorage,
     );
+    gh.factory<_i902.MediaService>(() => _i902.MediaServiceImpl());
     gh.lazySingleton<_i611.SecureStorageService>(
       () => _i611.SecureStorageService(gh<_i558.FlutterSecureStorage>()),
     );
@@ -129,50 +134,25 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i1000.ProfileApiClient>(
       () => _i1000.ProfileApiClient(gh<_i361.Dio>()),
     );
-    gh.factory<_i95.AuthRemoteDataSourceContract>(
-      () => _i691.AuthRemoteDataSourceImpl(gh<_i474.AuthApiClient>()),
-    );
-    gh.factory<_i830.HomeRemoteDataSourceContract>(
-      () => _i938.HomeRemoteDataSourceImpl(gh<_i866.HomeApiClient>()),
-    );
-    gh.factory<_i845.HomeRepositoryContract>(
-      () => _i60.HomeRepositoryImpl(gh<_i830.HomeRemoteDataSourceContract>()),
-    );
     gh.factory<_i1040.ProfileRemoteDataSourceContract>(
       () => _i1028.ProfileRemoteDataSourceImpl(
         gh<_i1000.ProfileApiClient>(),
         gh<_i902.MediaService>(),
       ),
     );
-    gh.factory<_i148.AuthRepositoryContract>(
-      () => _i954.AuthRepositoryImpl(
-        gh<_i95.AuthRemoteDataSourceContract>(),
-        gh<_i692.AuthManager>(),
-      ),
+    gh.factory<_i95.AuthRemoteDataSourceContract>(
+      () => _i691.AuthRemoteDataSourceImpl(gh<_i474.AuthApiClient>()),
     );
-    gh.factory<_i1038.LoginUseCase>(
-      () => _i1038.LoginUseCase(gh<_i148.AuthRepositoryContract>()),
-    );
-    gh.factory<_i580.LoginViewModel>(
-      () => _i580.LoginViewModel(
-        gh<_i1038.LoginUseCase>(),
-        gh<_i692.AuthManager>(),
-      ),
+    gh.factory<_i830.HomeRemoteDataSourceContract>(
+      () => _i938.HomeRemoteDataSourceImpl(gh<_i866.HomeApiClient>()),
     );
     gh.factory<_i193.ProfileRepositoryContract>(
       () => _i187.ProfileRepositoryImpl(
         gh<_i1040.ProfileRemoteDataSourceContract>(),
-        gh<_i692.AuthManager>(),
       ),
     );
-    gh.factory<_i1006.GetOrdersUseCase>(
-      () => _i1006.GetOrdersUseCase(gh<_i845.HomeRepositoryContract>()),
-    );
-    gh.factory<_i698.LogoutUseCase>(
-      () => _i698.LogoutUseCase(gh<_i148.AuthRepositoryContract>()),
-    );
-    gh.factory<_i77.HomeViewModel>(
-      () => _i77.HomeViewModel(gh<_i1006.GetOrdersUseCase>()),
+    gh.factory<_i845.HomeRepositoryContract>(
+      () => _i60.HomeRepositoryImpl(gh<_i830.HomeRemoteDataSourceContract>()),
     );
     gh.factory<_i963.ChangePasswordUseCase>(
       () => _i963.ChangePasswordUseCase(gh<_i193.ProfileRepositoryContract>()),
@@ -189,6 +169,51 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i967.UploadPhotoUseCase>(
       () => _i967.UploadPhotoUseCase(gh<_i193.ProfileRepositoryContract>()),
     );
+    gh.factory<_i148.AuthRepositoryContract>(
+      () => _i954.AuthRepositoryImpl(
+        gh<_i95.AuthRemoteDataSourceContract>(),
+        gh<_i692.AuthManager>(),
+      ),
+    );
+    gh.factory<_i227.EditVehicleInfoViewModel>(
+      () => _i227.EditVehicleInfoViewModel(
+        gh<_i191.GetVehicleTypesUseCase>(),
+        gh<_i133.EditVehicleInfoUseCase>(),
+      ),
+    );
+    gh.factory<_i110.GetProfileUseCase>(
+      () => _i110.GetProfileUseCase(gh<_i193.ProfileRepositoryContract>()),
+    );
+    gh.factory<_i1038.LoginUseCase>(
+      () => _i1038.LoginUseCase(gh<_i148.AuthRepositoryContract>()),
+    );
+    gh.factory<_i580.LoginViewModel>(
+      () => _i580.LoginViewModel(
+        gh<_i1038.LoginUseCase>(),
+        gh<_i692.AuthManager>(),
+      ),
+    );
+    gh.factory<_i548.ChangePasswordViewModel>(
+      () => _i548.ChangePasswordViewModel(gh<_i963.ChangePasswordUseCase>()),
+    );
+    gh.factory<_i530.GetProfileViewModel>(
+      () => _i530.GetProfileViewModel(gh<_i110.GetProfileUseCase>()),
+    );
+    gh.factory<_i1006.GetOrdersUseCase>(
+      () => _i1006.GetOrdersUseCase(gh<_i845.HomeRepositoryContract>()),
+    );
+    gh.factory<_i698.LogoutUseCase>(
+      () => _i698.LogoutUseCase(gh<_i148.AuthRepositoryContract>()),
+    );
+    gh.factory<_i87.EditProfileViewModel>(
+      () => _i87.EditProfileViewModel(
+        gh<_i199.EditProfileUseCase>(),
+        gh<_i967.UploadPhotoUseCase>(),
+      ),
+    );
+    gh.factory<_i77.HomeViewModel>(
+      () => _i77.HomeViewModel(gh<_i1006.GetOrdersUseCase>()),
+    );
     gh.factory<_i743.ApplyUseCase>(
       () => _i743.ApplyUseCase(gh<_i148.AuthRepositoryContract>()),
     );
@@ -197,21 +222,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i993.ApplyViewModel>(
       () => _i993.ApplyViewModel(gh<_i743.ApplyUseCase>()),
-    );
-    gh.factory<_i227.EditVehicleInfoViewModel>(
-      () => _i227.EditVehicleInfoViewModel(
-        gh<_i191.GetVehicleTypesUseCase>(),
-        gh<_i133.EditVehicleInfoUseCase>(),
-      ),
-    );
-    gh.factory<_i548.ChangePasswordViewModel>(
-      () => _i548.ChangePasswordViewModel(gh<_i963.ChangePasswordUseCase>()),
-    );
-    gh.factory<_i87.EditProfileViewModel>(
-      () => _i87.EditProfileViewModel(
-        gh<_i199.EditProfileUseCase>(),
-        gh<_i967.UploadPhotoUseCase>(),
-      ),
     );
     return this;
   }

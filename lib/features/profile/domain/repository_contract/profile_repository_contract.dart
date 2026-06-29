@@ -7,10 +7,14 @@ import 'package:flowery_rider_app/features/profile/domain/entities/profile_entit
 import 'package:flowery_rider_app/features/profile/domain/entities/vehicle_info_updated_entity.dart';
 import 'package:flowery_rider_app/features/profile/domain/entities/vehicle_types_response_entity.dart';
 
+import '../entities/profile_driver_entity.dart';
+
 abstract interface class ProfileRepositoryContract {
   Future<BaseResponse<EditProfileResponseEntity>> editProfile({
     required EditProfileRequestModel requestModel,
   });
+  Future<BaseResponse<ProfileDriverEntity>> getProfile();
+
 
   Future<BaseResponse<String>> uploadPhoto({required String filePath});
 
@@ -28,11 +32,4 @@ abstract interface class ProfileRepositoryContract {
   });
 }
 
-import 'package:flowery_rider_app/config/base_response/base_response.dart';
 
-import '../entities/profile_driver_entity.dart';
-
-abstract interface class ProfileRepositoryContract {
-
-  Future<BaseResponse<ProfileDriverEntity>> getProfile();
-}
