@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import 'driver.dart';
+import 'profile_driver.dart';
 part 'get_profile_response.g.dart';
 
 @JsonSerializable()
@@ -8,7 +8,7 @@ class GetProfileResponse {
   @JsonKey(name: "message")
   String? message;
   @JsonKey(name: "driver")
-  Driver? driver;
+  ProfileDriver? driver;
 
   GetProfileResponse({
     this.message,

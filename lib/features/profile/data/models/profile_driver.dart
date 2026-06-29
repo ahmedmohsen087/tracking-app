@@ -1,9 +1,9 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import '../../../auth/domain/entities/driver_entity.dart';
-part 'driver.g.dart';
+import '../../domain/entities/profile_driver_entity.dart';
+part 'profile_driver.g.dart';
 @JsonSerializable()
-class Driver {
+class ProfileDriver {
   @JsonKey(name: "_id")
   String? id;
   @JsonKey(name: "country")
@@ -35,7 +35,7 @@ class Driver {
   @JsonKey(name: "createdAt")
   DateTime? createdAt;
 
-  Driver({
+  ProfileDriver({
     this.id,
     this.country,
     this.firstName,
@@ -53,26 +53,26 @@ class Driver {
     this.createdAt,
   });
 
-  factory Driver.fromJson(Map<String, dynamic> json) => _$DriverFromJson(json);
+  factory ProfileDriver.fromJson(Map<String, dynamic> json) => _$ProfileDriverFromJson(json);
 
-  Map<String, dynamic> toJson() => _$DriverToJson(this);
+  Map<String, dynamic> toJson() => _$ProfileDriverToJson(this);
 
- DriverEntity toDomain() => DriverEntity(
-   id: id,
-   country: country,
-   firstName: firstName,
-   lastName: lastName,
-   vehicleType: vehicleType,
-   vehicleNumber: vehicleNumber,
-   vehicleLicense: vehicleLicense,
-   nid: nid,
-   nidImg: nidImg,
-   email: email,
-   gender: gender,
-   phone: phone,
-   photo: photo,
-   role: role,
-   createdAt: createdAt,
+  ProfileDriverEntity toDomain() => ProfileDriverEntity(
+   id: id??'',
+   country: country??'',
+   firstName: firstName??'',
+   lastName: lastName??'',
+   vehicleType: vehicleType ??'',
+   vehicleNumber: vehicleNumber??'',
+   vehicleLicense: vehicleLicense??'',
+   nid: nid??'',
+   nidImg: nidImg??'',
+   email: email??'',
+   gender: gender??'',
+   phone: phone??'',
+   photo: photo??'',
+   role: role??'',
+   createdAt: createdAt??DateTime.now(),
 
  );
 

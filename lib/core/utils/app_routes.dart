@@ -5,6 +5,11 @@ import 'package:flowery_rider_app/features/auth/presentation/screens/login_scree
 import 'package:flowery_rider_app/features/auth/presentation/screens/success_apply_screen.dart';
 import 'package:flowery_rider_app/features/splash/presentation/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../config/di/di.dart';
+import '../../features/profile/presentation/screens/profile_screen.dart';
+import '../../features/profile/presentation/view_models/get_profile_view_model/get_profile_event.dart';
+import '../../features/profile/presentation/view_models/get_profile_view_model/get_profile_view_model.dart';
 import '../../features/section_app/section_app.dart';
 
 class AppRoutes {
@@ -12,14 +17,29 @@ class AppRoutes {
     switch (settings.name) {
       case AppRoutsName.splashScreen:
         return MaterialPageRoute(builder: (_) => const SplashScreen());
-      case AppRoutsName.sectionApp:
-        return MaterialPageRoute(builder: (_) => const SectionApp());
+
       case AppRoutsName.applyScreen:
         return MaterialPageRoute(builder: (_) => const ApplyScreen());
       case AppRoutsName.successApplyScreen:
         return MaterialPageRoute(builder: (_) => const SuccessApplyScreen());
       case AppRoutsName.loginScreen:
         return MaterialPageRoute(builder: (_) => const LoginScreen());
+      case AppRoutsName.sectionApp:
+        return MaterialPageRoute(
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              // BlocProvider(
+              //   create: (_) => getIt<HomeViewModel>()
+              //     ..doEvent(const LoadHomeDataEvent()),
+              // ),
+              BlocProvider(
+                create: (_) => getIt<GetProfileViewModel>()
+                  ..doEvent(const RefreshProfileEvent()),
+              ),
+            ],
+            child: const SectionApp(),
+          ),
+        );
       default:
         return MaterialPageRoute(
           builder: (_) =>

@@ -130,5 +130,6 @@
   "chooseFromGallery": "Choose from Gallery",
   "vehicleInfo": "Vehicle Info",
   "language": "Language",
-  "English": "English"
+  "English": "English",
+  "noProfileDataAvailable": "No profile data available"
 }
