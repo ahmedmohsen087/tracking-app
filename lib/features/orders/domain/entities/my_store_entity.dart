@@ -1,13 +1,11 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../home/data/models/store.dart';
-
 class MyStoreEntity extends Equatable{
-  final Name name;
+  final String name;
   final String image;
-  final Address address;
+  final String address;
   final String phoneNumber;
-  final LatLong latLong;
+  final String latLong;
   const MyStoreEntity({
     required this.name,
     required this.image,

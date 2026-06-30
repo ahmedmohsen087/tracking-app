@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import '../../domain/entities/metadata_entity.dart';
 part 'meta_data.g.dart';
 @JsonSerializable()
 class Metadata {
@@ -21,4 +22,13 @@ class Metadata {
   factory Metadata.fromJson(Map<String, dynamic> json) => _$MetadataFromJson(json);
 
   Map<String, dynamic> toJson() => _$MetadataToJson(this);
+
+  MetadataEntity toDomain() {
+    return MetadataEntity(
+      currentPage: currentPage ?? 1,
+      totalPages: totalPages ?? 1,
+      totalItems: totalItems ?? 0,
+      limit: limit ?? 10,
+    );
+  }
 }

@@ -1,9 +1,11 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import '../../../home/data/models/metadata.dart';
 import '../../domain/entities/my_order_response_entity.dart';
+import 'meta_data.dart';
 import 'my_order_element.dart';
+
 part 'my_order_response.g.dart';
+
 @JsonSerializable()
 class MyOrderResponse {
   @JsonKey(name: "message")
@@ -22,11 +24,12 @@ class MyOrderResponse {
   factory MyOrderResponse.fromJson(Map<String, dynamic> json) => _$MyOrderResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$MyOrderResponseToJson(this);
-  MyOrderResponseEntity toDomain (){
+
+  MyOrderResponseEntity toDomain() {
     return MyOrderResponseEntity(
       message: message ?? '',
-      metadata: metadata ?? Metadata(),
-      orders: orders ?? [],
+      metadata: metadata?.toDomain() ?? Metadata().toDomain(),
+      orders: orders?.map((e) => e.toDomain()).toList() ?? [],
     );
   }
 }

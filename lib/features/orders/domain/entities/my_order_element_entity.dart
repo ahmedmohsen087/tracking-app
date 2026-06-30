@@ -1,17 +1,17 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../auth/data/models/driver_model.dart';
-import '../../data/models/my_orders.dart';
-import '../../data/models/my_store.dart';
+import '../../../auth/domain/entities/driver_entity.dart';
+import 'my_orders_entity.dart';
+import 'my_store_entity.dart';
 
 class MyOrderElementEntity extends Equatable{
   final String id;
-  final Driver driver;
-  final MyOrders order;
+  final DriverEntity driver;
+  final MyOrdersEntity order;
   final int v;
   final DateTime createdAt;
   final DateTime updatedAt;
-  final MyStore store;
+  final MyStoreEntity store;
   const MyOrderElementEntity({
    required this.id,
    required this.driver,
@@ -33,6 +33,5 @@ class MyOrderElementEntity extends Equatable{
     updatedAt,
     store,
   ];
-
-  }
+}
 

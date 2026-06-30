@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
 
-import '../../data/models/my_product.dart';
+import 'my_product_entity.dart';
 
 class MyOrderItemEntity extends Equatable{
- final MyProduct product;
+ final MyProductEntity product;
  final int price;
  final int quantity;
  final String id;
@@ -21,4 +21,3 @@ class MyOrderItemEntity extends Equatable{
    id,
  ];
   }
-

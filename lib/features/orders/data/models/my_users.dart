@@ -7,13 +7,13 @@ class MyUsers {
   @JsonKey(name: "_id")
   String? id;
   @JsonKey(name: "firstName")
-  FirstName? firstName;
+  String? firstName;
   @JsonKey(name: "lastName")
   String? lastName;
   @JsonKey(name: "email")
   String? email;
   @JsonKey(name: "gender")
-  Gender? gender;
+  String? gender;
   @JsonKey(name: "phone")
   String? phone;
   @JsonKey(name: "photo")
@@ -41,31 +41,14 @@ class MyUsers {
   MyUsersEntity toDomain (){
     return MyUsersEntity(
       id: id ?? '',
-      firstName: firstName ?? FirstName.AHMED,
-        lastName: lastName ?? '',
+      firstName: firstName,
+      lastName: lastName ?? '',
       email: email ?? '',
-      gender: gender ?? Gender.MALE,
+      gender: gender ?? '',
       phone: phone ?? '',
       photo: photo ?? '',
       passwordChangedAt: passwordChangedAt ?? DateTime.now(),
       resetCodeVerified: resetCodeVerified ?? false,
     );
-
-
-
   }
-}
-
-enum FirstName {
-  @JsonValue("Abdelrahman")
-  ABDELRAHMAN,
-  @JsonValue("Ahmed")
-  AHMED,
-  @JsonValue("ziadll")
-  ZIADLL
-}
-
-enum Gender {
-  @JsonValue("male")
-  MALE
 }

@@ -1,13 +1,11 @@
 import 'package:equatable/equatable.dart';
 
-import '../../data/models/my_users.dart';
-
 class MyUsersEntity extends Equatable{
  final String id;
- final FirstName? firstName;
+ final String? firstName;
  final String lastName;
  final String email;
- final Gender gender;
+ final String gender;
  final String phone;
  final String photo;
  final DateTime passwordChangedAt;

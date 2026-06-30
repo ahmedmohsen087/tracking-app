@@ -1,11 +1,24 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import '../../../home/data/models/product.dart';
 import '../../domain/entities/my_orders_entity.dart';
 import 'my_order_item.dart';
 import 'my_users.dart';
 import 'order_shipping_address.dart';
+
 part 'my_orders.g.dart';
+
+enum PaymentTypeModel {
+  @JsonValue("cash")
+  cash,
+}
+
+enum OrderStateModel {
+  @JsonValue("completed")
+  completed,
+  @JsonValue("inProgress")
+  inProgress,
+}
+
 @JsonSerializable()
 class MyOrders {
   @JsonKey(name: "_id")
@@ -19,7 +32,7 @@ class MyOrders {
   @JsonKey(name: "shippingAddress")
   OrderShippingAddress? shippingAddress;
   @JsonKey(name: "paymentType")
-  PaymentType? paymentType;
+  PaymentTypeModel? paymentType;
   @JsonKey(name: "isPaid")
   bool? isPaid;
   @JsonKey(name: "paidAt")
@@ -27,7 +40,7 @@ class MyOrders {
   @JsonKey(name: "isDelivered")
   bool? isDelivered;
   @JsonKey(name: "state")
-  State? state;
+  OrderStateModel? state;
   @JsonKey(name: "createdAt")
   DateTime? createdAt;
   @JsonKey(name: "updatedAt")
@@ -57,18 +70,19 @@ class MyOrders {
   factory MyOrders.fromJson(Map<String, dynamic> json) => _$MyOrdersFromJson(json);
 
   Map<String, dynamic> toJson() => _$MyOrdersToJson(this);
-  MyOrdersEntity toDomain (){
+
+  MyOrdersEntity toDomain() {
     return MyOrdersEntity(
       id: id ?? '',
-      user: user ?? MyUsers(),
-        orderItems: orderItems ?? [],
+      user: user?.toDomain() ?? MyUsers().toDomain(),
+      orderItems: orderItems?.map((e) => e.toDomain()).toList() ?? [],
       totalPrice: totalPrice ?? 0,
-      shippingAddress: shippingAddress ?? OrderShippingAddress(),
-        paymentType: paymentType ?? PaymentType.CASH,
+      shippingAddress: shippingAddress?.toDomain() ?? OrderShippingAddress().toDomain(),
+      paymentType: _mapPaymentType(paymentType),
       isPaid: isPaid ?? false,
       paidAt: paidAt ?? DateTime.now(),
       isDelivered: isDelivered ?? false,
-      state: state ?? State.COMPLETED,
+      state: _mapOrderState(state),
       createdAt: createdAt ?? DateTime.now(),
       updatedAt: updatedAt ?? DateTime.now(),
       v: v ?? 0,
@@ -76,4 +90,23 @@ class MyOrders {
     );
   }
 
+  PaymentType _mapPaymentType(PaymentTypeModel? model) {
+    switch (model) {
+      case PaymentTypeModel.cash:
+        return PaymentType.cash;
+      default:
+        return PaymentType.cash;
+    }
   }
+
+  OrderState _mapOrderState(OrderStateModel? model) {
+    switch (model) {
+      case OrderStateModel.completed:
+        return OrderState.completed;
+      case OrderStateModel.inProgress:
+        return OrderState.inProgress;
+      default:
+        return OrderState.completed;
+    }
+  }
+}

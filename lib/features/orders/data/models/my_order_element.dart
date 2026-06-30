@@ -1,9 +1,13 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import '../../../auth/data/models/driver_model.dart';
+import '../../../auth/domain/entities/driver_entity.dart';
 import '../../domain/entities/my_order_element_entity.dart';
 import 'my_orders.dart';
 import 'my_store.dart';
-part 'my_orders_element.g.dart';
+
+part 'my_order_element.g.dart';
+
 @JsonSerializable()
 class MyOrderElement {
   @JsonKey(name: "_id")
@@ -34,21 +38,16 @@ class MyOrderElement {
   factory MyOrderElement.fromJson(Map<String, dynamic> json) => _$MyOrderElementFromJson(json);
 
   Map<String, dynamic> toJson() => _$MyOrderElementToJson(this);
+
   MyOrderElementEntity toDomain (){
     return MyOrderElementEntity(
       id: id ?? '',
-      driver: driver ?? Driver().toDomain(),
-      order: order ?? MyOrders(),
+      driver: driver?.toDomain() ?? Driver().toDomain(),
+      order: order?.toDomain() ?? MyOrders().toDomain(),
       v: v ?? 0,
       createdAt: createdAt ?? DateTime.now(),
       updatedAt: updatedAt ?? DateTime.now(),
-      store: store ?? MyStore(),
+      store: store?.toDomain() ?? MyStore().toDomain(),
     );
-
   }
-}
-
-enum Driver {
-  @JsonValue("6a2f643b992612ae599a87c5")
-  THE_6_A2_F643_B992612_AE599_A87_C5
 }
