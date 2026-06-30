@@ -1,7 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../../auth/data/models/driver_model.dart';
-import '../../../auth/domain/entities/driver_entity.dart';
 import '../../domain/entities/my_order_element_entity.dart';
 import 'my_orders.dart';
 import 'my_store.dart';
