@@ -13,5 +13,6 @@ abstract class ApiEndpoints {
       "https://flower.elevateegy.com/api/v1/vehicles";
   static const String pendingOrders = "https://flower.elevateegy.com/api/v1/orders/pending-orders";
   static const String profile = "$baseUrl/profile-data";
+  static const String myOrders = "https://flower.elevateegy.com/api/v1/orders/driver-orders";
 
 }

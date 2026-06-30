@@ -47,6 +47,8 @@ import '../../features/home/domain/use_cases/get_orders_use_case.dart'
     as _i1006;
 import '../../features/home/presentation/view_model/home_view_model.dart'
     as _i77;
+import '../../features/orders/api/orders_api_client/orders_api_client.dart'
+    as _i84;
 import '../../features/profile/api/data_sources_impl/profile_remote_data_source_impl.dart'
     as _i1028;
 import '../../features/profile/api/profile_api_client/profile_api_client.dart'
@@ -130,6 +132,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i866.HomeApiClient>(
       () => _i866.HomeApiClient(gh<_i361.Dio>()),
+    );
+    gh.lazySingleton<_i84.OrdersApiClient>(
+      () => _i84.OrdersApiClient(gh<_i361.Dio>()),
     );
     gh.lazySingleton<_i1000.ProfileApiClient>(
       () => _i1000.ProfileApiClient(gh<_i361.Dio>()),
