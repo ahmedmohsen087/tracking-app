@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flowery_rider_app/features/auth/api/request_models/forget_password_request_model.dart';
 import 'package:flowery_rider_app/features/auth/data/models/auth_response_model.dart';
 import 'package:flowery_rider_app/core/values/api_endpoints.dart';
 import 'package:flowery_rider_app/core/values/api_parameters.dart';
@@ -13,16 +14,35 @@ part 'auth_api_client.g.dart';
 abstract class AuthApiClient {
   @factoryMethod
   factory AuthApiClient(Dio dio) = _AuthApiClient;
+
   // login
   @Extra({ApiParameters.requiresAuth: false})
   @POST(ApiEndpoints.login)
   Future<AuthResponseModel> login(@Body() LoginRequestModel body);
+
   // apply
   @Extra({ApiParameters.requiresAuth: false})
   @POST(ApiEndpoints.applyDriver)
   @MultiPart()
   Future<AuthResponseModel> applyAsDriver(@Body() FormData formData);
+
   // logout
   @GET(ApiEndpoints.logout)
   Future<AuthResponseModel> logout();
+
+  // forget password
+  @POST(ApiEndpoints.forgetPassword)
+  Future<AuthResponseModel> forgetPassword(
+    @Body() ForgetPasswordRequestModel body,
+  );
+
+  // verify otp
+  @POST(ApiEndpoints.verifyOtp)
+  Future<AuthResponseModel> verifyOtp(@Body() ForgetPasswordRequestModel body);
+
+  // reset password
+  @PUT(ApiEndpoints.resetPassword)
+  Future<AuthResponseModel> resetPassword(
+    @Body() ForgetPasswordRequestModel body,
+  );
 }

@@ -16,4 +16,5 @@ abstract class ApiParameters {
   static const String nidImg = 'NIDImg';
   static const String gender = 'gender';
   static const String photo = 'photo';
+  static const String resetCode = 'resetCode';
 }

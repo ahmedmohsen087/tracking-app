@@ -2,8 +2,12 @@ import 'package:flowery_rider_app/config/di/di.dart';
 import 'package:flowery_rider_app/core/values/app_routs_name.dart';
 import 'package:flowery_rider_app/core/values/app_strings.dart';
 import 'package:flowery_rider_app/features/auth/presentation/screens/apply_screen.dart';
+import 'package:flowery_rider_app/features/auth/presentation/screens/email_verification_screen.dart';
+import 'package:flowery_rider_app/features/auth/presentation/screens/forget_password_screen.dart';
 import 'package:flowery_rider_app/features/auth/presentation/screens/login_screen.dart';
+import 'package:flowery_rider_app/features/auth/presentation/screens/reset_password_screen.dart';
 import 'package:flowery_rider_app/features/auth/presentation/screens/success_apply_screen.dart';
+import 'package:flowery_rider_app/features/auth/presentation/view_models/forget_password_view_model/forget_password_view_model.dart';
 import 'package:flowery_rider_app/features/profile/domain/entities/profile_driver_entity.dart';
 import 'package:flowery_rider_app/features/profile/presentation/screens/change_password_screen.dart';
 import 'package:flowery_rider_app/features/profile/presentation/screens/edit_profile_screen.dart';
@@ -27,26 +31,57 @@ class AppRoutes {
 
       case AppRoutsName.applyScreen:
         return MaterialPageRoute(builder: (_) => const ApplyScreen());
+
       case AppRoutsName.successApplyScreen:
         return MaterialPageRoute(builder: (_) => const SuccessApplyScreen());
+
       case AppRoutsName.loginScreen:
         return MaterialPageRoute(builder: (_) => const LoginScreen());
+
+      case AppRoutsName.forgetPasswordScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => getIt<ForgetPasswordViewModel>(),
+            child: const ForgetPasswordScreen(),
+          ),
+        );
+
+      case AppRoutsName.emailVerificationScreen:
+        final viewModel = settings.arguments as ForgetPasswordViewModel;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider.value(
+            value: viewModel,
+            child: const EmailVerificationScreen(),
+          ),
+        );
+
+      case AppRoutsName.resetPassword:
+        final viewModel = settings.arguments as ForgetPasswordViewModel;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider.value(
+            value: viewModel,
+            child: const ResetPasswordScreen(),
+          ),
+        );
+
       case AppRoutsName.sectionApp:
         return MaterialPageRoute(
           builder: (_) => MultiBlocProvider(
             providers: [
-               BlocProvider(
-                 create: (_) => getIt<HomeViewModel>()
-                   ..doEvent(const LoadHomeDataEvent()),
-               ),
               BlocProvider(
-                create: (_) => getIt<GetProfileViewModel>()
-                  ..doEvent(const RefreshProfileEvent()),
+                create: (_) =>
+                    getIt<HomeViewModel>()..doEvent(const LoadHomeDataEvent()),
+              ),
+              BlocProvider(
+                create: (_) =>
+                    getIt<GetProfileViewModel>()
+                      ..doEvent(const RefreshProfileEvent()),
               ),
             ],
             child: const SectionApp(),
           ),
         );
+
       case AppRoutsName.changePasswordScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
@@ -60,17 +95,18 @@ class AppRoutes {
         return MaterialPageRoute(
           builder: (_) => EditProfileScreen(driver: driver),
         );
+
       case AppRoutsName.editVehicleInfoScreen:
         final vehicleDriver = settings.arguments as ProfileDriverEntity?;
         return MaterialPageRoute(
           builder: (_) => EditVehicleInfoScreen(driver: vehicleDriver),
         );
+
       default:
         return MaterialPageRoute(
           builder: (_) =>
               Scaffold(body: Center(child: Text(AppStrings.routeNotFound))),
         );
-
     }
   }
 }

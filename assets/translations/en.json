@@ -149,5 +149,8 @@
   "vehicleInfo": "Vehicle Info",
   "language": "Language",
   "English": "English",
-  "noProfileDataAvailable": "No profile data available"
-}
+  "noProfileDataAvailable": "No profile data available",
+  "pleaseEnterYourEmailAssociatedToYourAccount": "please enter your email associated to your account",
+  "didntReciveCode" : "didn't recive code ?",
+  "hitTextForResetPassword" : "hit text for reset password"
+} 

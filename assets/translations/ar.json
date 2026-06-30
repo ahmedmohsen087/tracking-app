@@ -151,8 +151,9 @@
   "vehicleInfo" : "معلومات المركبة",
   "language": "اللغة",
   "English": "الآنجليزية",
-  "noProfileDataAvailable": "لا تتوفر بيانات للملف الشخصي"
-
-
+  "noProfileDataAvailable": "لا تتوفر بيانات للملف الشخصي",
+  "pleaseEnterYourEmailAssociatedToYourAccount" : "برجاء ادخال الايميل الخاص بحسابك",
+  "didntReciveCode" : " لم يصلك الكود ؟",
+  "hitTextForResetPassword" : "اضغط على نص لإعادة تعيين كلمة المرور"
 
 }

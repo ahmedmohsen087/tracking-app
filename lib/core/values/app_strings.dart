@@ -197,4 +197,9 @@ class AppStrings {
   static String get language => 'language'.tr();
   static String get english => 'English'.tr();
   static String get noProfileDataAvailable => 'noProfileDataAvailable'.tr();
+  // forget password
+  static String get pleaseEnterYourEmailAssociatedToYourAccount =>
+      'pleaseEnterYourEmailAssociatedToYourAccount'.tr();
+  static String get didntReciveCode => 'didntReciveCode'.tr();
+  static String get hitTextForResetPassword => 'hitTextForResetPassword'.tr();
 }

@@ -6,6 +6,7 @@ abstract class AppRoutsName {
   static const String successApplyScreen = '/successApplyScreen';
   static const String forgetPasswordScreen = '/forgetPasswordScreen';
   static const String otpScreen = '/otpScreen';
+  static const String emailVerificationScreen = '/emailVerificationScreen';
   static const String changePasswordScreen = '/changePasswordScreen';
   static const String resetPassword = '/resetPassword';
   static const String ordersScreen = '/ordersScreen';
