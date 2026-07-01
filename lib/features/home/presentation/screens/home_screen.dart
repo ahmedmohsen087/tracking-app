@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../../core/values/assets.dart';
 import '../view_model/home_events.dart';
 import '../view_model/home_state.dart';
@@ -82,7 +81,7 @@ class HomeScreen extends StatelessWidget {
                 ),
                 itemCount: orders.length +
                     (state.isLoadingMore ? 1 : 0),
-                separatorBuilder: (_, __) =>
+                separatorBuilder: (_, _) =>
                 const SizedBox(height: 20),
                 itemBuilder: (context, index) {
                   if (index == orders.length) {

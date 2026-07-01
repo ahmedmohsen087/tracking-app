@@ -149,5 +149,9 @@
   "vehicleInfo": "Vehicle Info",
   "language": "Language",
   "English": "English",
-  "noProfileDataAvailable": "No profile data available"
+  "noProfileDataAvailable": "No profile data available",
+  "myOrders": "My Orders",
+  "cancelled": "Cancelled",
+  "completed": "Completed",
+  "recentOrders": "Recent Orders"
 }

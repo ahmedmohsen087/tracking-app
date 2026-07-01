@@ -11,6 +11,7 @@ enum PaymentType {
 enum OrderState {
   completed,
   inProgress,
+  cancelled,
 }
 
 class MyOrdersEntity extends Equatable {

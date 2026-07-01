@@ -17,6 +17,8 @@ enum OrderStateModel {
   completed,
   @JsonValue("inProgress")
   inProgress,
+  @JsonValue("cancelled")
+  cancelled,
 }
 
 @JsonSerializable()
@@ -105,8 +107,10 @@ class MyOrders {
         return OrderState.completed;
       case OrderStateModel.inProgress:
         return OrderState.inProgress;
+      case OrderStateModel.cancelled:
+        return OrderState.cancelled;
       default:
-        return OrderState.completed;
+        return OrderState.inProgress;
     }
   }
 }

@@ -47,8 +47,20 @@ import '../../features/home/domain/use_cases/get_orders_use_case.dart'
     as _i1006;
 import '../../features/home/presentation/view_model/home_view_model.dart'
     as _i77;
+import '../../features/orders/api/data_sources_impl/orders_remote_data_source_impl.dart'
+    as _i116;
 import '../../features/orders/api/orders_api_client/orders_api_client.dart'
     as _i84;
+import '../../features/orders/data/data_sources_contract/orders_remote_data_source_contract.dart'
+    as _i341;
+import '../../features/orders/data/repository_impl/orders_repository_impl.dart'
+    as _i822;
+import '../../features/orders/domain/repository_contract/orders_repository_contract.dart'
+    as _i440;
+import '../../features/orders/domain/use_cases/get_my_orders_use_case.dart'
+    as _i78;
+import '../../features/orders/presentation/view_models/my_orders_view_model.dart'
+    as _i892;
 import '../../features/profile/api/data_sources_impl/profile_remote_data_source_impl.dart'
     as _i1028;
 import '../../features/profile/api/profile_api_client/profile_api_client.dart'
@@ -139,6 +151,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i1000.ProfileApiClient>(
       () => _i1000.ProfileApiClient(gh<_i361.Dio>()),
     );
+    gh.factory<_i341.OrdersRemoteDataSourceContract>(
+      () => _i116.OrdersRemoteDataSourceImpl(gh<_i84.OrdersApiClient>()),
+    );
     gh.factory<_i1040.ProfileRemoteDataSourceContract>(
       () => _i1028.ProfileRemoteDataSourceImpl(
         gh<_i1000.ProfileApiClient>(),
@@ -175,6 +190,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i967.UploadPhotoUseCase>(
       () => _i967.UploadPhotoUseCase(gh<_i193.ProfileRepositoryContract>()),
     );
+    gh.factory<_i440.OrdersRepositoryContract>(
+      () => _i822.OrdersRepositoryImpl(
+        gh<_i341.OrdersRemoteDataSourceContract>(),
+      ),
+    );
+    gh.factory<_i78.GetMyOrdersUseCase>(
+      () => _i78.GetMyOrdersUseCase(gh<_i440.OrdersRepositoryContract>()),
+    );
     gh.factory<_i148.AuthRepositoryContract>(
       () => _i954.AuthRepositoryImpl(
         gh<_i95.AuthRemoteDataSourceContract>(),
@@ -201,6 +224,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i548.ChangePasswordViewModel>(
       () => _i548.ChangePasswordViewModel(gh<_i963.ChangePasswordUseCase>()),
+    );
+    gh.factory<_i892.MyOrdersViewModel>(
+      () => _i892.MyOrdersViewModel(gh<_i78.GetMyOrdersUseCase>()),
     );
     gh.factory<_i530.GetProfileViewModel>(
       () => _i530.GetProfileViewModel(gh<_i110.GetProfileUseCase>()),

@@ -151,7 +151,15 @@
   "vehicleInfo" : "معلومات المركبة",
   "language": "اللغة",
   "English": "الآنجليزية",
-  "noProfileDataAvailable": "لا تتوفر بيانات للملف الشخصي"
+  "noProfileDataAvailable": "لا تتوفر بيانات للملف الشخصي",
+  "myOrders": "آوردراتي ",
+  "cancelled": "أُلغِيَ",
+  "completed": "مكتمل",
+  "recentOrders": "الآوردرات الحالية"
+
+
+
+
 
 
 
