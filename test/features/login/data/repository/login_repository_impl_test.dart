@@ -39,7 +39,7 @@ void main() {
     test(
       'should return SuccessBaseResponse and save auth data when login is successful',
       () async {
-        // Arrange
+
         final response = AuthResponseModel(message: 'Success', token: tToken);
         when(
           mockDataSource.login(
@@ -50,11 +50,9 @@ void main() {
           mockAuthManager.setAuthData(token: anyNamed('token')),
         ).thenAnswer((_) async {});
 
-        // Act
         final result = await repository.login(
             loginRequestModel: tLoginRequestModel);
 
-        // Assert
         expect(result, isA<SuccessBaseResponse<AuthResponseEntity>>());
         expect(
           (result as SuccessBaseResponse<AuthResponseEntity>).data.token,
@@ -74,7 +72,7 @@ void main() {
     test(
       'should return ErrorBaseResponse when remote data source login fails',
       () async {
-        // Arrange
+
         when(
           mockDataSource.login(
               loginRequestModel: anyNamed('loginRequestModel')),
@@ -82,11 +80,9 @@ void main() {
           (_) async => ErrorBaseResponse(errorMessage: 'Network Failure'),
         );
 
-        // Act
         final result = await repository.login(
             loginRequestModel: tLoginRequestModel);
 
-        // Assert
         expect(result, isA<ErrorBaseResponse<AuthResponseEntity>>());
         expect(
           (result as ErrorBaseResponse<AuthResponseEntity>).errorMessage,

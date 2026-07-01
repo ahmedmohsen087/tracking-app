@@ -127,16 +127,41 @@
   "cameraDenied": "Camera access was denied. Please allow it to take photos.",
   "chooseImageSource": "Choose Image Source",
   "takePhoto": "Take Photo",
+  "chooseFromGallery": "Choose from Gallery",
 
   "flowerOrder": "Flower Order",
   "pickupAddress": "Pickup Address",
   "userAddress": "User Address",
   "accept": "Accept",
   "reject": "Reject",
-  "chooseFromGallery": "Choose from Gallery",
-  "passwordUpdated" : "Password Updated",
-  "currentPassword" : "Current Password",
-  "changePassword" : "Change Password",
+
+  "orderDetails": "Order Details",
+  "statusLabel": "Status",
+  "orderIdLabel": "Order ID",
+  "orderItems": "Order Items",
+  "totalLabel": "Total",
+  "egp": "EGP",
+  "itemFallback": "Product",
+  "noOrdersAvailable": "No orders available",
+
+  "statusAccepted": "Accepted",
+  "statusPicked": "Picked Up",
+  "statusOutForDelivery": "Out for Delivery",
+  "statusArrived": "Arrived",
+  "statusDelivered": "Delivered",
+
+  "actionArrivedPickup": "Arrived at Pickup",
+  "actionStartDeliver": "Start Delivery",
+  "actionArrivedToUser": "Arrived to User",
+  "actionDeliveredToUser": "Delivered to User",
+
+  "thankYou": "Thank You!!",
+  "orderDeliveredSuccessfully": "Order delivered successfully",
+  "done": "Done",
+
+  "passwordUpdated": "Password Updated",
+  "currentPassword": "Current Password",
+  "changePassword": "Change Password",
   "update": "Update",
   "editProfile": "Edit Profile",
   "updateProfile": "Update",
@@ -150,7 +175,5 @@
   "language": "Language",
   "English": "English",
   "noProfileDataAvailable": "No profile data available",
-  "pleaseEnterYourEmailAssociatedToYourAccount": "please enter your email associated to your account",
-  "didntReciveCode" : "didn't recive code ?",
-  "hitTextForResetPassword" : "hit text for reset password"
-} 
+  "pleaseEnterYourEmailAssociatedToYourAccount": "Please enter your email associated to your account"
+}

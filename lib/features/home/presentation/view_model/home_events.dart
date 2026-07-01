@@ -1,3 +1,5 @@
+import 'package:flowery_rider_app/features/home/domain/entities/order_entity.dart';
+
 sealed class GetHomeEvent {
   const GetHomeEvent();
 }
@@ -15,7 +17,13 @@ class LoadMoreOrdersEvent extends GetHomeEvent {
 }
 
 class RejectOrderEvent extends GetHomeEvent {
-  final String? orderId;
+  final String orderId;
 
   const RejectOrderEvent(this.orderId);
+}
+
+class AcceptOrderEvent extends GetHomeEvent {
+  final OrderEntity order;
+
+  const AcceptOrderEvent(this.order);
 }

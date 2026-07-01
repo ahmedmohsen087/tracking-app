@@ -11,7 +11,13 @@ abstract class ApiEndpoints {
   static const String uploadPhoto = "$baseUrl/upload-photo";
   static const String getVehicleTypes =
       "https://flower.elevateegy.com/api/v1/vehicles";
-  static const String pendingOrders = "https://flower.elevateegy.com/api/v1/orders/pending-orders";
+  static const String pendingOrders =
+      "https://flower.elevateegy.com/api/v1/orders/pending-orders";
   static const String profile = "$baseUrl/profile-data";
 
+  static String imageUrl(String? path) {
+    if (path == null || path.isEmpty) return '';
+    if (path.startsWith('http')) return path;
+    return 'https://flower.elevateegy.com/$path';
+  }
 }
