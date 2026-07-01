@@ -32,16 +32,14 @@ void main() {
     test(
       'should return SuccessBaseResponse when remote datasource logout succeeds',
       () async {
-        // Arrange
+
         final response = AuthResponseModel(message: 'Success', token: 'token');
         when(
           mockDataSource.logout(),
         ).thenAnswer((_) async => SuccessBaseResponse(data: response));
 
-        // Act
         final result = await repository.logout();
 
-        // Assert
         expect(result, isA<SuccessBaseResponse<AuthResponseEntity>>());
         expect(
           (result as SuccessBaseResponse<AuthResponseEntity>).data.message,
@@ -55,15 +53,13 @@ void main() {
     test(
       'should return ErrorBaseResponse when remote datasource logout fails',
       () async {
-        // Arrange
+
         when(
           mockDataSource.logout(),
         ).thenAnswer((_) async => ErrorBaseResponse(errorMessage: 'Remote Fail'));
 
-        // Act
         final result = await repository.logout();
 
-        // Assert
         expect(result, isA<ErrorBaseResponse<AuthResponseEntity>>());
         expect(
           (result as ErrorBaseResponse<AuthResponseEntity>).errorMessage,

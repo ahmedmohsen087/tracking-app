@@ -2,7 +2,9 @@ import 'package:flowery_rider_app/config/di/di.dart';
 import 'package:flowery_rider_app/features/auth/presentation/view_models/logout_view_model/logout_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../../core/values/app_strings.dart';
+import '../../core/values/assets.dart';
 import '../home/presentation/screens/home_screen.dart';
 import '../orders/presentation/screens/orders_screen.dart';
 import '../profile/presentation/screens/profile_screen.dart';
@@ -42,15 +44,15 @@ class _SectionAppState extends State<SectionApp> {
         },
         items: [
           BottomNavigationBarItem(
-            icon: const Icon(Icons.home),
+            icon: SvgPicture.asset(Assets.assetsIconsHome, height: 24),
             label: AppStrings.home,
           ),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.shopping_cart),
+            icon: SvgPicture.asset(Assets.assetsIconsOrder, height: 24),
             label: AppStrings.orders,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
+            icon: SvgPicture.asset(Assets.assetsIconsPerson, height: 24),
             label: AppStrings.profile,
           ),
         ],

@@ -59,7 +59,7 @@ void main() {
     test(
       'should forward params to repository and return SuccessBaseResponse on success',
       () async {
-        // Arrange
+
         final expectedResponse = SuccessBaseResponse<AuthResponseEntity>(
           data: tAuthResponseEntity,
         );
@@ -67,10 +67,8 @@ void main() {
           mockRepository.login(email: tEmail, password: tPassword),
         ).thenAnswer((_) async => expectedResponse);
 
-        // Act
         final result = await useCase.execute(requestModel: tLoginRequestModel);
 
-        // Assert
         expect(result, expectedResponse);
         verify(
           mockRepository.login(email: tEmail, password: tPassword),
@@ -82,7 +80,7 @@ void main() {
     test(
       'should forward params to repository and return ErrorBaseResponse on failure',
       () async {
-        // Arrange
+
         final expectedResponse = ErrorBaseResponse<AuthResponseEntity>(
           errorMessage: 'Invalid Credentials',
         );
@@ -90,10 +88,8 @@ void main() {
           mockRepository.login(email: tEmail, password: tPassword),
         ).thenAnswer((_) async => expectedResponse);
 
-        // Act
         final result = await useCase.execute(requestModel: tLoginRequestModel);
 
-        // Assert
         expect(result, expectedResponse);
         verify(
           mockRepository.login(email: tEmail, password: tPassword),

@@ -36,16 +36,14 @@ void main() {
     test(
       'should return SuccessBaseResponse when api client login call succeeds',
       () async {
-        // Arrange
+
         when(mockApiClient.login(any)).thenAnswer((_) async => tAuthResponse);
 
-        // Act
         final result = await datasource.login(
           email: tEmail,
           password: tPassword,
         );
 
-        // Assert
         expect(result, isA<SuccessBaseResponse<AuthResponseModel>>());
         expect(
           (result as SuccessBaseResponse<AuthResponseModel>).data,
@@ -59,17 +57,15 @@ void main() {
     test(
       'should return ErrorBaseResponse when api client login call fails',
       () async {
-        // Arrange
+
         final exception = Exception('Invalid Credentials');
         when(mockApiClient.login(any)).thenThrow(exception);
 
-        // Act
         final result = await datasource.login(
           email: tEmail,
           password: tPassword,
         );
 
-        // Assert
         expect(result, isA<ErrorBaseResponse<AuthResponseModel>>());
         verify(mockApiClient.login(any)).called(1);
         verifyNoMoreInteractions(mockApiClient);

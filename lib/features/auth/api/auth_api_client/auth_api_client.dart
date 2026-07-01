@@ -13,16 +13,15 @@ part 'auth_api_client.g.dart';
 abstract class AuthApiClient {
   @factoryMethod
   factory AuthApiClient(Dio dio) = _AuthApiClient;
-  // login
   @Extra({ApiParameters.requiresAuth: false})
   @POST(ApiEndpoints.login)
   Future<AuthResponseModel> login(@Body() LoginRequestModel body);
-  // apply
+
   @Extra({ApiParameters.requiresAuth: false})
   @POST(ApiEndpoints.applyDriver)
   @MultiPart()
   Future<AuthResponseModel> applyAsDriver(@Body() FormData formData);
-  // logout
+
   @GET(ApiEndpoints.logout)
   Future<AuthResponseModel> logout();
 }

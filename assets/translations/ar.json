@@ -129,11 +129,33 @@
   "takePhoto": "تصوير بالكاميرا",
   "chooseFromGallery": "اختيار من المعرض",
 
-  "flowerOrder": "الاوردرات ",
-  "pickupAddress": "عنوان الآستلام",
-  "userAddress": " عنوان المستخدم ",
+  "flowerOrder": "الاوردرات",
+  "pickupAddress": "عنوان الاستلام",
+  "userAddress": "عنوان المستخدم",
   "accept": "قبول",
-  "reject": "رفض"
+  "reject": "رفض",
 
+  "orderDetails": "تفاصيل الطلب",
+  "statusLabel": "الحالة",
+  "orderIdLabel": "رقم الطلب",
+  "orderItems": "عناصر الطلب",
+  "totalLabel": "الإجمالي",
+  "egp": "جنيه",
+  "itemFallback": "منتج",
+  "noOrdersAvailable": "لا توجد طلبات",
 
+  "statusAccepted": "مقبول",
+  "statusPicked": "تم الاستلام",
+  "statusOutForDelivery": "في الطريق",
+  "statusArrived": "وصل",
+  "statusDelivered": "تم التسليم",
+
+  "actionArrivedPickup": "وصلت لنقطة الاستلام",
+  "actionStartDeliver": "ابدأ التوصيل",
+  "actionArrivedToUser": "وصلت للمستخدم",
+  "actionDeliveredToUser": "تم التسليم للمستخدم",
+
+  "thankYou": "شكراً!!",
+  "orderDeliveredSuccessfully": "تم توصيل الطلب بنجاح",
+  "done": "تم"
 }

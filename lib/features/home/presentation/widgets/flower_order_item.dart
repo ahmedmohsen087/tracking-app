@@ -10,20 +10,24 @@ import 'item_selected.dart';
 class FlowerOrderItem extends StatelessWidget {
   final OrderEntity order;
   final VoidCallback onReject;
+  final VoidCallback onAccept;
+  final bool isAccepting;
 
   const FlowerOrderItem({
     super.key,
     required this.order,
     required this.onReject,
+    required this.onAccept,
+    this.isAccepting = false,
   });
 
   @override
   Widget build(BuildContext context) {
     final shippingAddress = order.shippingAddress;
     final userAddress = [
-      shippingAddress?.street,
-      shippingAddress?.city,
-    ].where((part) => part?.isNotEmpty == true).join(', ');
+      shippingAddress.street,
+      shippingAddress.city,
+    ].where((part) => part.isNotEmpty).join(', ');
 
     return Container(
       width: double.infinity,
@@ -51,16 +55,24 @@ class FlowerOrderItem extends StatelessWidget {
               style: TextStyles.bodyRegular12.copyWith(color: AppColors.grey),
             ),
             AddressItem(
-              title: order.store?.name,
-              address: order.store?.address,
-              image: order.store?.image,
+              title: order.store.name,
+              address: order.store.address,
+              image: order.store.image,
             ),
             Text(
               AppStrings.userAddress,
               style: TextStyles.bodyRegular12.copyWith(color: AppColors.grey),
             ),
-            AddressItem(title: order.user?.firstName, address: userAddress),
-            ItemSelected(price: order.totalPrice, onReject: onReject),
+            AddressItem(
+              title: '${order.user.firstName} ${order.user.lastName}'.trim(),
+              address: userAddress,
+            ),
+            ItemSelected(
+              price: order.totalPrice,
+              onReject: onReject,
+              onAccept: onAccept,
+              isAccepting: isAccepting,
+            ),
           ],
         ),
       ),

@@ -133,5 +133,29 @@
   "pickupAddress": "Pickup Address",
   "userAddress": "User Address",
   "accept": "Accept",
-  "reject": "Reject"
+  "reject": "Reject",
+
+  "orderDetails": "Order details",
+  "statusLabel": "Status",
+  "orderIdLabel": "Order ID",
+  "orderItems": "Order Items",
+  "totalLabel": "Total",
+  "egp": "EGP",
+  "itemFallback": "Item",
+  "noOrdersAvailable": "No orders available",
+
+  "statusAccepted": "Accepted",
+  "statusPicked": "Picked",
+  "statusOutForDelivery": "Out for delivery",
+  "statusArrived": "Arrived",
+  "statusDelivered": "Delivered",
+
+  "actionArrivedPickup": "Arrived at Pickup point",
+  "actionStartDeliver": "Start deliver",
+  "actionArrivedToUser": "Arrived to the user",
+  "actionDeliveredToUser": "Delivered to the user",
+
+  "thankYou": "Thank you!!",
+  "orderDeliveredSuccessfully": "The order delivered successfully",
+  "done": "Done"
 }
