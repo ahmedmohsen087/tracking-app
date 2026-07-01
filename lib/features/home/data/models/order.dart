@@ -7,8 +7,15 @@ import 'order_item.dart';
 
 part 'order.g.dart';
 
-enum PaymentType { CASH }
-enum State { PENDING }
+enum PaymentType {
+  @JsonValue("cash")
+  CASH
+}
+
+enum State {
+  @JsonValue("pending")
+  PENDING
+}
 
 @JsonSerializable()
 class Order {
@@ -20,13 +27,13 @@ class Order {
   List<OrderItem>? orderItems;
   @JsonKey(name: "totalPrice")
   double? totalPrice;
-  @JsonKey(name: "paymentType")
+  @JsonKey(name: "paymentType", unknownEnumValue: null)
   PaymentType? paymentType;
   @JsonKey(name: "isPaid")
   bool? isPaid;
   @JsonKey(name: "isDelivered")
   bool? isDelivered;
-  @JsonKey(name: "state")
+  @JsonKey(name: "state", unknownEnumValue: null)
   State? state;
   @JsonKey(name: "createdAt")
   DateTime? createdAt;

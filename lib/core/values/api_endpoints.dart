@@ -9,6 +9,11 @@ abstract class ApiEndpoints {
   static const String forgetPassword = "$authDrivers/forgotPassword";
   static const String verifyOtp = "$authDrivers/verifyResetCode";
   static const String resetPassword = "$authDrivers/resetPassword";
+  static const String profile = "$authDrivers/profile-data";
+  static const String changePassword = "$authDrivers/change-password";
+  static const String editProfile = "$authDrivers/editProfile";
+  static const String uploadPhoto = "$authDrivers/upload-photo";
+  static const String getVehicleTypes = "$baseUrl/vehicles";
   static const String pendingOrders = "$orders/pending-orders";
   static const String startOrder = "$orders/start";
 

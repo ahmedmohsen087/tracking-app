@@ -66,6 +66,7 @@ class FlowerOrderItem extends StatelessWidget {
             AddressItem(
               title: '${order.user.firstName} ${order.user.lastName}'.trim(),
               address: userAddress,
+              image: order.user.photo,
             ),
             ItemSelected(
               price: order.totalPrice,

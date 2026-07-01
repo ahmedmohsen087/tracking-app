@@ -1,6 +1,4 @@
 import 'package:flowery_rider_app/features/home/data/models/order.dart';
-import 'package:flowery_rider_app/features/home/data/models/product.dart';
-import 'package:flowery_rider_app/features/home/data/models/shipping_address.dart';
 import 'package:flowery_rider_app/features/home/domain/entities/order_entity.dart';
 import 'package:flowery_rider_app/features/home/domain/entities/shipping_address_entity.dart';
 import 'package:flowery_rider_app/features/home/domain/entities/store_entity.dart';
@@ -34,14 +32,16 @@ extension OrderModelMapper on Order {
             lat: '',
             long: '',
           ),
-      paymentType: paymentType == null
-          ? ''
-          : const {PaymentType.CASH: 'cash'}[paymentType!] ?? '',
+      paymentType: switch (paymentType) {
+        PaymentType.CASH => 'cash',
+        null => '',
+      },
       isPaid: isPaid ?? false,
       isDelivered: isDelivered ?? false,
-      state: state == null
-          ? ''
-          : const {State.PENDING: 'pending'}[state!] ?? '',
+      state: switch (state) {
+        State.PENDING => 'pending',
+        null => '',
+      },
       createdAt: createdAt ?? DateTime.fromMillisecondsSinceEpoch(0),
       updatedAt: updatedAt ?? DateTime.fromMillisecondsSinceEpoch(0),
       orderNumber: orderNumber ?? '',

@@ -22,8 +22,3 @@ class ShippingAddress {
 
   Map<String, dynamic> toJson() => _$ShippingAddressToJson(this);
 }
-
-enum State {
-  @JsonValue("pending")
-  PENDING,
-}

@@ -45,6 +45,8 @@ class AppStrings {
   static String get emailVerification => 'emailVerification'.tr();
   static String get pleaseEnterYourEmailAssociated =>
       'pleaseEnterYourEmailAssociated'.tr();
+  static String get pleaseEnterYourEmailAssociatedToYourAccount =>
+      'pleaseEnterYourEmailAssociatedToYourAccount'.tr();
   static String get pleaseEnterYourCode => 'pleaseEnterYourCode'.tr();
   static String get didntReceiveCode => 'didntReceiveCode'.tr();
   static String get resend => 'resend'.tr();
@@ -65,6 +67,7 @@ class AppStrings {
   static String get enterYourPassword => 'enterYourPassword'.tr();
   static String get enterPassword => 'enterPassword'.tr();
   static String get confirmPassword => 'confirmPassword'.tr();
+  static String get hitTextForResetPassword => 'hitTextForResetPassword'.tr();
 
   static String get otpEmpty => 'otpEmpty'.tr();
   static String get otpInvalid => 'otpInvalid'.tr();
@@ -145,10 +148,15 @@ class AppStrings {
       'profileUpdatedSuccessfully'.tr();
   static String get photoUploadedSuccessfully =>
       'photoUploadedSuccessfully'.tr();
+  static String get firstName => 'firstName'.tr();
+  static String get lastName => 'lastName'.tr();
+  static String get vehicleInfoUpdatedSuccessfully =>
+      'vehicleInfoUpdatedSuccessfully'.tr();
   static String get editVehicleInfo => 'editVehicleInfo'.tr();
   static String get vehicleInfo => 'vehicleInfo'.tr();
   static String get language => 'language'.tr();
   static String get english => 'English'.tr();
+  static String get arabic => 'Arabic'.tr();
   static String get noProfileDataAvailable => 'noProfileDataAvailable'.tr();
 
   static String get flowerOrder => 'flowerOrder'.tr();

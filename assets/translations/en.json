@@ -1,5 +1,5 @@
 {
-  "appName": "Tracking App",
+  "appName": "Flowery rider",
   "routeNotFound": "Route not found",
   "loading": "Loading...",
   "cancel": "Cancel",
@@ -34,7 +34,7 @@
   "emailVerification": "Email verification",
   "pleaseEnterYourEmailAssociated": "Please enter your email associated to \n your account",
   "pleaseEnterYourCode": "Please enter your code that send to your \n email address",
-  "didn'tReceiveCode": "Didn't receive code? ",
+  "didntReceiveCode": "Didn't receive code? ",
   "resend": "Resend",
   "phoneRequired": "Phone number is required",
   "phoneInvalid": "Please enter a valid phone number",
@@ -99,7 +99,7 @@
   "rememberMe": "Remember me",
   "loginButton": "Login",
   "continueAsGuest": "Continue as guest",
-  "don'tHaveAccount": "Don't have an account? ",
+  "dontHaveAccount": "Don't have an account? ",
   "signUp": "Sign up",
   "logout": "Logout",
   "confirmLogout": "Are you sure you want to logout?",
@@ -152,6 +152,8 @@
   "vehicleInfo": "Vehicle Info",
   "language": "Language",
   "English": "English",
+  "Arabic": "Arabic",
   "noProfileDataAvailable": "No profile data available",
-  "pleaseEnterYourEmailAssociatedToYourAccount": "Please enter your email associated to your account"
+  "pleaseEnterYourEmailAssociatedToYourAccount": "Please enter your email associated to your account",
+  "hitTextForResetPassword": "Tap here to reset your password"
 }

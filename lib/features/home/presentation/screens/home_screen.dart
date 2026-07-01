@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flowery_rider_app/config/di/di.dart';
 import 'package:flowery_rider_app/core/values/app_strings.dart';
 import 'package:flowery_rider_app/features/orders/presentation/screens/order_details_screen.dart';
@@ -15,6 +16,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.locale;
     return BlocProvider(
       create: (context) =>
           getIt<HomeViewModel>()..doEvent(const LoadHomeDataEvent()),

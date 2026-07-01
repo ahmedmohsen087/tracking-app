@@ -1,6 +1,7 @@
 import 'package:flowery_rider_app/config/base_response/base_response.dart';
 import 'package:flowery_rider_app/config/base_state/base_state.dart';
 import 'package:flowery_rider_app/features/auth/domain/entities/auth_response_entity.dart';
+import 'package:flowery_rider_app/core/values/app_strings.dart';
 import 'package:flowery_rider_app/features/auth/presentation/view_models/apply_view_model/apply_events.dart';
 import 'package:flowery_rider_app/features/auth/presentation/view_models/apply_view_model/apply_state.dart';
 import 'package:flowery_rider_app/features/auth/domain/use_cases/apply_use_case.dart';
@@ -26,18 +27,27 @@ class ApplyViewModel extends Cubit<ApplyState> {
   Future<void> _submitApply(SubmitApplyEvent event) async {
     emit(state.copyWith(applyState: BaseState.loading()));
 
-    final response = await _applyUseCase.execute(
-      applyRequestModel: event.requestModel,
-    );
+    try {
+      final response = await _applyUseCase
+          .execute(applyRequestModel: event.requestModel)
+          .timeout(const Duration(seconds: 60));
 
-    switch (response) {
-      case SuccessBaseResponse<AuthResponseEntity>():
-        emit(state.copyWith(applyState: BaseState.success(response.data)));
+      switch (response) {
+        case SuccessBaseResponse<AuthResponseEntity>():
+          emit(state.copyWith(applyState: BaseState.success(response.data)));
 
-      case ErrorBaseResponse<AuthResponseEntity>():
-        emit(
-          state.copyWith(applyState: BaseState.error(response.errorMessage)),
-        );
+        case ErrorBaseResponse<AuthResponseEntity>():
+          emit(
+            state.copyWith(applyState: BaseState.error(response.errorMessage)),
+          );
+      }
+    } catch (e) {
+      String errorMsg = e.toString();
+      if (errorMsg.contains('TimeoutException')) {
+        errorMsg = AppStrings.connectionTimeout;
+      }
+
+      emit(state.copyWith(applyState: BaseState.error(errorMsg)));
     }
   }
 
@@ -47,6 +57,14 @@ class ApplyViewModel extends Cubit<ApplyState> {
     if (status.isPermanentlyDenied) return PermissionResult.permanentlyDenied;
 
     status = await Permission.storage.request();
+    if (status.isGranted) return PermissionResult.granted;
+    if (status.isPermanentlyDenied) return PermissionResult.permanentlyDenied;
+
+    return PermissionResult.denied;
+  }
+
+  Future<PermissionResult> checkCameraPermission() async {
+    final status = await Permission.camera.request();
     if (status.isGranted) return PermissionResult.granted;
     if (status.isPermanentlyDenied) return PermissionResult.permanentlyDenied;
 
