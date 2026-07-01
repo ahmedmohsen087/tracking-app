@@ -1,5 +1,4 @@
 import 'package:injectable/injectable.dart';
-
 import '../../../../config/base_response/base_response.dart';
 import '../../api/request_models/get_orders_request.dart';
 import '../../domain/entities/orders_page_entity.dart';

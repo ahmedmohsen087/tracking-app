@@ -51,3 +51,5 @@ class ApplyViewModel extends Cubit<ApplyState> {
     if (status.isPermanentlyDenied) return PermissionResult.permanentlyDenied;
 
     return PermissionResult.denied;
+  }
+}

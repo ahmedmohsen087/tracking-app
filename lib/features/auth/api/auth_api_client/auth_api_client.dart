@@ -23,13 +23,11 @@ abstract class AuthApiClient {
   @POST(ApiEndpoints.applyDriver)
   Future<AuthResponseModel> applyAsDriver(@Body() FormData formData);
 
-  @POST(ApiEndpoints.logout)
-  Future<void> logout();
-
   @Extra({ApiParameters.requiresAuth: false})
   @POST(ApiEndpoints.forgetPassword)
   Future<AuthResponseModel> forgetPassword(
-      @Body() ForgetPasswordRequestModel body);
+    @Body() ForgetPasswordRequestModel body,
+  );
 
   @Extra({ApiParameters.requiresAuth: false})
   @POST(ApiEndpoints.verifyOtp)
@@ -38,5 +36,9 @@ abstract class AuthApiClient {
   @Extra({ApiParameters.requiresAuth: false})
   @PUT(ApiEndpoints.resetPassword)
   Future<AuthResponseModel> resetPassword(
-      @Body() ForgetPasswordRequestModel body);
+    @Body() ForgetPasswordRequestModel body,
+  );
+  
+  @GET(ApiEndpoints.logout)
+  Future<AuthResponseModel> logout();
 }

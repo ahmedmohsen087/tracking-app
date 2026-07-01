@@ -21,7 +21,9 @@ void main() {
   const tPassword = 'password123';
   const tToken = 'mocked_jwt_token';
   final tLoginRequestModel = LoginRequestModel(
-      email: tEmail, password: tPassword);
+    email: tEmail,
+    password: tPassword,
+  );
 
   setUpAll(() {
     provideDummy<BaseResponse<AuthResponseModel>>(
@@ -39,11 +41,11 @@ void main() {
     test(
       'should return SuccessBaseResponse and save auth data when login is successful',
       () async {
-
         final response = AuthResponseModel(message: 'Success', token: tToken);
         when(
           mockDataSource.login(
-              loginRequestModel: anyNamed('loginRequestModel')),
+            loginRequestModel: anyNamed('loginRequestModel'),
+          ),
         ).thenAnswer((_) async => SuccessBaseResponse(data: response));
 
         when(
@@ -51,7 +53,8 @@ void main() {
         ).thenAnswer((_) async {});
 
         final result = await repository.login(
-            loginRequestModel: tLoginRequestModel);
+          loginRequestModel: tLoginRequestModel,
+        );
 
         expect(result, isA<SuccessBaseResponse<AuthResponseEntity>>());
         expect(
@@ -61,7 +64,8 @@ void main() {
 
         verify(
           mockDataSource.login(
-              loginRequestModel: anyNamed('loginRequestModel')),
+            loginRequestModel: anyNamed('loginRequestModel'),
+          ),
         ).called(1);
         verify(mockAuthManager.setAuthData(token: tToken)).called(1);
         verifyNoMoreInteractions(mockDataSource);
@@ -72,17 +76,17 @@ void main() {
     test(
       'should return ErrorBaseResponse when remote data source login fails',
       () async {
-
         when(
           mockDataSource.login(
-              loginRequestModel: anyNamed('loginRequestModel')),
+            loginRequestModel: anyNamed('loginRequestModel'),
+          ),
         ).thenAnswer(
           (_) async => ErrorBaseResponse(errorMessage: 'Network Failure'),
         );
 
         final result = await repository.login(
-            loginRequestModel: tLoginRequestModel);
-
+          loginRequestModel: tLoginRequestModel,
+        );
         expect(result, isA<ErrorBaseResponse<AuthResponseEntity>>());
         expect(
           (result as ErrorBaseResponse<AuthResponseEntity>).errorMessage,
@@ -91,7 +95,8 @@ void main() {
 
         verify(
           mockDataSource.login(
-              loginRequestModel: anyNamed('loginRequestModel')),
+            loginRequestModel: anyNamed('loginRequestModel'),
+          ),
         ).called(1);
         verifyNever(mockAuthManager.setAuthData(token: anyNamed('token')));
       },

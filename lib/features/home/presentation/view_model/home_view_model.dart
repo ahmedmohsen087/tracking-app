@@ -67,8 +67,7 @@ class HomeViewModel extends Cubit<HomeState> {
 
   void _removeOrder(String orderId) {
     final orders = state.getOrdersState.data ?? [];
-    final updatedOrders =
-        orders.where((order) => order.id != orderId).toList();
+    final updatedOrders = orders.where((order) => order.id != orderId).toList();
     emit(
       state.copyWith(
         getOrdersState: BaseState<List<OrderEntity>>.success(updatedOrders),
@@ -90,8 +89,9 @@ class HomeViewModel extends Cubit<HomeState> {
       case ErrorBaseResponse<StartOrderEntity>():
         emit(
           state.copyWith(
-            acceptOrderState:
-                BaseState<OrderEntity>.error(response.errorMessage),
+            acceptOrderState: BaseState<OrderEntity>.error(
+              response.errorMessage,
+            ),
           ),
         );
         return;
@@ -118,12 +118,10 @@ class HomeViewModel extends Cubit<HomeState> {
               .doc(userId)
               .get();
           final fcmToken = userDoc.data()?['fcmToken'] as String?;
-          final language =
-              (userDoc.data()?['language'] as String?) ?? 'en';
+          final language = (userDoc.data()?['language'] as String?) ?? 'en';
 
           if (fcmToken != null && fcmToken.isNotEmpty) {
-            final msgs =
-                FcmService.orderStatusMessages['accepted'] ?? {};
+            final msgs = FcmService.orderStatusMessages['accepted'] ?? {};
             await _fcmService.sendNotification(
               fcmToken: fcmToken,
               titleEn: msgs['title_en'] ?? '',
@@ -136,7 +134,8 @@ class HomeViewModel extends Cubit<HomeState> {
           }
         } catch (e, s) {
           debugPrint(
-              'Firestore/FCM error after accepting order $orderId: $e\n$s');
+            'Firestore/FCM error after accepting order $orderId: $e\n$s',
+          );
         }
 
         _removeOrder(orderId);
@@ -162,10 +161,7 @@ class HomeViewModel extends Cubit<HomeState> {
     );
 
     final response = await _getOrdersUseCase(
-      request: GetOrdersRequest(
-        page: page,
-        limit: state.limit,
-      ),
+      request: GetOrdersRequest(page: page, limit: state.limit),
     );
 
     switch (response) {

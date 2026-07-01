@@ -6,35 +6,27 @@
   "close": "إغلاق",
   "error": "حدث خطأ",
   "retry": "إعادة المحاولة",
-
   "home": "الرئيسي",
   "orders": "طلباتي",
   "profile": "الملف الشخصي",
-
   "welcomeToFloweryRiderApp": "مرحباً بك في\nتطبيق Flowery للسائقين",
   "login": "تسجيل الدخول",
   "applyNow": "تقدم الآن",
-
   "tokenEmpty": "رمز المصادقة غير موجود",
   "tokenWriteFailed": "فشل حفظ رمز المصادقة",
   "tokenReadFailed": "فشل قراءة رمز المصادقة",
   "tokenDeleteFailed": "فشل حذف رمز المصادقة",
-
   "rememberMeWriteFailed": "فشل حفظ تفضيل تذكرني",
   "rememberMeReadFailed": "فشل قراءة تفضيل تذكرني",
   "rememberMeDeleteFailed": "فشل حذف تفضيل تذكرني",
-
   "seenOnboardingWriteFailed": "فشل حفظ حالة التعريف بالتطبيق",
   "seenOnboardingReadFailed": "فشل قراءة حالة التعريف بالتطبيق",
-
   "clearStorageFailed": "فشل مسح بيانات التخزين المحلي",
-
   "firstNameRequired": "الاسم الأول مطلوب",
   "lastNameRequired": "اسم العائلة مطلوب",
   "nameInvalid": "يجب أن يحتوي الاسم على حروف ومسافات وشرطات فقط",
   "nameTooShort": "يجب أن يكون الاسم مكونًا من حرفين على الأقل",
   "nameTooLong": "يجب ألا يزيد الاسم عن 20 حرفًا",
-
   "emailRequired": "البريد الإلكتروني مطلوب",
   "emailInvalid": "يرجى إدخال بريد إلكتروني صحيح",
   "email": "الآيميل",
@@ -44,10 +36,8 @@
   "pleaseEnterYourCode": "الرجاء إدخال الرمز الذي تم إرساله إلى عنوان بريدك الإلكتروني",
   "didn'tReceiveCode": "لم يتم استلام الرمز؟",
   "resend": "إعادة الإرسال",
-
   "phoneRequired": "رقم الهاتف مطلوب",
   "phoneInvalid": "يرجى إدخال رقم هاتف صحيح",
-
   "passwordRequired": "كلمة المرور مطلوبة",
   "passwordWeak": "يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل، وتشمل حرف كبير وحرف صغير ورقم ورمز خاص",
   "confirmPasswordRequired": "يرجى تأكيد كلمة المرور",
@@ -61,17 +51,14 @@
   "enterYourPassword": "أدخل كلمة المرور",
   "enterPassword": "أدخل كلمة المرور",
   "confirmPassword": "تأكيد كلمة المرور",
-
   "otpEmpty": "رمز التحقق مطلوب",
   "otpInvalid": "يجب أن يحتوي رمز التحقق على أرقام فقط",
   "otpLength": "يجب أن يكون رمز التحقق مكونًا من 4 أرقام",
-
   "noInternetConnection": "لا يوجد اتصال بالإنترنت، يرجى التحقق من الشبكة",
   "connectionTimeout": "انتهت مهلة الاتصال، يرجى المحاولة مرة أخرى",
   "requestCancelled": "تم إلغاء الطلب",
   "badCertificate": "فشل الاتصال الآمن",
   "somethingWentWrong": "حدث خطأ ما، يرجى المحاولة مرة أخرى",
-
   "apply": "تقديم",
   "welcomeExclamation": "مرحباً!",
   "applySubtitle": "يرجى ملء النموذج أدناه للتقديم كسائق",
@@ -102,10 +89,8 @@
   "idNumberRequired": "رقم الهوية مطلوب",
   "idImageRequired": "صورة الهوية مطلوبة",
   "genderRequired": "الجنس مطلوب",
-
   "applicationSubmitted": "تم إرسال طلبك\nبنجاح!",
   "applicationSubmittedSubtitle": "شكرًا لتقديم طلبك،\nسنقوم بمراجعته والرد عليك في أقرب وقت ممكن.",
-
   "loginTitle": "تسجيل الدخول",
   "emailLabel": "الآيميل",
   "emailHint": "ادخل الآيميل",
@@ -116,7 +101,6 @@
   "continueAsGuest": "الاستمرار كزائر",
   "don'tHaveAccount": "ليس لديك حساب؟ ",
   "signUp": "إنشاء حساب",
-
   "logout": "تسجيل الخروج",
   "confirmLogout": "هل أنت متأكد أنك تريد تسجيل الخروج؟",
   "permissionRequired": "صلاحية مطلوبة",
@@ -128,13 +112,11 @@
   "chooseImageSource": "اختر مصدر الصورة",
   "takePhoto": "تصوير بالكاميرا",
   "chooseFromGallery": "اختيار من المعرض",
-
   "flowerOrder": "الاوردرات",
   "pickupAddress": "عنوان الاستلام",
   "userAddress": "عنوان المستخدم",
   "accept": "قبول",
   "reject": "رفض",
-
   "orderDetails": "تفاصيل الطلب",
   "statusLabel": "الحالة",
   "orderIdLabel": "رقم الطلب",
@@ -143,22 +125,18 @@
   "egp": "جنيه",
   "itemFallback": "منتج",
   "noOrdersAvailable": "لا توجد طلبات",
-
   "statusAccepted": "مقبول",
   "statusPicked": "تم الاستلام",
   "statusOutForDelivery": "في الطريق",
   "statusArrived": "وصل",
   "statusDelivered": "تم التسليم",
-
   "actionArrivedPickup": "وصلت لنقطة الاستلام",
   "actionStartDeliver": "ابدأ التوصيل",
   "actionArrivedToUser": "وصلت للمستخدم",
   "actionDeliveredToUser": "تم التسليم للمستخدم",
-
   "thankYou": "شكراً!!",
   "orderDeliveredSuccessfully": "تم توصيل الطلب بنجاح",
   "done": "تم",
-
   "passwordUpdated": "تم تعديل الباسورد",
   "currentPassword": "الباسورد الحالي",
   "changePassword": "تغيير الباسورد",

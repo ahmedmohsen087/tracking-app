@@ -6,35 +6,27 @@
   "close": "Close",
   "error": "Error",
   "retry": "Retry",
-
   "home": "Home",
   "orders": "Orders",
   "profile": "Profile",
-
   "welcomeToFloweryRiderApp": "Welcome to\nFlowery rider app",
   "login": "Login",
   "applyNow": "Apply now",
-
   "tokenEmpty": "Token cannot be empty",
   "tokenWriteFailed": "Failed to save the authentication token",
   "tokenReadFailed": "Failed to read the authentication token",
   "tokenDeleteFailed": "Failed to remove the authentication token",
-
   "rememberMeWriteFailed": "Failed to save the remember me preference",
   "rememberMeReadFailed": "Failed to read the remember me preference",
   "rememberMeDeleteFailed": "Failed to remove the remember me preference",
-
   "seenOnboardingWriteFailed": "Failed to save the onboarding status",
   "seenOnboardingReadFailed": "Failed to read the onboarding status",
-
   "clearStorageFailed": "Failed to clear local storage",
-
   "firstNameRequired": "First name is required",
   "lastNameRequired": "Last name is required",
   "nameInvalid": "Name can only contain letters, spaces and hyphens",
   "nameTooShort": "Name must be at least 2 characters",
   "nameTooLong": "Name must be at most 20 characters",
-
   "emailRequired": "Email is required",
   "emailInvalid": "Please enter a valid email address",
   "email": "Email",
@@ -44,10 +36,8 @@
   "pleaseEnterYourCode": "Please enter your code that send to your \n email address",
   "didn'tReceiveCode": "Didn't receive code? ",
   "resend": "Resend",
-
   "phoneRequired": "Phone number is required",
   "phoneInvalid": "Please enter a valid phone number",
-
   "passwordRequired": "Password is required",
   "passwordWeak": "Password must be at least 8 characters and include an uppercase letter, a lowercase letter, a number and a special character",
   "confirmPasswordRequired": "Please confirm your password",
@@ -61,17 +51,14 @@
   "enterYourPassword": "Enter your password",
   "enterPassword": "Enter password",
   "confirmPassword": "Confirm password",
-
   "otpEmpty": "OTP is required",
   "otpInvalid": "OTP must contain numbers only",
   "otpLength": "OTP must be 4 digits",
-
   "noInternetConnection": "No internet connection, please check your network",
   "connectionTimeout": "Connection timed out, please try again",
   "requestCancelled": "Request was cancelled",
   "badCertificate": "Secure connection failed",
   "somethingWentWrong": "Something went wrong, please try again",
-
   "apply": "Apply",
   "welcomeExclamation": "Welcome!",
   "applySubtitle": "Please fill out the form below to apply as a rider",
@@ -102,10 +89,8 @@
   "idNumberRequired": "ID number is required",
   "idImageRequired": "ID image is required",
   "genderRequired": "Gender is required",
-
   "applicationSubmitted": "Your application has been\nsubmitted!",
   "applicationSubmittedSubtitle": "Thank you for providing your application,\nwe will review your application and will\nget back to you soon.",
-
   "loginTitle": "Login",
   "emailLabel": "Email",
   "emailHint": "Enter your email",
@@ -116,7 +101,6 @@
   "continueAsGuest": "Continue as guest",
   "don'tHaveAccount": "Don't have an account? ",
   "signUp": "Sign up",
-
   "logout": "Logout",
   "confirmLogout": "Are you sure you want to logout?",
   "permissionRequired": "Permission Required",
@@ -128,13 +112,11 @@
   "chooseImageSource": "Choose Image Source",
   "takePhoto": "Take Photo",
   "chooseFromGallery": "Choose from Gallery",
-
   "flowerOrder": "Flower Order",
   "pickupAddress": "Pickup Address",
   "userAddress": "User Address",
   "accept": "Accept",
   "reject": "Reject",
-
   "orderDetails": "Order Details",
   "statusLabel": "Status",
   "orderIdLabel": "Order ID",
@@ -143,22 +125,18 @@
   "egp": "EGP",
   "itemFallback": "Product",
   "noOrdersAvailable": "No orders available",
-
   "statusAccepted": "Accepted",
   "statusPicked": "Picked Up",
   "statusOutForDelivery": "Out for Delivery",
   "statusArrived": "Arrived",
   "statusDelivered": "Delivered",
-
   "actionArrivedPickup": "Arrived at Pickup",
   "actionStartDeliver": "Start Delivery",
   "actionArrivedToUser": "Arrived to User",
   "actionDeliveredToUser": "Delivered to User",
-
   "thankYou": "Thank You!!",
   "orderDeliveredSuccessfully": "Order delivered successfully",
   "done": "Done",
-
   "passwordUpdated": "Password Updated",
   "currentPassword": "Current Password",
   "changePassword": "Change Password",
