@@ -1,10 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flowery_rider_app/config/di/di.dart';
 import 'package:flowery_rider_app/core/values/app_strings.dart';
-import 'package:flowery_rider_app/features/orders/presentation/screens/order_details_screen.dart';
+import 'package:flowery_rider_app/features/orders/presentation/screens/active_order_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../../core/theme/text_styles.dart';
 import '../view_model/home_events.dart';
 import '../view_model/home_state.dart';
@@ -31,7 +30,7 @@ class HomeScreen extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (_) =>
-                  OrderDetailsScreen(orderId: order.id, order: order),
+                  ActiveOrderScreen(orderId: order.id, order: order),
             ),
           );
         },
@@ -74,10 +73,6 @@ class HomeScreen extends StatelessWidget {
                 );
               }
 
-              if (orders.isEmpty) {
-                return Center(child: Text(AppStrings.noOrdersAvailable));
-              }
-
               return NotificationListener<ScrollNotification>(
                 onNotification: (notification) {
                   final metrics = notification.metrics;
@@ -89,35 +84,52 @@ class HomeScreen extends StatelessWidget {
                   return false;
                 },
                 child: RefreshIndicator(
-                  onRefresh: () async => context
-                      .read<HomeViewModel>()
-                      .doEvent(const RefreshHomeEvent()),
-                  child: ListView.separated(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 10,
-                    ),
-                    itemCount: orders.length + (state.isLoadingMore ? 1 : 0),
-                    separatorBuilder: (_, __) => const SizedBox(height: 20),
-                    itemBuilder: (context, index) {
-                      if (index == orders.length) {
-                        return const Center(child: CircularProgressIndicator());
-                      }
+                  onRefresh: () => context.read<HomeViewModel>().refresh(),
+                  child: orders.isEmpty
+                      ? ListView(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          children: [
+                            SizedBox(
+                              height:
+                                  MediaQuery.of(context).size.height * 0.7,
+                              child: Center(
+                                child: Text(AppStrings.noOrdersAvailable),
+                              ),
+                            ),
+                          ],
+                        )
+                      : ListView.separated(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 10,
+                          ),
+                          itemCount:
+                              orders.length + (state.isLoadingMore ? 1 : 0),
+                          separatorBuilder: (_, _) =>
+                              const SizedBox(height: 20),
+                          itemBuilder: (context, index) {
+                            if (index == orders.length) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
 
-                      final order = orders[index];
+                            final order = orders[index];
 
-                      return FlowerOrderItem(
-                        order: order,
-                        isAccepting: state.acceptingOrderId == order.id,
-                        onReject: () => context
-                            .read<HomeViewModel>()
-                            .doEvent(RejectOrderEvent(order.id)),
-                        onAccept: () => context
-                            .read<HomeViewModel>()
-                            .doEvent(AcceptOrderEvent(order)),
-                      );
-                    },
-                  ),
+                            return FlowerOrderItem(
+                              order: order,
+                              isAccepting:
+                                  state.acceptingOrderId == order.id,
+                              onReject: () => context
+                                  .read<HomeViewModel>()
+                                  .doEvent(RejectOrderEvent(order.id)),
+                              onAccept: () => context
+                                  .read<HomeViewModel>()
+                                  .doEvent(AcceptOrderEvent(order)),
+                            );
+                          },
+                        ),
                 ),
               );
             },

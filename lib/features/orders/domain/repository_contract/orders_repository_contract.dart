@@ -3,4 +3,6 @@ import 'package:flowery_rider_app/features/orders/domain/entities/start_order_en
 
 abstract interface class OrdersRepositoryContract {
   Future<BaseResponse<StartOrderEntity>> startOrder(String orderId);
+
+  Future<BaseResponse<void>> updateOrderState(String orderId, String state);
 }

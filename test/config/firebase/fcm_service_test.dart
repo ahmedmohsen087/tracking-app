@@ -10,7 +10,7 @@ import 'fcm_service_test.mocks.dart';
 
 class _TestFcmService extends FcmService {
   _TestFcmService({required http.Client httpClient})
-      : super(httpClient: httpClient);
+      : super.withClient(httpClient);
 
   @override
   Future<String> getAccessToken() async => 'test-bearer-token';

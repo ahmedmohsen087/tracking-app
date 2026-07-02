@@ -16,6 +16,7 @@ abstract class ApiEndpoints {
   static const String getVehicleTypes = "$baseUrl/vehicles";
   static const String pendingOrders = "$orders/pending-orders";
   static const String startOrder = "$orders/start";
+  static const String orderState = "$orders/state";
 
   static String imageUrl(String? path) {
     if (path == null || path.isEmpty) return '';

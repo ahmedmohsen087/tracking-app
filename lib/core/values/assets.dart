@@ -24,8 +24,6 @@ class Assets {
 
   static const String assetsIconsDelete = "assets/icons/delete.svg";
 
-  static const String assetsIconsDeliveryBoy = "assets/icons/delivery_boy.svg";
-
   static const String assetsIconsDiamond = "assets/icons/diamond.svg";
 
   static const String assetsIconsEgyptFlag = "assets/icons/egypt_flag.svg";
@@ -49,6 +47,8 @@ class Assets {
   static const String assetsIconsOrder = "assets/icons/order.svg";
 
   static const String assetsIconsPerson = "assets/icons/person.svg";
+
+  static const String assetsIconsPhoneCall = "assets/icons/phone_call.svg";
 
   static const String assetsIconsPhotoCamera = "assets/icons/photo_camera.svg";
 

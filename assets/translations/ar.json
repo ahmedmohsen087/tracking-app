@@ -155,5 +155,11 @@
   "Arabic": "العربية",
   "noProfileDataAvailable": "لا توجد بيانات للملف الشخصي",
   "pleaseEnterYourEmailAssociatedToYourAccount": "يرجى إدخال بريدك الإلكتروني المرتبط بحسابك",
-  "hitTextForResetPassword": "انقر هنا لإعادة تعيين كلمة المرور"
+  "hitTextForResetPassword": "انقر هنا لإعادة تعيين كلمة المرور",
+  "completeOrder": "إتمام الطلب",
+  "cancelOrder": "إلغاء الطلب",
+  "cancelOrderConfirmTitle": "إلغاء الطلب",
+  "cancelOrderConfirmDescription": "هل أنت متأكد أنك تريد إلغاء هذا الطلب؟",
+  "callLabel": "اتصال",
+  "whatsappLabel": "واتساب"
 }

@@ -2,16 +2,21 @@ import 'dart:async';
 
 import 'package:bloc_test/bloc_test.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flowery_rider_app/config/base_response/base_response.dart';
+import 'package:flowery_rider_app/config/firebase/fcm_config.dart';
 import 'package:flowery_rider_app/config/firebase/fcm_service.dart';
-import 'package:flowery_rider_app/features/orders/presentation/view_models/order_details_view_model/order_details_event.dart';
-import 'package:flowery_rider_app/features/orders/presentation/view_models/order_details_view_model/order_details_state.dart';
-import 'package:flowery_rider_app/features/orders/presentation/view_models/order_details_view_model/order_details_view_model.dart';
+import 'package:flowery_rider_app/core/values/order_status.dart';
+import 'package:flowery_rider_app/features/orders/domain/use_cases/update_order_state_use_case.dart';
+import 'package:flowery_rider_app/features/orders/presentation/view_models/active_order_view_model/active_order_event.dart';
+import 'package:flowery_rider_app/features/orders/presentation/view_models/active_order_view_model/active_order_state.dart';
+import 'package:flowery_rider_app/features/orders/presentation/view_models/active_order_view_model/active_order_view_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'order_details_view_model_test.mocks.dart';
+import 'active_order_view_model_test.mocks.dart';
 
+// ignore: subtype_of_sealed_class
 class _FakeDocSnap extends Fake
     implements DocumentSnapshot<Map<String, dynamic>> {
   final Map<String, dynamic> _data;
@@ -28,6 +33,7 @@ class _FakeDocSnap extends Fake
 @GenerateMocks([
   FirebaseFirestore,
   FcmService,
+  UpdateOrderStateUseCase,
 ], customMocks: [
   MockSpec<CollectionReference<Map<String, dynamic>>>(
     as: #MockCollectionReference,
@@ -37,17 +43,22 @@ class _FakeDocSnap extends Fake
   ),
 ])
 void main() {
+  setUpAll(() {
+    provideDummy<BaseResponse<void>>(SuccessBaseResponse<void>(data: null));
+  });
+
   late MockFirebaseFirestore mockFirestore;
   late MockFcmService mockFcmService;
+  late MockUpdateOrderStateUseCase mockUpdateOrderStateUseCase;
   late MockCollectionReference mockOrdersCollection;
   late MockDocumentReference mockOrderDoc;
   late StreamController<DocumentSnapshot<Map<String, dynamic>>>
       orderStreamController;
 
-
   setUp(() {
     mockFirestore = MockFirebaseFirestore();
     mockFcmService = MockFcmService();
+    mockUpdateOrderStateUseCase = MockUpdateOrderStateUseCase();
     mockOrdersCollection = MockCollectionReference();
     mockOrderDoc = MockDocumentReference();
     orderStreamController = StreamController.broadcast();
@@ -75,21 +86,23 @@ void main() {
     await orderStreamController.close();
   });
 
-  OrderDetailsViewModel _build() =>
-      OrderDetailsViewModel(mockFcmService, mockFirestore);
+  ActiveOrderViewModel build() => ActiveOrderViewModel(
+        mockFcmService,
+        mockFirestore,
+        mockUpdateOrderStateUseCase,
+      );
 
   test('initial state has status="accepted" and userConfirmed=false', () {
-    final vm = _build();
+    final vm = build();
     expect(vm.state.status, 'accepted');
     expect(vm.state.userConfirmed, false);
     expect(vm.state.orderId, '');
     vm.close();
   });
 
-
-  blocTest<OrderDetailsViewModel, OrderDetailsState>(
+  blocTest<ActiveOrderViewModel, ActiveOrderState>(
     'emits userConfirmed=true when Firestore stream delivers that value',
-    build: _build,
+    build: build,
     act: (vm) async {
       vm.init('order-123');
       orderStreamController.add(
@@ -104,7 +117,7 @@ void main() {
       await Future<void>.delayed(const Duration(milliseconds: 30));
     },
     expect: () => [
-      predicate<OrderDetailsState>(
+      predicate<ActiveOrderState>(
         (s) =>
             s.userConfirmed == true &&
             s.status == 'arrived_user' &&
@@ -114,15 +127,13 @@ void main() {
     ],
   );
 
-
-  blocTest<OrderDetailsViewModel, OrderDetailsState>(
+  blocTest<ActiveOrderViewModel, ActiveOrderState>(
     'updateStatus(arrived_pickup) writes to Firestore and calls FcmService',
     build: () {
       final mockUsersCollection = MockCollectionReference();
       final mockUserDoc = MockDocumentReference();
 
-      when(mockFirestore.collection('users'))
-          .thenReturn(mockUsersCollection);
+      when(mockFirestore.collection('users')).thenReturn(mockUsersCollection);
       when(mockUsersCollection.doc(any)).thenReturn(mockUserDoc);
       when(mockUserDoc.get()).thenAnswer(
         (_) async => _FakeDocSnap({
@@ -131,20 +142,19 @@ void main() {
         }),
       );
 
-      return _build();
+      return build();
     },
-    seed: () => const OrderDetailsState(
+    seed: () => const ActiveOrderState(
       orderId: 'order-123',
       userId: 'user-1',
       status: 'accepted',
     ),
-    act: (vm) =>
-        vm.doEvent(const UpdateOrderStatusEvent('arrived_pickup')),
+    act: (vm) => vm.doEvent(const UpdateOrderStatusEvent('arrived_pickup')),
     wait: const Duration(milliseconds: 100),
     verify: (vm) {
       verify(mockOrderDoc.update({'status': 'arrived_pickup'})).called(1);
 
-      final msgs = FcmService.orderStatusMessages['arrived_pickup']!;
+      final msgs = FcmConfig.orderStatusMessages['arrived_pickup']!;
       verify(
         mockFcmService.sendNotification(
           fcmToken: 'fcm-device-token',
@@ -159,10 +169,98 @@ void main() {
     },
   );
 
+  blocTest<ActiveOrderViewModel, ActiveOrderState>(
+    'completeOrder emits loading then success',
+    build: () {
+      when(mockUpdateOrderStateUseCase.call(any, any))
+          .thenAnswer((_) async => SuccessBaseResponse(data: null));
+      return build();
+    },
+    seed: () => const ActiveOrderState(orderId: 'order-123'),
+    act: (vm) => vm.completeOrder('order-123'),
+    expect: () => [
+      predicate<ActiveOrderState>(
+        (s) =>
+            s.updateOrderState.isLoading &&
+            s.submittedState == OrderStatus.completed,
+        'loading with submittedState=completed',
+      ),
+      predicate<ActiveOrderState>(
+        (s) => !s.updateOrderState.isLoading && s.updateOrderState.msg == null,
+        'success',
+      ),
+    ],
+  );
+
+  blocTest<ActiveOrderViewModel, ActiveOrderState>(
+    'completeOrder emits loading then error',
+    build: () {
+      when(mockUpdateOrderStateUseCase.call(any, any))
+          .thenAnswer((_) async => ErrorBaseResponse(errorMessage: 'Server error'));
+      return build();
+    },
+    seed: () => const ActiveOrderState(orderId: 'order-123'),
+    act: (vm) => vm.completeOrder('order-123'),
+    expect: () => [
+      predicate<ActiveOrderState>(
+        (s) => s.updateOrderState.isLoading,
+        'loading',
+      ),
+      predicate<ActiveOrderState>(
+        (s) => s.updateOrderState.msg == 'Server error',
+        'error message set',
+      ),
+    ],
+  );
+
+  blocTest<ActiveOrderViewModel, ActiveOrderState>(
+    'cancelOrder emits loading then success',
+    build: () {
+      when(mockUpdateOrderStateUseCase.call(any, any))
+          .thenAnswer((_) async => SuccessBaseResponse(data: null));
+      return build();
+    },
+    seed: () => const ActiveOrderState(orderId: 'order-123'),
+    act: (vm) => vm.cancelOrder('order-123'),
+    expect: () => [
+      predicate<ActiveOrderState>(
+        (s) =>
+            s.updateOrderState.isLoading &&
+            s.submittedState == OrderStatus.canceled,
+        'loading with submittedState=canceled',
+      ),
+      predicate<ActiveOrderState>(
+        (s) => !s.updateOrderState.isLoading && s.updateOrderState.msg == null,
+        'success',
+      ),
+    ],
+  );
+
+  blocTest<ActiveOrderViewModel, ActiveOrderState>(
+    'cancelOrder emits loading then error',
+    build: () {
+      when(mockUpdateOrderStateUseCase.call(any, any))
+          .thenAnswer((_) async => ErrorBaseResponse(errorMessage: 'Cancel failed'));
+      return build();
+    },
+    seed: () => const ActiveOrderState(orderId: 'order-123'),
+    act: (vm) => vm.cancelOrder('order-123'),
+    expect: () => [
+      predicate<ActiveOrderState>(
+        (s) => s.updateOrderState.isLoading,
+        'loading',
+      ),
+      predicate<ActiveOrderState>(
+        (s) => s.updateOrderState.msg == 'Cancel failed',
+        'error message set',
+      ),
+    ],
+  );
+
   test(
     'button is disabled when status=arrived_user and userConfirmed=false',
     () {
-      const state = OrderDetailsState(
+      const state = ActiveOrderState(
         status: 'arrived_user',
         userConfirmed: false,
       );
@@ -175,7 +273,7 @@ void main() {
   test(
     'button is enabled when status=arrived_user and userConfirmed=true',
     () {
-      const state = OrderDetailsState(
+      const state = ActiveOrderState(
         status: 'arrived_user',
         userConfirmed: true,
       );

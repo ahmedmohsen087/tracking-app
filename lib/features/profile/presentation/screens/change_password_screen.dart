@@ -121,9 +121,6 @@ class _ChangePasswordViewState extends State<ChangePasswordScreen> {
   }
 }
 
-// ---------------------------------------------------------------------------
-// AppBar
-// ---------------------------------------------------------------------------
 class _ChangePasswordAppBar extends StatelessWidget
     implements PreferredSizeWidget {
   const _ChangePasswordAppBar();
@@ -145,9 +142,6 @@ class _ChangePasswordAppBar extends StatelessWidget
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
 
-// ---------------------------------------------------------------------------
-// Password Field — manages its own obscureText state
-// ---------------------------------------------------------------------------
 class _PasswordField extends StatefulWidget {
   const _PasswordField({
     required this.controller,
@@ -190,9 +184,6 @@ class _PasswordFieldState extends State<_PasswordField> {
   }
 }
 
-// ---------------------------------------------------------------------------
-// Update Button — disabled until all fields are filled
-// ---------------------------------------------------------------------------
 class _UpdateButton extends StatefulWidget {
   const _UpdateButton({
     required this.isLoading,

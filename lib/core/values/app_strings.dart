@@ -181,6 +181,9 @@ class AppStrings {
   static String get statusArrived => 'statusArrived'.tr();
   static String get statusDelivered => 'statusDelivered'.tr();
 
+  static String get callLabel => 'callLabel'.tr();
+  static String get whatsappLabel => 'whatsappLabel'.tr();
+
   static String get actionArrivedPickup => 'actionArrivedPickup'.tr();
   static String get actionStartDeliver => 'actionStartDeliver'.tr();
   static String get actionArrivedToUser => 'actionArrivedToUser'.tr();
@@ -190,4 +193,10 @@ class AppStrings {
   static String get orderDeliveredSuccessfully =>
       'orderDeliveredSuccessfully'.tr();
   static String get done => 'done'.tr();
+
+  static String get completeOrder => 'completeOrder'.tr();
+  static String get cancelOrder => 'cancelOrder'.tr();
+  static String get cancelOrderConfirmTitle => 'cancelOrderConfirmTitle'.tr();
+  static String get cancelOrderConfirmDescription =>
+      'cancelOrderConfirmDescription'.tr();
 }

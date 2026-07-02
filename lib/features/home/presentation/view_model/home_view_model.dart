@@ -1,7 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flowery_rider_app/config/firebase/fcm_config.dart';
 import 'package:flowery_rider_app/config/firebase/fcm_service.dart';
+import 'package:flowery_rider_app/core/values/firestore_keys.dart';
+import 'package:flowery_rider_app/core/values/order_status.dart';
 import 'package:flowery_rider_app/features/orders/domain/entities/start_order_entity.dart';
 import 'package:flowery_rider_app/features/orders/domain/use_cases/start_order_use_case.dart';
+import 'package:flowery_rider_app/features/profile/domain/entities/profile_driver_entity.dart';
+import 'package:flowery_rider_app/features/profile/domain/use_cases/get_profile_use_case.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
@@ -18,17 +23,17 @@ import 'home_state.dart';
 @injectable
 class HomeViewModel extends Cubit<HomeState> {
   static const int _firstPage = 1;
-  static const _ordersCollection = 'orders';
-  static const _usersCollection = 'users';
 
   final GetOrdersUseCase _getOrdersUseCase;
   final StartOrderUseCase _startOrderUseCase;
+  final GetProfileUseCase _getProfileUseCase;
   final FcmService _fcmService;
   final FirebaseFirestore _firestore;
 
   HomeViewModel(
     this._getOrdersUseCase,
     this._startOrderUseCase,
+    this._getProfileUseCase,
     this._fcmService,
     this._firestore,
   ) : super(const HomeState());
@@ -55,6 +60,8 @@ class HomeViewModel extends Cubit<HomeState> {
   void retryLoadHomeData() {
     _getOrders(page: _firstPage, refresh: true);
   }
+
+  Future<void> refresh() => _getOrders(page: _firstPage, refresh: true, showLoading: false);
 
   void _loadMoreOrders() {
     if (state.getOrdersState.isLoading ||
@@ -103,25 +110,42 @@ class HomeViewModel extends Cubit<HomeState> {
             : order.user.id;
         final orderId = order.id;
 
+        String driverName = '';
+        String driverPhone = '';
+        final profileResponse = await _getProfileUseCase();
+        switch (profileResponse) {
+          case SuccessBaseResponse<ProfileDriverEntity>():
+            driverName = '${profileResponse.data.firstName} ${profileResponse.data.lastName}'.trim();
+            driverPhone = profileResponse.data.phone;
+          default:
+            break;
+        }
+
         try {
-          await _firestore.collection(_ordersCollection).doc(orderId).set({
-            'userId': userId,
-            'status': 'accepted',
-            'driverName': '',
-            'driverPhone': '',
-            'userConfirmed': false,
-            'createdAt': FieldValue.serverTimestamp(),
-          });
+          await _firestore
+              .collection(FirestoreKeys.ordersCollection)
+              .doc(orderId)
+              .set({
+                FirestoreKeys.userId: userId,
+                FirestoreKeys.status: OrderStatus.accepted,
+                FirestoreKeys.driverName: driverName,
+                FirestoreKeys.driverPhone: driverPhone,
+                FirestoreKeys.userConfirmed: false,
+                FirestoreKeys.createdAt: FieldValue.serverTimestamp(),
+              });
 
           final userDoc = await _firestore
-              .collection(_usersCollection)
+              .collection(FirestoreKeys.usersCollection)
               .doc(userId)
               .get();
-          final fcmToken = userDoc.data()?['fcmToken'] as String?;
-          final language = (userDoc.data()?['language'] as String?) ?? 'en';
+          final fcmToken =
+              userDoc.data()?[FirestoreKeys.fcmToken] as String?;
+          final language =
+              (userDoc.data()?[FirestoreKeys.language] as String?) ?? 'en';
 
           if (fcmToken != null && fcmToken.isNotEmpty) {
-            final msgs = FcmService.orderStatusMessages['accepted'] ?? {};
+            final msgs =
+                FcmConfig.orderStatusMessages[OrderStatus.accepted] ?? {};
             await _fcmService.sendNotification(
               fcmToken: fcmToken,
               titleEn: msgs['title_en'] ?? '',
@@ -148,12 +172,12 @@ class HomeViewModel extends Cubit<HomeState> {
     }
   }
 
-  Future<void> _getOrders({required int page, bool refresh = false}) async {
+  Future<void> _getOrders({required int page, bool refresh = false, bool showLoading = true}) async {
     final isFirstPage = page == _firstPage;
 
     emit(
       state.copyWith(
-        getOrdersState: isFirstPage
+        getOrdersState: isFirstPage && showLoading
             ? BaseState<List<OrderEntity>>.loading()
             : state.getOrdersState,
         isLoadingMore: !isFirstPage,

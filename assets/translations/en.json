@@ -155,5 +155,11 @@
   "Arabic": "Arabic",
   "noProfileDataAvailable": "No profile data available",
   "pleaseEnterYourEmailAssociatedToYourAccount": "Please enter your email associated to your account",
-  "hitTextForResetPassword": "Tap here to reset your password"
+  "hitTextForResetPassword": "Tap here to reset your password",
+  "completeOrder": "Complete Order",
+  "cancelOrder": "Cancel Order",
+  "cancelOrderConfirmTitle": "Cancel Order",
+  "cancelOrderConfirmDescription": "Are you sure you want to cancel this order?",
+  "callLabel": "Call",
+  "whatsappLabel": "WhatsApp"
 }

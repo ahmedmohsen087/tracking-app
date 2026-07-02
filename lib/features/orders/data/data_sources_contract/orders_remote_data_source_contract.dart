@@ -3,4 +3,6 @@ import 'package:flowery_rider_app/features/orders/data/models/start_order_respon
 
 abstract interface class OrdersRemoteDataSourceContract {
   Future<BaseResponse<StartOrderResponse>> startOrder(String orderId);
+
+  Future<BaseResponse<void>> updateOrderState(String orderId, String state);
 }

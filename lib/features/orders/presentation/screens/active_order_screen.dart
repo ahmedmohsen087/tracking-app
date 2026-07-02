@@ -1,42 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../../../../config/di/di.dart';
+import '../../../../core/reusable_widgets/app_dialog.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/text_styles.dart';
 import '../../../../core/values/api_endpoints.dart';
+import '../../../../core/values/app_routs_name.dart';
 import '../../../../core/values/app_strings.dart';
 import '../../../../core/values/assets.dart';
+import '../../../../core/values/order_status.dart';
 import '../../../home/domain/entities/order_entity.dart';
 import '../../../home/domain/entities/order_item_entity.dart';
-import '../view_models/order_details_view_model/order_details_event.dart';
-import '../view_models/order_details_view_model/order_details_state.dart';
-import '../view_models/order_details_view_model/order_details_view_model.dart';
+import '../view_models/active_order_view_model/active_order_event.dart';
+import '../view_models/active_order_view_model/active_order_state.dart';
+import '../view_models/active_order_view_model/active_order_view_model.dart';
 import 'order_success_screen.dart';
 
 Map<String, String> _statusLabels() => {
-  'accepted': AppStrings.statusAccepted,
-  'arrived_pickup': AppStrings.statusPicked,
-  'out_for_delivery': AppStrings.statusOutForDelivery,
-  'arrived_user': AppStrings.statusArrived,
-  'delivered': AppStrings.statusDelivered,
+  OrderStatus.accepted: AppStrings.statusAccepted,
+  OrderStatus.arrivedPickup: AppStrings.statusPicked,
+  OrderStatus.outForDelivery: AppStrings.statusOutForDelivery,
+  OrderStatus.arrivedUser: AppStrings.statusArrived,
+  OrderStatus.delivered: AppStrings.statusDelivered,
 };
 
-const List<String> _statusOrder = [
-  'accepted',
-  'arrived_pickup',
-  'out_for_delivery',
-  'arrived_user',
-  'delivered',
-];
+const List<String> _statusOrder = OrderStatus.progressOrder;
 
-class OrderDetailsScreen extends StatelessWidget {
+const String _dateTimePattern = 'dd/MM/yyyy  HH:mm';
+const double _contactIconSize = 24;
+
+class ActiveOrderScreen extends StatelessWidget {
   final String orderId;
   final OrderEntity order;
 
-  const OrderDetailsScreen({
+  const ActiveOrderScreen({
     super.key,
     required this.orderId,
     required this.order,
@@ -45,17 +45,33 @@ class OrderDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => getIt<OrderDetailsViewModel>()..init(orderId),
-      child: BlocListener<OrderDetailsViewModel, OrderDetailsState>(
+      create: (_) => getIt<ActiveOrderViewModel>()..init(orderId),
+      child: BlocListener<ActiveOrderViewModel, ActiveOrderState>(
         listenWhen: (prev, curr) =>
-            prev.status != curr.status && curr.status == 'delivered',
+            prev.updateOrderState != curr.updateOrderState,
         listener: (context, state) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (_) => OrderSuccessScreen(orderId: state.orderId),
-            ),
-          );
+          final update = state.updateOrderState;
+          if (update.isLoading) return;
+          if (update.msg != null) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(update.msg!)));
+            return;
+          }
+          if (state.submittedState == OrderStatus.completed) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (_) => OrderSuccessScreen(orderId: state.orderId),
+              ),
+            );
+          } else if (state.submittedState == OrderStatus.canceled) {
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              AppRoutsName.sectionApp,
+              (route) => false,
+            );
+          }
         },
         child: Scaffold(
           backgroundColor: AppColors.white,
@@ -64,7 +80,7 @@ class OrderDetailsScreen extends StatelessWidget {
             title: Text(AppStrings.orderDetails),
             centerTitle: false,
           ),
-          body: BlocBuilder<OrderDetailsViewModel, OrderDetailsState>(
+          body: BlocBuilder<ActiveOrderViewModel, ActiveOrderState>(
             builder: (context, state) {
               return ListView(
                 padding: const EdgeInsets.all(16),
@@ -104,18 +120,38 @@ class OrderDetailsScreen extends StatelessWidget {
                     paymentMethod: order.paymentType,
                   ),
                   const SizedBox(height: 24),
-                  _ActionButton(
-                    status: state.status,
-                    userConfirmed: state.userConfirmed,
-                    isUpdating: state.isUpdating,
-                    onPressed: () {
-                      final next = _nextStatus(state.status);
-                      if (next != null) {
-                        context.read<OrderDetailsViewModel>().doEvent(
-                          UpdateOrderStatusEvent(next),
-                        );
-                      }
-                    },
+                  if (state.status != OrderStatus.delivered)
+                    _ActionButton(
+                      status: state.status,
+                      userConfirmed: state.userConfirmed,
+                      isUpdating: state.isUpdating,
+                      onPressed: () {
+                        final next = _nextStatus(state.status);
+                        if (next != null) {
+                          context.read<ActiveOrderViewModel>().doEvent(
+                            UpdateOrderStatusEvent(next),
+                          );
+                        }
+                      },
+                    ),
+                  if (state.status == OrderStatus.delivered)
+                    _CompleteButton(
+                      isLoading:
+                          state.updateOrderState.isLoading &&
+                          state.submittedState == OrderStatus.completed,
+                      enabled: !state.updateOrderState.isLoading,
+                      onPressed: () => context
+                          .read<ActiveOrderViewModel>()
+                          .completeOrder(state.orderId),
+                    ),
+                  const SizedBox(height: 12),
+                  _CancelButton(
+                    isLoading:
+                        state.updateOrderState.isLoading &&
+                        state.submittedState == OrderStatus.canceled,
+                    enabled: !state.updateOrderState.isLoading,
+                    onPressed: () =>
+                        _confirmCancelOrder(context, state.orderId),
                   ),
                   const SizedBox(height: 24),
                 ],
@@ -131,6 +167,103 @@ class OrderDetailsScreen extends StatelessWidget {
     final idx = _statusOrder.indexOf(current);
     if (idx == -1 || idx >= _statusOrder.length - 1) return null;
     return _statusOrder[idx + 1];
+  }
+}
+
+void _confirmCancelOrder(BuildContext context, String orderId) {
+  final viewModel = context.read<ActiveOrderViewModel>();
+  AppDialog.show(
+    context: context,
+    title: AppStrings.cancelOrderConfirmTitle,
+    description: AppStrings.cancelOrderConfirmDescription,
+    confirmText: AppStrings.confirm,
+    cancelText: AppStrings.cancel,
+    onConfirm: () => viewModel.cancelOrder(orderId),
+  );
+}
+
+class _CompleteButton extends StatelessWidget {
+  final bool isLoading;
+  final bool enabled;
+  final VoidCallback onPressed;
+
+  const _CompleteButton({
+    required this.isLoading,
+    required this.enabled,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: 52,
+      child: ElevatedButton(
+        onPressed: enabled ? onPressed : null,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.pink,
+          disabledBackgroundColor: AppColors.whiteGrey,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+        child: isLoading
+            ? const SizedBox(
+                width: 22,
+                height: 22,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: AppColors.white,
+                ),
+              )
+            : Text(AppStrings.completeOrder, style: TextStyles.buttonTextStyle),
+      ),
+    );
+  }
+}
+
+class _CancelButton extends StatelessWidget {
+  final bool isLoading;
+  final bool enabled;
+  final VoidCallback onPressed;
+
+  const _CancelButton({
+    required this.isLoading,
+    required this.enabled,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: 52,
+      child: OutlinedButton(
+        onPressed: enabled ? onPressed : null,
+        style: OutlinedButton.styleFrom(
+          side: const BorderSide(color: AppColors.pink),
+          foregroundColor: AppColors.pink,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+        child: isLoading
+            ? const SizedBox(
+                width: 22,
+                height: 22,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: AppColors.pink,
+                ),
+              )
+            : Text(
+                AppStrings.cancelOrder,
+                style: TextStyles.buttonTextStyle.copyWith(
+                  color: AppColors.pink,
+                ),
+              ),
+      ),
+    );
   }
 }
 
@@ -175,10 +308,7 @@ class _StatusCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final label = _statusLabels()[status] ?? status;
-    final dateStr =
-        '${createdAt.day}/${createdAt.month}/${createdAt.year}  '
-        '${createdAt.hour.toString().padLeft(2, '0')}:'
-        '${createdAt.minute.toString().padLeft(2, '0')}';
+    final dateStr = DateFormat(_dateTimePattern).format(createdAt);
 
     return Container(
       width: double.infinity,
@@ -324,14 +454,30 @@ class _AddressCard extends StatelessWidget {
               if (phone?.isNotEmpty == true) ...[
                 const SizedBox(width: 8),
                 IconButton(
-                  icon: const Icon(Icons.call_outlined, color: AppColors.green),
+                  tooltip: AppStrings.callLabel,
+                  icon: SvgPicture.asset(
+                    Assets.assetsIconsPhoneCall,
+                    width: _contactIconSize,
+                    height: _contactIconSize,
+                    colorFilter: const ColorFilter.mode(
+                      AppColors.green,
+                      BlendMode.srcIn,
+                    ),
+                    semanticsLabel: AppStrings.callLabel,
+                  ),
                   onPressed: () => _launchPhone(phone!),
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
                 ),
                 const SizedBox(width: 4),
                 IconButton(
-                  icon: const Icon(Icons.chat_outlined, color: AppColors.green),
+                  tooltip: AppStrings.whatsappLabel,
+                  icon: SvgPicture.asset(
+                    Assets.assetsIconsWhatsapp,
+                    width: _contactIconSize,
+                    height: _contactIconSize,
+                    semanticsLabel: AppStrings.whatsappLabel,
+                  ),
                   onPressed: () => _launchWhatsApp(phone!),
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
@@ -474,13 +620,13 @@ class _ActionButton extends StatelessWidget {
 
   String _label() {
     switch (status) {
-      case 'accepted':
+      case OrderStatus.accepted:
         return AppStrings.actionArrivedPickup;
-      case 'arrived_pickup':
+      case OrderStatus.arrivedPickup:
         return AppStrings.actionStartDeliver;
-      case 'out_for_delivery':
+      case OrderStatus.outForDelivery:
         return AppStrings.actionArrivedToUser;
-      case 'arrived_user':
+      case OrderStatus.arrivedUser:
         return AppStrings.actionDeliveredToUser;
       default:
         return '';
@@ -488,8 +634,8 @@ class _ActionButton extends StatelessWidget {
   }
 
   bool _isEnabled() {
-    if (status == 'delivered') return false;
-    if (status == 'arrived_user') return userConfirmed;
+    if (status == OrderStatus.delivered) return false;
+    if (status == OrderStatus.arrivedUser) return userConfirmed;
     return true;
   }
 

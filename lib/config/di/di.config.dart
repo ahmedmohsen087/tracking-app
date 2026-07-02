@@ -65,8 +65,10 @@ import '../../features/orders/domain/repository_contract/orders_repository_contr
     as _i440;
 import '../../features/orders/domain/use_cases/start_order_use_case.dart'
     as _i810;
-import '../../features/orders/presentation/view_models/order_details_view_model/order_details_view_model.dart'
-    as _i994;
+import '../../features/orders/domain/use_cases/update_order_state_use_case.dart'
+    as _i65;
+import '../../features/orders/presentation/view_models/active_order_view_model/active_order_view_model.dart'
+    as _i1042;
 import '../../features/profile/api/data_sources_impl/profile_remote_data_source_impl.dart'
     as _i1028;
 import '../../features/profile/api/profile_api_client/profile_api_client.dart'
@@ -128,12 +130,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i92.FcmService>(() => _i92.FcmService());
     gh.factory<_i902.MediaService>(() => _i902.MediaServiceImpl());
-    gh.factory<_i994.OrderDetailsViewModel>(
-      () => _i994.OrderDetailsViewModel(
-        gh<_i92.FcmService>(),
-        gh<_i974.FirebaseFirestore>(),
-      ),
-    );
     gh.lazySingleton<_i611.SecureStorageService>(
       () => _i611.SecureStorageService(gh<_i558.FlutterSecureStorage>()),
     );
@@ -215,6 +211,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i810.StartOrderUseCase>(
       () => _i810.StartOrderUseCase(gh<_i440.OrdersRepositoryContract>()),
     );
+    gh.factory<_i65.UpdateOrderStateUseCase>(
+      () => _i65.UpdateOrderStateUseCase(gh<_i440.OrdersRepositoryContract>()),
+    );
     gh.factory<_i148.AuthRepositoryContract>(
       () => _i954.AuthRepositoryImpl(
         gh<_i95.AuthRemoteDataSourceContract>(),
@@ -260,6 +259,22 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i967.UploadPhotoUseCase>(),
       ),
     );
+    gh.factory<_i77.HomeViewModel>(
+      () => _i77.HomeViewModel(
+        gh<_i1006.GetOrdersUseCase>(),
+        gh<_i810.StartOrderUseCase>(),
+        gh<_i110.GetProfileUseCase>(),
+        gh<_i92.FcmService>(),
+        gh<_i974.FirebaseFirestore>(),
+      ),
+    );
+    gh.factory<_i1042.ActiveOrderViewModel>(
+      () => _i1042.ActiveOrderViewModel(
+        gh<_i92.FcmService>(),
+        gh<_i974.FirebaseFirestore>(),
+        gh<_i65.UpdateOrderStateUseCase>(),
+      ),
+    );
     gh.factory<_i743.ApplyUseCase>(
       () => _i743.ApplyUseCase(gh<_i148.AuthRepositoryContract>()),
     );
@@ -274,14 +289,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i628.ForgetPasswordViewModel>(
       () => _i628.ForgetPasswordViewModel(gh<_i483.ForgetPasswordUseCase>()),
-    );
-    gh.factory<_i77.HomeViewModel>(
-      () => _i77.HomeViewModel(
-        gh<_i1006.GetOrdersUseCase>(),
-        gh<_i810.StartOrderUseCase>(),
-        gh<_i92.FcmService>(),
-        gh<_i974.FirebaseFirestore>(),
-      ),
     );
     return this;
   }

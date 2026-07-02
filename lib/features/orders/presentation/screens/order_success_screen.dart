@@ -57,7 +57,7 @@ class _OrderSuccessScreenState extends State<OrderSuccessScreen>
               children: [
                 AnimatedBuilder(
                   animation: _controller,
-                  builder: (_, __) {
+                  builder: (_, _) {
                     return Stack(
                       alignment: Alignment.center,
                       children: [

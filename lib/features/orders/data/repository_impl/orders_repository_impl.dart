@@ -27,4 +27,12 @@ class OrdersRepositoryImpl implements OrdersRepositoryContract {
         );
     }
   }
+
+  @override
+  Future<BaseResponse<void>> updateOrderState(
+    String orderId,
+    String state,
+  ) {
+    return _dataSource.updateOrderState(orderId, state);
+  }
 }
