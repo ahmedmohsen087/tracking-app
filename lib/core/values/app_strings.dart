@@ -191,6 +191,10 @@ class AppStrings {
   static String get userAddress => 'userAddress'.tr();
   static String get reject => 'reject'.tr();
   static String get accept => 'accept'.tr();
+  static String get myOrders => 'myOrders'.tr();
+  static String get cancelled => 'cancelled'.tr();
+  static String get completed => 'completed'.tr();
+  static String get recentOrders => 'recentOrders'.tr();
 
   // profile
   static String get vehicleInfo => 'vehicleInfo'.tr();

@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import '../../domain/entities/driver_entity.dart';
 part 'driver_model.g.dart';
 
 @JsonSerializable()
@@ -55,4 +56,24 @@ class Driver {
   factory Driver.fromJson(Map<String, dynamic> json) => _$DriverFromJson(json);
 
   Map<String, dynamic> toJson() => _$DriverToJson(this);
+
+  DriverEntity toDomain() {
+    return DriverEntity(
+      id: id,
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      phone: phone,
+      photo: photo,
+      gender: gender,
+      country: country,
+      role: role,
+      vehicleType: vehicleType,
+      vehicleNumber: vehicleNumber,
+      vehicleLicense: vehicleLicense,
+      nid: nid,
+      nidImg: nidImg,
+      createdAt: createdAt,
+    );
+  }
 }

@@ -153,4 +153,10 @@
   "pleaseEnterYourEmailAssociatedToYourAccount": "please enter your email associated to your account",
   "didntReciveCode" : "didn't recive code ?",
   "hitTextForResetPassword" : "hit text for reset password"
-} 
+}
+  "noProfileDataAvailable": "No profile data available",
+  "myOrders": "My Orders",
+  "cancelled": "Cancelled",
+  "completed": "Completed",
+  "recentOrders": "Recent Orders"
+}

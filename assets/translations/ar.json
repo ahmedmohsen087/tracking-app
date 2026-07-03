@@ -155,5 +155,16 @@
   "pleaseEnterYourEmailAssociatedToYourAccount" : "برجاء ادخال الايميل الخاص بحسابك",
   "didntReciveCode" : " لم يصلك الكود ؟",
   "hitTextForResetPassword" : "اضغط على نص لإعادة تعيين كلمة المرور"
+  "noProfileDataAvailable": "لا تتوفر بيانات للملف الشخصي",
+  "myOrders": "آوردراتي ",
+  "cancelled": "أُلغِيَ",
+  "completed": "مكتمل",
+  "recentOrders": "الآوردرات الحالية"
+
+
+
+
+
+
 
 }
