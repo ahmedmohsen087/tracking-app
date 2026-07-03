@@ -154,8 +154,7 @@
   "noProfileDataAvailable": "لا تتوفر بيانات للملف الشخصي",
   "pleaseEnterYourEmailAssociatedToYourAccount" : "برجاء ادخال الايميل الخاص بحسابك",
   "didntReciveCode" : " لم يصلك الكود ؟",
-  "hitTextForResetPassword" : "اضغط على نص لإعادة تعيين كلمة المرور"
-  "noProfileDataAvailable": "لا تتوفر بيانات للملف الشخصي",
+  "hitTextForResetPassword" : "اضغط على نص لإعادة تعيين كلمة المرور",
   "myOrders": "آوردراتي ",
   "cancelled": "أُلغِيَ",
   "completed": "مكتمل",
