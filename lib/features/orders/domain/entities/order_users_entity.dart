@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-class MyUsersEntity extends Equatable{
+class OrderUsersEntity extends Equatable{
  final String id;
  final String? firstName;
  final String lastName;
@@ -10,7 +10,7 @@ class MyUsersEntity extends Equatable{
  final String photo;
  final DateTime passwordChangedAt;
  final bool resetCodeVerified;
- const MyUsersEntity({
+ const OrderUsersEntity({
    required this.id,
    required this.firstName,
    required this.lastName,

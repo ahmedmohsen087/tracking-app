@@ -1,22 +1,29 @@
 import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 import 'my_order_item_entity.dart';
-import 'my_users_entity.dart';
 import 'order_shipping_address_entity.dart';
+import 'order_users_entity.dart';
 
 enum PaymentType {
+  @JsonValue('cash')
   cash,
 }
 
 enum OrderState {
+  @JsonValue('completed')
   completed,
+
+  @JsonValue('inProgress')
   inProgress,
+
+  @JsonValue('cancelled')
   cancelled,
 }
 
 class MyOrdersEntity extends Equatable {
   final String id;
-  final MyUsersEntity user;
+  final OrderUsersEntity user;
   final List<MyOrderItemEntity> orderItems;
   final double totalPrice;
   final OrderShippingAddressEntity shippingAddress;
@@ -49,19 +56,19 @@ class MyOrdersEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        user,
-        orderItems,
-        totalPrice,
-        shippingAddress,
-        paymentType,
-        isPaid,
-        paidAt,
-        isDelivered,
-        state,
-        createdAt,
-        updatedAt,
-        v,
-        orderNumber,
-      ];
+    id,
+    user,
+    orderItems,
+    totalPrice,
+    shippingAddress,
+    paymentType,
+    isPaid,
+    paidAt,
+    isDelivered,
+    state,
+    createdAt,
+    updatedAt,
+    v,
+    orderNumber,
+  ];
 }

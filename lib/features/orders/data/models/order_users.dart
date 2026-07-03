@@ -1,9 +1,9 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import '../../domain/entities/my_users_entity.dart';
-part 'my_users.g.dart';
+import '../../domain/entities/order_users_entity.dart';
+part 'order_users.g.dart';
 @JsonSerializable()
-class MyUsers {
+class OrderUsers {
   @JsonKey(name: "_id")
   String? id;
   @JsonKey(name: "firstName")
@@ -23,7 +23,7 @@ class MyUsers {
   @JsonKey(name: "resetCodeVerified")
   bool? resetCodeVerified;
 
-  MyUsers({
+  OrderUsers({
     this.id,
     this.firstName,
     this.lastName,
@@ -35,11 +35,11 @@ class MyUsers {
     this.resetCodeVerified,
   });
 
-  factory MyUsers.fromJson(Map<String, dynamic> json) => _$MyUsersFromJson(json);
+  factory OrderUsers.fromJson(Map<String, dynamic> json) => _$OrderUsersFromJson(json);
 
-  Map<String, dynamic> toJson() => _$MyUsersToJson(this);
-  MyUsersEntity toDomain (){
-    return MyUsersEntity(
+  Map<String, dynamic> toJson() => _$OrderUsersToJson(this);
+  OrderUsersEntity toDomain (){
+    return OrderUsersEntity(
       id: id ?? '',
       firstName: firstName,
       lastName: lastName ?? '',

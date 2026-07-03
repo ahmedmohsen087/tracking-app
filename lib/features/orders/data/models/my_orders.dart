@@ -2,57 +2,56 @@ import 'package:json_annotation/json_annotation.dart';
 
 import '../../domain/entities/my_orders_entity.dart';
 import 'my_order_item.dart';
-import 'my_users.dart';
 import 'order_shipping_address.dart';
+import 'order_users.dart';
 
 part 'my_orders.g.dart';
-
-enum PaymentTypeModel {
-  @JsonValue("cash")
-  cash,
-}
-
-enum OrderStateModel {
-  @JsonValue("completed")
-  completed,
-  @JsonValue("inProgress")
-  inProgress,
-  @JsonValue("cancelled")
-  cancelled,
-}
 
 @JsonSerializable()
 class MyOrders {
   @JsonKey(name: "_id")
-  String? id;
-  @JsonKey(name: "user")
-  MyUsers? user;
-  @JsonKey(name: "orderItems")
-  List<MyOrderItem>? orderItems;
-  @JsonKey(name: "totalPrice")
-  double? totalPrice;
-  @JsonKey(name: "shippingAddress")
-  OrderShippingAddress? shippingAddress;
-  @JsonKey(name: "paymentType")
-  PaymentTypeModel? paymentType;
-  @JsonKey(name: "isPaid")
-  bool? isPaid;
-  @JsonKey(name: "paidAt")
-  DateTime? paidAt;
-  @JsonKey(name: "isDelivered")
-  bool? isDelivered;
-  @JsonKey(name: "state")
-  OrderStateModel? state;
-  @JsonKey(name: "createdAt")
-  DateTime? createdAt;
-  @JsonKey(name: "updatedAt")
-  DateTime? updatedAt;
-  @JsonKey(name: "orderNumber")
-  String? orderNumber;
-  @JsonKey(name: "__v")
-  int? v;
+  final String? id;
 
-  MyOrders({
+  @JsonKey(name: "user")
+  final OrderUsers? user;
+
+  @JsonKey(name: "orderItems")
+  final List<MyOrderItem>? orderItems;
+
+  @JsonKey(name: "totalPrice")
+  final double? totalPrice;
+
+  @JsonKey(name: "shippingAddress")
+  final OrderShippingAddress? shippingAddress;
+
+  @JsonKey(name: "paymentType")
+  final PaymentType? paymentType;
+
+  @JsonKey(name: "isPaid")
+  final bool? isPaid;
+
+  @JsonKey(name: "paidAt")
+  final DateTime? paidAt;
+
+  @JsonKey(name: "isDelivered")
+  final bool? isDelivered;
+
+  @JsonKey(name: "state")
+  final OrderState? state;
+
+  @JsonKey(name: "createdAt")
+  final DateTime? createdAt;
+
+  @JsonKey(name: "updatedAt")
+  final DateTime? updatedAt;
+
+  @JsonKey(name: "orderNumber")
+  final String? orderNumber;
+
+  @JsonKey(name: "__v")
+  final int? v;
+
+  const MyOrders({
     this.id,
     this.user,
     this.orderItems,
@@ -69,48 +68,28 @@ class MyOrders {
     this.v,
   });
 
-  factory MyOrders.fromJson(Map<String, dynamic> json) => _$MyOrdersFromJson(json);
+  factory MyOrders.fromJson(Map<String, dynamic> json) =>
+      _$MyOrdersFromJson(json);
 
   Map<String, dynamic> toJson() => _$MyOrdersToJson(this);
 
   MyOrdersEntity toDomain() {
     return MyOrdersEntity(
       id: id ?? '',
-      user: user?.toDomain() ?? MyUsers().toDomain(),
+      user: user?.toDomain() ?? OrderUsers().toDomain(),
       orderItems: orderItems?.map((e) => e.toDomain()).toList() ?? [],
       totalPrice: totalPrice ?? 0,
-      shippingAddress: shippingAddress?.toDomain() ?? OrderShippingAddress().toDomain(),
-      paymentType: _mapPaymentType(paymentType),
+      shippingAddress:
+      shippingAddress?.toDomain() ?? OrderShippingAddress().toDomain(),
+      paymentType: paymentType ?? PaymentType.cash,
       isPaid: isPaid ?? false,
       paidAt: paidAt ?? DateTime.now(),
       isDelivered: isDelivered ?? false,
-      state: _mapOrderState(state),
+      state: state ?? OrderState.inProgress,
       createdAt: createdAt ?? DateTime.now(),
       updatedAt: updatedAt ?? DateTime.now(),
       v: v ?? 0,
       orderNumber: orderNumber ?? '',
     );
-  }
-
-  PaymentType _mapPaymentType(PaymentTypeModel? model) {
-    switch (model) {
-      case PaymentTypeModel.cash:
-        return PaymentType.cash;
-      default:
-        return PaymentType.cash;
-    }
-  }
-
-  OrderState _mapOrderState(OrderStateModel? model) {
-    switch (model) {
-      case OrderStateModel.completed:
-        return OrderState.completed;
-      case OrderStateModel.inProgress:
-        return OrderState.inProgress;
-      case OrderStateModel.cancelled:
-        return OrderState.cancelled;
-      default:
-        return OrderState.inProgress;
-    }
   }
 }

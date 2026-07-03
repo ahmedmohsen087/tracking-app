@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
 
-class MyProductEntity extends Equatable{
+class OrderProductEntity extends Equatable{
  final String id;
  final int price;
- const MyProductEntity({
+ const OrderProductEntity({
    required this.id,
    required this.price,
  });

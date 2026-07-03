@@ -4,7 +4,7 @@ import '../../../../../config/base_response/base_response.dart';
 import '../../../../../config/base_state/base_state.dart';
 import '../../api/request_models/get_my_orders_request.dart';
 import '../../domain/entities/my_order_element_entity.dart';
-import '../../domain/entities/my_order_response_entity.dart';
+import '../../domain/entities/get_order_response_entity.dart';
 import '../../domain/use_cases/get_my_orders_use_case.dart';
 import 'my_order_state.dart';
 import 'my_orders_events.dart';
@@ -91,7 +91,7 @@ class MyOrdersViewModel extends Cubit<MyOrderState> {
     );
 
     switch (response) {
-      case SuccessBaseResponse<MyOrderResponseEntity>():
+      case SuccessBaseResponse<GetOrderResponseEntity>():
         final currentOrders = refresh
             ? <MyOrderElementEntity>[]
             : state.getOrdersState.data ?? <MyOrderElementEntity>[];
@@ -112,7 +112,7 @@ class MyOrdersViewModel extends Cubit<MyOrderState> {
           ),
         );
 
-      case ErrorBaseResponse<MyOrderResponseEntity>():
+      case ErrorBaseResponse<GetOrderResponseEntity>():
         final currentOrders =
             state.getOrdersState.data ?? <MyOrderElementEntity>[];
 
