@@ -29,7 +29,6 @@ class ProfileRepositoryImpl implements ProfileRepositoryContract {
   ProfileRepositoryImpl(this._profileRemoteDataSourceContract,
       this._authManager,
       );
-
   @override
   Future<BaseResponse<ProfileDriverEntity>> getProfile() async {
     final response = await _profileRemoteDataSourceContract.getProfile();
