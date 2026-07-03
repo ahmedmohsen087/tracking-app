@@ -1,42 +1,57 @@
 import 'package:flowery_rider_app/config/base_response/base_response.dart';
-import 'package:flowery_rider_app/core/entities/auth_response_entity.dart';
-import 'package:flowery_rider_app/features/login/api/request_models/login_request_model.dart';
-import 'package:flowery_rider_app/features/login/domain/repository/login_repository.dart';
-import 'package:flowery_rider_app/features/login/domain/use_cases/login_use_case.dart';
+import 'package:flowery_rider_app/features/auth/api/request_models/login_request_model.dart';
+import 'package:flowery_rider_app/features/auth/domain/entities/auth_response_entity.dart';
+import 'package:flowery_rider_app/features/auth/domain/entities/driver_entity.dart';
+import 'package:flowery_rider_app/features/auth/domain/repository_contract/auth_repository_contract.dart';
+import 'package:flowery_rider_app/features/auth/domain/use_cases/login_use_case.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import 'login_use_case_test.mocks.dart';
 
-@GenerateMocks([LoginRepository])
+const tDriverEntity = DriverEntity(
+  id: 'dummy',
+  firstName: 'dummy',
+  lastName: 'dummy',
+  email: 'dummy@example.com',
+  gender: 'dummy',
+  phone: 'dummy',
+  photo: 'dummy',
+  role: 'dummy',
+);
+
+@GenerateMocks([AuthRepositoryContract])
 void main() {
   provideDummy<BaseResponse<AuthResponseEntity>>(
     SuccessBaseResponse<AuthResponseEntity>(
-      data: const AuthResponseEntity(token: 'dummy_token', user: null),
+      data: const AuthResponseEntity(
+        token: 'dummy_token',
+        message: '',
+        driver: tDriverEntity,
+      ),
     ),
   );
 
-  late MockLoginRepository mockRepository;
+  late MockAuthRepositoryContract mockRepository;
   late LoginUseCase useCase;
 
   const tEmail = 'test@example.com';
   const tPassword = 'password123';
-  const tRememberMe = true;
 
   final tLoginRequestModel = LoginRequestModel(
     email: tEmail,
     password: tPassword,
-    rememberMe: tRememberMe,
   );
 
-  const tAuthResponseEntity = AuthResponseEntity(
+  final tAuthResponseEntity = AuthResponseEntity(
     token: 'mocked_jwt_token',
-    user: null,
+    message: 'Success',
+    driver: tDriverEntity,
   );
 
   setUp(() {
-    mockRepository = MockLoginRepository();
+    mockRepository = MockAuthRepositoryContract();
     useCase = LoginUseCase(mockRepository);
   });
 
@@ -50,23 +65,18 @@ void main() {
         );
         when(
           mockRepository.login(
-            email: tEmail,
-            password: tPassword,
-            rememberMe: tRememberMe,
-          ),
+              loginRequestModel: anyNamed('loginRequestModel')),
         ).thenAnswer((_) async => expectedResponse);
 
         // Act
-        final result = await useCase.execute(requestModel: tLoginRequestModel);
+        final result = await useCase.execute(
+            loginRequestModel: tLoginRequestModel);
 
         // Assert
         expect(result, expectedResponse);
         verify(
           mockRepository.login(
-            email: tEmail,
-            password: tPassword,
-            rememberMe: tRememberMe,
-          ),
+              loginRequestModel: anyNamed('loginRequestModel')),
         ).called(1);
         verifyNoMoreInteractions(mockRepository);
       },
@@ -76,30 +86,23 @@ void main() {
       'should forward params to repository and return ErrorBaseResponse on failure',
       () async {
         // Arrange
-        final exception = Exception('Invalid Credentials');
         final expectedResponse = ErrorBaseResponse<AuthResponseEntity>(
           errorMessage: 'Invalid Credentials',
-          exception: exception,
         );
         when(
           mockRepository.login(
-            email: tEmail,
-            password: tPassword,
-            rememberMe: tRememberMe,
-          ),
+              loginRequestModel: anyNamed('loginRequestModel')),
         ).thenAnswer((_) async => expectedResponse);
 
         // Act
-        final result = await useCase.execute(requestModel: tLoginRequestModel);
+        final result = await useCase.execute(
+            loginRequestModel: tLoginRequestModel);
 
         // Assert
         expect(result, expectedResponse);
         verify(
           mockRepository.login(
-            email: tEmail,
-            password: tPassword,
-            rememberMe: tRememberMe,
-          ),
+              loginRequestModel: anyNamed('loginRequestModel')),
         ).called(1);
         verifyNoMoreInteractions(mockRepository);
       },

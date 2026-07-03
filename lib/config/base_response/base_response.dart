@@ -7,5 +7,5 @@ class SuccessBaseResponse<T> extends BaseResponse<T> {
 
 class ErrorBaseResponse<T> extends BaseResponse<T> {
   final String errorMessage;
-  ErrorBaseResponse({required this.errorMessage, required Object exception});
+  ErrorBaseResponse({required this.errorMessage});
 }

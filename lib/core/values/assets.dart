@@ -25,6 +25,8 @@ class Assets {
 
   static const String assetsIconsDiamond = "assets/icons/diamond.svg";
 
+  static const String assetsIconsEgyptFlag = "assets/icons/egypt_flag.svg";
+
   static const String assetsIconsError = "assets/icons/error.svg";
 
   static const String assetsIconsFactCheck = "assets/icons/fact_check.svg";
@@ -32,6 +34,8 @@ class Assets {
   static const String assetsIconsGoButton = "assets/icons/go_button.svg";
 
   static const String assetsIconsHome = "assets/icons/home.svg";
+
+  static const String assetsIconsKuwaitFlag = "assets/icons/kuwait_flag.svg";
 
   static const String assetsIconsLocation = "assets/icons/location.svg";
 
@@ -47,6 +51,8 @@ class Assets {
 
   static const String assetsIconsRemove = "assets/icons/remove.svg";
 
+  static const String assetsIconsSaudiFlag = "assets/icons/saudi_flag.svg";
+
   static const String assetsIconsSchedule = "assets/icons/schedule.svg";
 
   static const String assetsIconsSearch = "assets/icons/search.svg";
@@ -56,6 +62,8 @@ class Assets {
   static const String assetsIconsTranslate = "assets/icons/translate.svg";
 
   static const String assetsIconsTulip = "assets/icons/tulip.svg";
+
+  static const String assetsIconsUaeFlag = "assets/icons/uae_flag.svg";
 
   static const String assetsIconsUpload = "assets/icons/upload.svg";
 
@@ -72,4 +80,9 @@ class Assets {
   static const String assetsTranslationsAr = "assets/translations/ar.json";
 
   static const String assetsTranslationsEn = "assets/translations/en.json";
+
+  static const String appBarIcon = "assets/images/flowery_rider.png";
+  static const String flowerLogo = "assets/images/flowerylogo.png";
+  static const String userLogo = "assets/images/userlogo.png";
+
 }

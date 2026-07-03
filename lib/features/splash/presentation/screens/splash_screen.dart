@@ -40,14 +40,12 @@ class _SplashScreenState extends State<SplashScreen>
   final List<Timer> _timers = [];
   int _step = 0;
 
-  late final bool _isLoggedIn;
   late final Future<bool> _seenOnboardingFuture;
 
   @override
   void initState() {
     super.initState();
 
-    _isLoggedIn = getIt<AuthManager>().isLoggedIn;
     _seenOnboardingFuture = getIt<SecureStorageService>().readSeenOnboarding();
 
     _logoController = AnimationController(
@@ -115,13 +113,13 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   Future<void> _onHeroPhaseComplete() async {
-    if (_isLoggedIn) {
-      Navigator.of(context).pushReplacementNamed(AppRoutsName.homeScreen);
-      return;
-    }
-
     final seenOnboarding = await _seenOnboardingFuture;
     if (!mounted) return;
+
+    if (getIt<AuthManager>().isLoggedIn) {
+      Navigator.of(context).pushReplacementNamed(AppRoutsName.sectionApp);
+      return;
+    }
 
     if (seenOnboarding) {
       Navigator.of(context).pushReplacementNamed(AppRoutsName.loginScreen);
@@ -158,7 +156,7 @@ class _SplashScreenState extends State<SplashScreen>
 
   void _onApplyNow() {
     getIt<SecureStorageService>().writeSeenOnboarding(true);
-    Navigator.of(context).pushReplacementNamed(AppRoutsName.registerScreen);
+    Navigator.of(context).pushReplacementNamed(AppRoutsName.applyScreen);
   }
 
   @override

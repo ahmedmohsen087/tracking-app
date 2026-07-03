@@ -1,0 +1,18 @@
+[
+  {
+    "id": "6a32b278992612ae599acf91",
+    "label": "Car"
+  },
+  {
+    "id": "6a32b312992612ae599acfb2",
+    "label": "Motorcycle"
+  },
+  {
+    "id": "6a32b384992612ae599acfb9",
+    "label": "Bicycle"
+  },
+  {
+    "id": "6a32b384992612ae599acfc0",
+    "label": "Van"
+  }
+]

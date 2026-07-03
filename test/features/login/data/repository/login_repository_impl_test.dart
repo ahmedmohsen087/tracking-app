@@ -1,54 +1,38 @@
 import 'package:flowery_rider_app/config/auth/auth_manager.dart';
 import 'package:flowery_rider_app/config/base_response/base_response.dart';
-import 'package:flowery_rider_app/core/entities/auth_response_entity.dart';
-import 'package:flowery_rider_app/core/models/auth_response.dart';
-import 'package:flowery_rider_app/features/login/data/data_sources/login_remote_data_source.dart';
-import 'package:flowery_rider_app/features/login/data/repository/login_repository_impl.dart';
+import 'package:flowery_rider_app/features/auth/api/request_models/login_request_model.dart';
+import 'package:flowery_rider_app/features/auth/data/data_sources_contract/auth_remote_data_source_contract.dart';
+import 'package:flowery_rider_app/features/auth/data/models/auth_response_model.dart';
+import 'package:flowery_rider_app/features/auth/data/repository_impl/auth_repository_impl.dart';
+import 'package:flowery_rider_app/features/auth/domain/entities/auth_response_entity.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import 'login_repository_impl_test.mocks.dart';
 
-@GenerateMocks([LoginRemoteDataSource, AuthManager])
+@GenerateMocks([AuthRemoteDataSourceContract, AuthManager])
 void main() {
-  setUpAll(() {
-    final fallbackEntity = const AuthResponseEntity(token: 'dummy', user: null);
-    final dummyException = Exception('dummy');
-
-    provideDummy<BaseResponse<AuthResponseEntity>>(
-      SuccessBaseResponse<AuthResponseEntity>(data: fallbackEntity),
-    );
-    provideDummy<SuccessBaseResponse<AuthResponseEntity>>(
-      SuccessBaseResponse<AuthResponseEntity>(data: fallbackEntity),
-    );
-    provideDummy<ErrorBaseResponse<AuthResponseEntity>>(
-      ErrorBaseResponse<AuthResponseEntity>(
-        errorMessage: 'dummy_error',
-        exception: dummyException,
-      ),
-    );
-  });
-
-  late MockLoginRemoteDataSource mockRemoteDataSource;
+  late AuthRepositoryImpl repository;
+  late MockAuthRemoteDataSourceContract mockDataSource;
   late MockAuthManager mockAuthManager;
-  late LoginRepositoryImpl repository;
 
   const tEmail = 'test@example.com';
   const tPassword = 'password123';
-  const tRememberMe = true;
   const tToken = 'mocked_jwt_token';
+  final tLoginRequestModel = LoginRequestModel(
+      email: tEmail, password: tPassword);
 
-  final tAuthResponse = AuthResponse(
-    token: tToken,
-    message: 'Success',
-    user: null,
-  );
+  setUpAll(() {
+    provideDummy<BaseResponse<AuthResponseModel>>(
+      SuccessBaseResponse(data: AuthResponseModel()),
+    );
+  });
 
   setUp(() {
-    mockRemoteDataSource = MockLoginRemoteDataSource();
+    mockDataSource = MockAuthRemoteDataSourceContract();
     mockAuthManager = MockAuthManager();
-    repository = LoginRepositoryImpl(mockRemoteDataSource, mockAuthManager);
+    repository = AuthRepositoryImpl(mockDataSource, mockAuthManager);
   });
 
   group('login', () {
@@ -56,86 +40,64 @@ void main() {
       'should return SuccessBaseResponse and save auth data when login is successful',
       () async {
         // Arrange
+        final response = AuthResponseModel(message: 'Success', token: tToken);
         when(
-          mockRemoteDataSource.login(
-            email: anyNamed('email'),
-            password: anyNamed('password'),
-          ),
-        ).thenAnswer((_) async => tAuthResponse);
+          mockDataSource.login(
+              loginRequestModel: anyNamed('loginRequestModel')),
+        ).thenAnswer((_) async => SuccessBaseResponse(data: response));
 
         when(
-          mockAuthManager.setAuthData(
-            token: anyNamed('token'),
-            rememberMe: anyNamed('rememberMe'),
-            userId: anyNamed('userId'),
-          ),
+          mockAuthManager.setAuthData(token: anyNamed('token')),
         ).thenAnswer((_) async {});
 
         // Act
         final result = await repository.login(
-          email: tEmail,
-          password: tPassword,
-          rememberMe: tRememberMe,
-        );
+            loginRequestModel: tLoginRequestModel);
 
         // Assert
         expect(result, isA<SuccessBaseResponse<AuthResponseEntity>>());
+        expect(
+          (result as SuccessBaseResponse<AuthResponseEntity>).data.token,
+          tToken,
+        );
 
         verify(
-          mockRemoteDataSource.login(
-            email: anyNamed('email'),
-            password: anyNamed('password'),
-          ),
+          mockDataSource.login(
+              loginRequestModel: anyNamed('loginRequestModel')),
         ).called(1);
-
-        verify(
-          mockAuthManager.setAuthData(
-            token: anyNamed('token'),
-            rememberMe: anyNamed('rememberMe'),
-            userId: anyNamed('userId'),
-          ),
-        ).called(1);
-
-        verifyNoMoreInteractions(mockRemoteDataSource);
+        verify(mockAuthManager.setAuthData(token: tToken)).called(1);
+        verifyNoMoreInteractions(mockDataSource);
         verifyNoMoreInteractions(mockAuthManager);
       },
     );
 
     test(
-      'should return ErrorBaseResponse when remote data source login throws an exception',
+      'should return ErrorBaseResponse when remote data source login fails',
       () async {
         // Arrange
-        final exception = Exception('Network Failure');
         when(
-          mockRemoteDataSource.login(
-            email: anyNamed('email'),
-            password: anyNamed('password'),
-          ),
-        ).thenThrow(exception);
+          mockDataSource.login(
+              loginRequestModel: anyNamed('loginRequestModel')),
+        ).thenAnswer(
+          (_) async => ErrorBaseResponse(errorMessage: 'Network Failure'),
+        );
 
         // Act
         final result = await repository.login(
-          email: tEmail,
-          password: tPassword,
-          rememberMe: tRememberMe,
-        );
+            loginRequestModel: tLoginRequestModel);
 
         // Assert
         expect(result, isA<ErrorBaseResponse<AuthResponseEntity>>());
+        expect(
+          (result as ErrorBaseResponse<AuthResponseEntity>).errorMessage,
+          'Network Failure',
+        );
 
         verify(
-          mockRemoteDataSource.login(
-            email: anyNamed('email'),
-            password: anyNamed('password'),
-          ),
+          mockDataSource.login(
+              loginRequestModel: anyNamed('loginRequestModel')),
         ).called(1);
-        verifyNever(
-          mockAuthManager.setAuthData(
-            token: anyNamed('token'),
-            rememberMe: anyNamed('rememberMe'),
-            userId: anyNamed('userId'),
-          ),
-        );
+        verifyNever(mockAuthManager.setAuthData(token: anyNamed('token')));
       },
     );
   });

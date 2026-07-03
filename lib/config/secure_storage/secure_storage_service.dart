@@ -51,46 +51,6 @@ class SecureStorageService {
     }
   }
 
-  Future<void> writeUserId(String userId) async {
-    try {
-      if (userId.isEmpty) {
-        throw LocalStorageException(AppStrings.userIdEmpty);
-      }
-
-      await _secureStorage.write(key: SecureStorageKeys.userId, value: userId);
-    } catch (e, s) {
-      throw LocalStorageException(
-        AppStrings.userIdWriteFailed,
-        error: e,
-        stackTrace: s,
-      );
-    }
-  }
-
-  Future<String?> readUserId() async {
-    try {
-      return await _secureStorage.read(key: SecureStorageKeys.userId);
-    } catch (e, s) {
-      throw LocalStorageException(
-        AppStrings.userIdReadFailed,
-        error: e,
-        stackTrace: s,
-      );
-    }
-  }
-
-  Future<void> deleteUserId() async {
-    try {
-      await _secureStorage.delete(key: SecureStorageKeys.userId);
-    } catch (e, s) {
-      throw LocalStorageException(
-        AppStrings.userIdDeleteFailed,
-        error: e,
-        stackTrace: s,
-      );
-    }
-  }
-
   Future<void> writeRememberMe(bool value) async {
     try {
       await _secureStorage.write(
@@ -165,9 +125,11 @@ class SecureStorageService {
     }
   }
 
-  Future<void> clearAll() async {
+  Future<void> clearAuthData() async {
     try {
-      await _secureStorage.deleteAll();
+      await _secureStorage.delete(key: SecureStorageKeys.token);
+      await _secureStorage.delete(key: SecureStorageKeys.userId);
+      await _secureStorage.delete(key: SecureStorageKeys.rememberMe);
     } catch (e, s) {
       throw LocalStorageException(
         AppStrings.clearStorageFailed,

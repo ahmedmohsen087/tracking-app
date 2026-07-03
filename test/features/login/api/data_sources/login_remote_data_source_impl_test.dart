@@ -1,63 +1,77 @@
-import 'package:flowery_rider_app/core/models/auth_response.dart';
-import 'package:flowery_rider_app/features/login/api/data_sources/login_remote_data_source_impl.dart';
-import 'package:flowery_rider_app/features/login/api/login_api_client/login_api_client.dart';
+import 'package:flowery_rider_app/config/base_response/base_response.dart';
+import 'package:flowery_rider_app/features/auth/api/auth_api_client/auth_api_client.dart';
+import 'package:flowery_rider_app/features/auth/api/data_sources_impl/auth_remote_data_source_impl.dart';
+import 'package:flowery_rider_app/features/auth/api/request_models/login_request_model.dart';
+import 'package:flowery_rider_app/features/auth/data/models/auth_response_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import 'login_remote_data_source_impl_test.mocks.dart';
 
-@GenerateMocks([LoginApiClient])
+@GenerateMocks([AuthApiClient])
 void main() {
-  late MockLoginApiClient mockApiClient;
-  late LoginRemoteDataSourceImpl datasource;
+  late MockAuthApiClient mockApiClient;
+  late AuthRemoteDataSourceImpl datasource;
 
   const tEmail = 'test@example.com';
   const tPassword = 'password123';
+  final tLoginRequestModel = LoginRequestModel(
+      email: tEmail, password: tPassword);
 
-  final tAuthResponse = AuthResponse(
+  final tAuthResponse = AuthResponseModel(
     token: 'mocked_jwt_token_for_testing',
     message: 'Success',
   );
 
+  setUpAll(() {
+    provideDummy<BaseResponse<AuthResponseModel>>(
+      SuccessBaseResponse(data: AuthResponseModel()),
+    );
+  });
+
   setUp(() {
-    mockApiClient = MockLoginApiClient();
-    datasource = LoginRemoteDataSourceImpl(mockApiClient);
+    mockApiClient = MockAuthApiClient();
+    datasource = AuthRemoteDataSourceImpl(mockApiClient);
   });
 
   group('login', () {
     test(
-      'should return AuthResponse when api client login call succeeds',
+      'should return SuccessBaseResponse when api client login call succeeds',
       () async {
         // Arrange
         when(mockApiClient.login(any)).thenAnswer((_) async => tAuthResponse);
 
         // Act
         final result = await datasource.login(
-          email: tEmail,
-          password: tPassword,
+          loginRequestModel: tLoginRequestModel,
         );
 
         // Assert
-        expect(result, tAuthResponse);
+        expect(result, isA<SuccessBaseResponse<AuthResponseModel>>());
+        expect(
+          (result as SuccessBaseResponse<AuthResponseModel>).data,
+          tAuthResponse,
+        );
         verify(mockApiClient.login(any)).called(1);
         verifyNoMoreInteractions(mockApiClient);
       },
     );
 
     test(
-      'should throw an exception when api client login call fails',
+      'should return ErrorBaseResponse when api client login call fails',
       () async {
         // Arrange
         final exception = Exception('Invalid Credentials');
         when(mockApiClient.login(any)).thenThrow(exception);
 
-        // Act & Assert
-        expect(
-          () => datasource.login(email: tEmail, password: tPassword),
-          throwsA(isA<Exception>()),
+        // Act
+        final result = await datasource.login(
+          loginRequestModel: tLoginRequestModel,
         );
 
+        // Assert
+        expect(result, isA<ErrorBaseResponse<AuthResponseModel>>());
         verify(mockApiClient.login(any)).called(1);
         verifyNoMoreInteractions(mockApiClient);
       },

@@ -1,9 +1,9 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flowery_rider_app/config/base_response/base_response.dart';
-import 'package:flowery_rider_app/features/logout/domain/use_cases/logout_use_case.dart';
-import 'package:flowery_rider_app/features/logout/presentation/view_model/logout_events.dart';
-import 'package:flowery_rider_app/features/logout/presentation/view_model/logout_state.dart';
-import 'package:flowery_rider_app/features/logout/presentation/view_model/logout_view_model.dart';
+import 'package:flowery_rider_app/features/auth/domain/use_cases/logout_use_case.dart';
+import 'package:flowery_rider_app/features/auth/presentation/view_models/logout_view_model/logout_events.dart';
+import 'package:flowery_rider_app/features/auth/presentation/view_models/logout_view_model/logout_state.dart';
+import 'package:flowery_rider_app/features/auth/presentation/view_models/logout_view_model/logout_view_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
