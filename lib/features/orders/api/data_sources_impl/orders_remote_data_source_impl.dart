@@ -3,6 +3,7 @@ import 'package:flowery_rider_app/core/utils/error/error_handler.dart';
 import 'package:flowery_rider_app/features/orders/api/orders_api_client/orders_api_client.dart';
 import 'package:flowery_rider_app/features/orders/api/request_models/update_order_state_request.dart';
 import 'package:flowery_rider_app/features/orders/data/data_sources_contract/orders_remote_data_source_contract.dart';
+import 'package:flowery_rider_app/features/orders/data/models/get_order_response.dart';
 import 'package:flowery_rider_app/features/orders/data/models/start_order_response.dart';
 import 'package:injectable/injectable.dart';
 
@@ -37,6 +38,20 @@ class OrdersRemoteDataSourceImpl implements OrdersRemoteDataSourceContract {
     } catch (e) {
       final String message = ErrorHandler.handle(e);
       return ErrorBaseResponse<void>(errorMessage: message);
+    }
+  }
+
+  @override
+  Future<BaseResponse<GetOrderResponse>> getMyOrders({
+    required int page,
+    required int limit,
+  }) async {
+    try {
+      final response = await _apiClient.getMyOrders(page, limit);
+      return SuccessBaseResponse<GetOrderResponse>(data: response);
+    } catch (e) {
+      final String message = ErrorHandler.handle(e);
+      return ErrorBaseResponse<GetOrderResponse>(errorMessage: message);
     }
   }
 }
