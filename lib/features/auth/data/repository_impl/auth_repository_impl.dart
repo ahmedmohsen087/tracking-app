@@ -4,7 +4,7 @@ import 'package:flowery_rider_app/features/auth/api/request_models/forget_passwo
 import 'package:flowery_rider_app/features/auth/api/request_models/login_request_model.dart';
 import 'package:flowery_rider_app/features/auth/domain/entities/auth_response_entity.dart';
 import 'package:flowery_rider_app/features/auth/domain/entities/forget_password_entity.dart';
-import 'package:flowery_rider_app/features/auth/domain/mappers/auth_response_model_mapper.dart'; // المابير الموحد اللي عدلناه سوا
+import 'package:flowery_rider_app/features/auth/domain/mappers/auth_response_model_mapper.dart';
 import 'package:flowery_rider_app/features/auth/data/models/auth_response_model.dart';
 import 'package:flowery_rider_app/features/auth/api/request_models/apply_request_model.dart';
 import 'package:injectable/injectable.dart';

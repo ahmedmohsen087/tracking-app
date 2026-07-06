@@ -5,10 +5,18 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/text_styles.dart';
 
 class ItemSelected extends StatelessWidget {
-  final double? price;
+  final double price;
   final VoidCallback onReject;
+  final VoidCallback onAccept;
+  final bool isAccepting;
 
-  const ItemSelected({super.key, this.price, required this.onReject});
+  const ItemSelected({
+    super.key,
+    required this.price,
+    required this.onReject,
+    required this.onAccept,
+    this.isAccepting = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +26,7 @@ class ItemSelected extends StatelessWidget {
         spacing: 10,
         children: [
           Text(
-            'EGP ${price ?? 0}',
+            '${AppStrings.egp} $price',
             style: TextStyles.textFieldTextStyle.copyWith(
               fontWeight: FontWeight.w600,
             ),
@@ -28,7 +36,7 @@ class ItemSelected extends StatelessWidget {
               style: ButtonStyle(
                 backgroundColor: WidgetStateProperty.all(AppColors.white),
               ),
-              onPressed: onReject,
+              onPressed: isAccepting ? null : onReject,
               child: Text(
                 AppStrings.reject,
                 style: TextStyles.textFieldTextStyle.copyWith(
@@ -39,8 +47,17 @@ class ItemSelected extends StatelessWidget {
           ),
           Expanded(
             child: ElevatedButton(
-              onPressed: () {},
-              child: Text(AppStrings.accept),
+              onPressed: isAccepting ? null : onAccept,
+              child: isAccepting
+                  ? const SizedBox(
+                      width: 18,
+                      height: 18,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: AppColors.white,
+                      ),
+                    )
+                  : Text(AppStrings.accept),
             ),
           ),
         ],

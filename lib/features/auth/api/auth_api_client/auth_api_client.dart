@@ -15,34 +15,30 @@ abstract class AuthApiClient {
   @factoryMethod
   factory AuthApiClient(Dio dio) = _AuthApiClient;
 
-  // login
   @Extra({ApiParameters.requiresAuth: false})
   @POST(ApiEndpoints.login)
   Future<AuthResponseModel> login(@Body() LoginRequestModel body);
 
-  // apply
   @Extra({ApiParameters.requiresAuth: false})
   @POST(ApiEndpoints.applyDriver)
-  @MultiPart()
   Future<AuthResponseModel> applyAsDriver(@Body() FormData formData);
 
-  // logout
-  @GET(ApiEndpoints.logout)
-  Future<AuthResponseModel> logout();
-
-  // forget password
+  @Extra({ApiParameters.requiresAuth: false})
   @POST(ApiEndpoints.forgetPassword)
   Future<AuthResponseModel> forgetPassword(
     @Body() ForgetPasswordRequestModel body,
   );
 
-  // verify otp
+  @Extra({ApiParameters.requiresAuth: false})
   @POST(ApiEndpoints.verifyOtp)
   Future<AuthResponseModel> verifyOtp(@Body() ForgetPasswordRequestModel body);
 
-  // reset password
+  @Extra({ApiParameters.requiresAuth: false})
   @PUT(ApiEndpoints.resetPassword)
   Future<AuthResponseModel> resetPassword(
     @Body() ForgetPasswordRequestModel body,
   );
+  
+  @GET(ApiEndpoints.logout)
+  Future<AuthResponseModel> logout();
 }

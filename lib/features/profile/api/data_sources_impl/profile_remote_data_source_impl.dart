@@ -18,11 +18,10 @@ import '../responses/vehicle_types_response.dart';
 class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSourceContract {
   final ProfileApiClient profileApiClient;
   final MediaService _mediaService;
-  ProfileRemoteDataSourceImpl(this.profileApiClient,this._mediaService);
+  ProfileRemoteDataSourceImpl(this.profileApiClient, this._mediaService);
 
   @override
-  Future<BaseResponse<GetProfileResponse>> getProfile() async{
-
+  Future<BaseResponse<GetProfileResponse>> getProfile() async {
     try {
       final response = profileApiClient.getProfile();
       return SuccessBaseResponse<GetProfileResponse>(data: await response);
@@ -30,9 +29,8 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSourceContract {
       final message = ErrorHandler.handle(e);
       return ErrorBaseResponse<GetProfileResponse>(errorMessage: message);
     }
+  }
 
-
-}
   @override
   Future<BaseResponse<ProfileResponseModel>> changePassword({
     required ProfileRequestModel request,
@@ -45,7 +43,6 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSourceContract {
       return ErrorBaseResponse<ProfileResponseModel>(errorMessage: message);
     }
   }
-
 
   @override
   Future<BaseResponse<EditProfileResponse>> editProfile({
@@ -93,14 +90,12 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSourceContract {
     required EditVehicleInfoRequestModel requestModel,
   }) async {
     try {
-      // Use media service as requested for processing the file
       await _mediaService.createMultipartFile(
-          requestModel.vehicleLicenseFilePath);
+        requestModel.vehicleLicenseFilePath,
+      );
       return SuccessBaseResponse<String>(data: 'success');
     } catch (e) {
       return ErrorBaseResponse<String>(errorMessage: e.toString());
     }
   }
-    }
-
-
+}

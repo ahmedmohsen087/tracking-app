@@ -27,16 +27,14 @@ void main() {
   test(
     'should return SuccessBaseResponse from repository when logout succeeds',
     () async {
-      // Arrange
+
       final response = SuccessBaseResponse<AuthResponseEntity>(
         data: const AuthResponseEntity(),
       );
       when(mockRepository.logout()).thenAnswer((_) async => response);
 
-      // Act
       final result = await useCase.execute();
 
-      // Assert
       expect(result, response);
       verify(mockRepository.logout()).called(1);
       verifyNoMoreInteractions(mockRepository);
@@ -46,16 +44,14 @@ void main() {
   test(
     'should return ErrorBaseResponse from repository when logout fails',
     () async {
-      // Arrange
+
       final response = ErrorBaseResponse<AuthResponseEntity>(
         errorMessage: 'Logout Failed',
       );
       when(mockRepository.logout()).thenAnswer((_) async => response);
 
-      // Act
       final result = await useCase.execute();
 
-      // Assert
       expect(result, response);
       verify(mockRepository.logout()).called(1);
       verifyNoMoreInteractions(mockRepository);

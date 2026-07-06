@@ -48,3 +48,8 @@ app.*.map.json
 *.g.dart
 *.mocks.dart
 *.config.dart
+
+# Sensitive credentials — never commit
+assets/files/firebase_service_account.json
+google-services.json
+

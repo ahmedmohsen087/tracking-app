@@ -1,11 +1,14 @@
 // ignore_for_file: prefer_single_quotes
 class Assets {
   Assets._();
-
-  static const String assetsAnimationsOnboardingAnimation =
-      "assets/animations/onboarding_animation.json";
+  
+  static const String assetsAnimationsOnboardingAnimation = "assets/animations/onboarding_animation.json";
 
   static const String assetsFilesCountry = "assets/files/country.json";
+
+  static const String assetsFilesFirebaseServiceAccount = "assets/files/firebase_service_account.json";
+
+  static const String assetsFilesVehiclesType = "assets/files/vehicles_type.json";
 
   static const String assetsIconsArrowBack = "assets/icons/arrow_back.svg";
 
@@ -20,8 +23,6 @@ class Assets {
   static const String assetsIconsCheckCircle = "assets/icons/check_circle.svg";
 
   static const String assetsIconsDelete = "assets/icons/delete.svg";
-
-  static const String assetsIconsDeliveryBoy = "assets/icons/delivery_boy.svg";
 
   static const String assetsIconsDiamond = "assets/icons/diamond.svg";
 
@@ -47,6 +48,8 @@ class Assets {
 
   static const String assetsIconsPerson = "assets/icons/person.svg";
 
+  static const String assetsIconsPhoneCall = "assets/icons/phone_call.svg";
+
   static const String assetsIconsPhotoCamera = "assets/icons/photo_camera.svg";
 
   static const String assetsIconsRemove = "assets/icons/remove.svg";
@@ -67,22 +70,20 @@ class Assets {
 
   static const String assetsIconsUpload = "assets/icons/upload.svg";
 
-  static const String assetsIconsVisibilityOff =
-      "assets/icons/visibility_off.svg";
+  static const String assetsIconsVisibilityOff = "assets/icons/visibility_off.svg";
 
-  static const String assetsIconsVisibilityOn =
-      "assets/icons/visibility_on.svg";
+  static const String assetsIconsVisibilityOn = "assets/icons/visibility_on.svg";
 
   static const String assetsIconsWhatsapp = "assets/icons/whatsapp.svg";
 
   static const String assetsImagesAppIcon = "assets/images/app_icon.png";
 
+  static const String assetsImagesFloweryRider = "assets/images/flowery_rider.png";
+
+  static const String assetsImagesFlowerylogo = "assets/images/flowerylogo.png";
+
   static const String assetsTranslationsAr = "assets/translations/ar.json";
 
   static const String assetsTranslationsEn = "assets/translations/en.json";
-
-  static const String appBarIcon = "assets/images/flowery_rider.png";
-  static const String flowerLogo = "assets/images/flowerylogo.png";
-  static const String userLogo = "assets/images/userlogo.png";
-
 }
+
