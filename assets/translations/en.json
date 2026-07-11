@@ -140,5 +140,12 @@
   "myOrders": "My Orders",
   "cancelled": "Cancelled",
   "completed": "Completed",
-  "recentOrders": "Recent Orders"
+  "recentOrders": "Recent Orders",
+  "orderDetails": "Order Details",
+  "orderItems": "Order Items",
+  "total": "Total",
+  "paymentMethod": "Payment Method",
+  "cashOnDelivery": "Cash on delivery",
+  "inProgress": "In Progress",
+  "egpCurrency": "EGP"
 }

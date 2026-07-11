@@ -16,8 +16,10 @@ import 'package:flowery_rider_app/features/profile/presentation/view_models/chan
 import 'package:flowery_rider_app/features/splash/presentation/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../features/home/presentation/view_model/home_events.dart';
 import '../../features/home/presentation/view_model/home_view_model.dart';
+import '../../features/orders/presentation/screens/order_details_screen.dart';
 import '../../features/orders/presentation/view_models/my_orders_events.dart';
 import '../../features/orders/presentation/view_models/my_orders_view_model.dart';
 import '../../features/profile/presentation/view_models/get_profile_view_model/get_profile_event.dart';
@@ -108,6 +110,11 @@ class AppRoutes {
           builder: (_) => EditVehicleInfoScreen(driver: vehicleDriver),
         );
 
+      case AppRoutsName.orderDetailsScreen:
+        return MaterialPageRoute(
+          builder: (_) => const OrderDetailsScreen(),
+          settings: settings,
+        );
       default:
         return MaterialPageRoute(
           builder: (_) =>

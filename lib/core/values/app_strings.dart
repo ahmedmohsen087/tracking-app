@@ -179,6 +179,21 @@ class AppStrings {
   static String get completed => 'completed'.tr();
   static String get recentOrders => 'recentOrders'.tr();
 
+  // order details
+  static String get orderDetails => 'orderDetails'.tr();
+
+  static String get orderItems => 'orderItems'.tr();
+
+  static String get total => 'total'.tr();
+
+  static String get paymentMethod => 'paymentMethod'.tr();
+
+  static String get cashOnDelivery => 'cashOnDelivery'.tr();
+
+  static String get inProgress => 'inProgress'.tr();
+
+  static String get egpCurrency => 'egpCurrency'.tr();
+
   // profile
   static String get vehicleInfo => 'vehicleInfo'.tr();
   static String get language => 'language'.tr();

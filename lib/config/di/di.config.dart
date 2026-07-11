@@ -65,6 +65,8 @@ import '../../features/orders/domain/use_cases/get_my_orders_use_case.dart'
     as _i78;
 import '../../features/orders/presentation/view_models/my_orders_view_model.dart'
     as _i892;
+import '../../features/orders/presentation/view_models/order_details_view_model.dart'
+    as _i450;
 import '../../features/profile/api/data_sources_impl/profile_remote_data_source_impl.dart'
     as _i1028;
 import '../../features/profile/api/profile_api_client/profile_api_client.dart'
@@ -231,6 +233,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i892.MyOrdersViewModel>(
       () => _i892.MyOrdersViewModel(gh<_i78.GetMyOrdersUseCase>()),
+    );
+    gh.factory<_i450.OrderDetailsViewModel>(
+      () => _i450.OrderDetailsViewModel(),
     );
     gh.factory<_i530.GetProfileViewModel>(
       () => _i530.GetProfileViewModel(gh<_i110.GetProfileUseCase>()),
