@@ -9,6 +9,7 @@ import 'package:flowery_rider_app/features/home/domain/entities/order_entity.dar
 import 'package:flowery_rider_app/features/home/domain/entities/shipping_address_entity.dart';
 import 'package:flowery_rider_app/features/home/domain/entities/store_entity.dart';
 import 'package:flowery_rider_app/features/home/domain/entities/user_entity.dart';
+import 'package:flowery_rider_app/features/orders/data/services/driver_location_service.dart';
 import 'package:flowery_rider_app/features/orders/domain/use_cases/update_order_state_use_case.dart';
 import 'package:flowery_rider_app/features/orders/presentation/screens/active_order_screen.dart';
 import 'package:flowery_rider_app/features/orders/presentation/view_models/active_order_view_model/active_order_event.dart';
@@ -57,10 +58,12 @@ class _StubViewModel extends ActiveOrderViewModel {
     required FcmService fcmService,
     required FirebaseFirestore firestore,
     required UpdateOrderStateUseCase updateOrderStateUseCase,
-  }) : super(fcmService, firestore, updateOrderStateUseCase);
+    required DriverLocationService driverLocationService,
+  }) : super(fcmService, firestore, updateOrderStateUseCase,
+            driverLocationService);
 
   @override
-  void init(String orderId) {
+  Future<void> init(String orderId) async {
     emit(_presetState);
   }
 
@@ -68,11 +71,17 @@ class _StubViewModel extends ActiveOrderViewModel {
   void doEvent(ActiveOrderEvent event) {}
 }
 
-@GenerateMocks([FirebaseFirestore, FcmService, UpdateOrderStateUseCase])
+@GenerateMocks([
+  FirebaseFirestore,
+  FcmService,
+  UpdateOrderStateUseCase,
+  DriverLocationService,
+])
 void main() {
   late MockFirebaseFirestore mockFirestore;
   late MockFcmService mockFcmService;
   late MockUpdateOrderStateUseCase mockUpdateOrderStateUseCase;
+  late MockDriverLocationService mockDriverLocationService;
   late Map<String, dynamic> translations;
 
   const testOrderId = 'order-abc';
@@ -124,6 +133,7 @@ void main() {
     mockFirestore = MockFirebaseFirestore();
     mockFcmService = MockFcmService();
     mockUpdateOrderStateUseCase = MockUpdateOrderStateUseCase();
+    mockDriverLocationService = MockDriverLocationService();
 
     final fakeCollection = _FakeCollection();
     when(
@@ -143,6 +153,7 @@ void main() {
       fcmService: mockFcmService,
       firestore: mockFirestore,
       updateOrderStateUseCase: mockUpdateOrderStateUseCase,
+      driverLocationService: mockDriverLocationService,
     );
 
     if (getIt.isRegistered<ActiveOrderViewModel>()) {

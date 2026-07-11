@@ -204,4 +204,10 @@ abstract class AppStrings {
   static String get cancelOrderConfirmTitle => 'cancelOrderConfirmTitle'.tr();
   static String get cancelOrderConfirmDescription =>
       'cancelOrderConfirmDescription'.tr();
+
+  static String get showMap => 'showMap'.tr();
+  static String get goingToPickup => 'goingToPickup'.tr();
+  static String get goingToDelivery => 'goingToDelivery'.tr();
+  static String get eta => 'eta'.tr();
+  static String get distanceKm => 'distanceKm'.tr();
 }

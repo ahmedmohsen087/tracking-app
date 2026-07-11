@@ -167,5 +167,10 @@
   "cancelOrderConfirmTitle": "Cancel Order",
   "cancelOrderConfirmDescription": "Are you sure you want to cancel this order?",
   "callLabel": "Call",
-  "whatsappLabel": "WhatsApp"
+  "whatsappLabel": "WhatsApp",
+  "showMap": "Show Map",
+  "goingToPickup": "Going to Store",
+  "goingToDelivery": "Going to Customer",
+  "eta": "ETA",
+  "distanceKm": "km"
 }

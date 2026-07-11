@@ -7,6 +7,8 @@ import 'package:flowery_rider_app/config/firebase/fcm_config.dart';
 import 'package:flowery_rider_app/config/firebase/fcm_service.dart';
 import 'package:flowery_rider_app/core/values/firestore_keys.dart';
 import 'package:flowery_rider_app/core/values/order_status.dart';
+import 'package:flowery_rider_app/features/orders/data/services/background_location_service.dart';
+import 'package:flowery_rider_app/features/orders/data/services/driver_location_service.dart';
 import 'package:flowery_rider_app/features/orders/domain/use_cases/update_order_state_use_case.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
@@ -19,6 +21,7 @@ class ActiveOrderViewModel extends Cubit<ActiveOrderState> {
   final FcmService _fcmService;
   final FirebaseFirestore _firestore;
   final UpdateOrderStateUseCase _updateOrderStateUseCase;
+  final DriverLocationService _driverLocationService;
 
   StreamSubscription<DocumentSnapshot<Map<String, dynamic>>>? _orderSub;
 
@@ -26,9 +29,10 @@ class ActiveOrderViewModel extends Cubit<ActiveOrderState> {
     this._fcmService,
     this._firestore,
     this._updateOrderStateUseCase,
+    this._driverLocationService,
   ) : super(const ActiveOrderState());
 
-  void init(String orderId) {
+  Future<void> init(String orderId) async {
     _orderSub = _firestore
         .collection(FirestoreKeys.ordersCollection)
         .doc(orderId)
@@ -45,6 +49,9 @@ class ActiveOrderViewModel extends Cubit<ActiveOrderState> {
         userId: data[FirestoreKeys.userId] as String? ?? '',
       ));
     });
+
+    await _driverLocationService.startTracking(orderId);
+    await BackgroundLocationService.start();
   }
 
   void doEvent(ActiveOrderEvent event) {
@@ -141,8 +148,10 @@ class ActiveOrderViewModel extends Cubit<ActiveOrderState> {
   }
 
   @override
-  Future<void> close() {
-    _orderSub?.cancel();
+  Future<void> close() async {
+    await _orderSub?.cancel();
+    await _driverLocationService.stopTracking();
+    await BackgroundLocationService.stop();
     return super.close();
   }
 }

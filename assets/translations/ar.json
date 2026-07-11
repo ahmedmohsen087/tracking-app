@@ -165,5 +165,10 @@
   "cancelOrderConfirmTitle": "إلغاء الطلب",
   "cancelOrderConfirmDescription": "هل أنت متأكد أنك تريد إلغاء هذا الطلب؟",
   "callLabel": "اتصال",
-  "whatsappLabel": "واتساب"
+  "whatsappLabel": "واتساب",
+  "showMap": "عرض الخريطة",
+  "goingToPickup": "في الطريق للمتجر",
+  "goingToDelivery": "في الطريق للعميل",
+  "eta": "الوقت المتبقي",
+  "distanceKm": "كم"
 }

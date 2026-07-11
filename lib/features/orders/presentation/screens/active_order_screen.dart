@@ -17,6 +17,7 @@ import '../../../home/domain/entities/order_item_entity.dart';
 import '../view_models/active_order_view_model/active_order_event.dart';
 import '../view_models/active_order_view_model/active_order_state.dart';
 import '../view_models/active_order_view_model/active_order_view_model.dart';
+import '../widgets/live_map_sheet.dart';
 import 'order_success_screen.dart';
 
 Map<String, String> _statusLabels() => {
@@ -120,6 +121,10 @@ class ActiveOrderScreen extends StatelessWidget {
                     paymentMethod: order.paymentType,
                   ),
                   const SizedBox(height: 24),
+                  _ShowMapButton(
+                    onPressed: () => _openLiveMap(context, state.status),
+                  ),
+                  const SizedBox(height: 12),
                   if (state.status != OrderStatus.delivered)
                     _ActionButton(
                       status: state.status,
@@ -167,6 +172,26 @@ class ActiveOrderScreen extends StatelessWidget {
     final idx = _statusOrder.indexOf(current);
     if (idx == -1 || idx >= _statusOrder.length - 1) return null;
     return _statusOrder[idx + 1];
+  }
+
+  void _openLiveMap(BuildContext context, String status) {
+    final mapHeight = MediaQuery.sizeOf(context).height * 0.85;
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: AppColors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (_) => SizedBox(
+        height: mapHeight,
+        child: LiveMapSheet(
+          orderId: orderId,
+          initialStatus: status,
+          order: order,
+        ),
+      ),
+    );
   }
 }
 
@@ -262,6 +287,35 @@ class _CancelButton extends StatelessWidget {
                   color: AppColors.pink,
                 ),
               ),
+      ),
+    );
+  }
+}
+
+class _ShowMapButton extends StatelessWidget {
+  final VoidCallback onPressed;
+
+  const _ShowMapButton({required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: 52,
+      child: OutlinedButton.icon(
+        onPressed: onPressed,
+        icon: const Icon(Icons.map_outlined, color: AppColors.pink),
+        style: OutlinedButton.styleFrom(
+          side: const BorderSide(color: AppColors.pink),
+          foregroundColor: AppColors.pink,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+        label: Text(
+          AppStrings.showMap,
+          style: TextStyles.buttonTextStyle.copyWith(color: AppColors.pink),
+        ),
       ),
     );
   }

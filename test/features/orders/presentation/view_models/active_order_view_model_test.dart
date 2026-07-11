@@ -6,6 +6,7 @@ import 'package:flowery_rider_app/config/base_response/base_response.dart';
 import 'package:flowery_rider_app/config/firebase/fcm_config.dart';
 import 'package:flowery_rider_app/config/firebase/fcm_service.dart';
 import 'package:flowery_rider_app/core/values/order_status.dart';
+import 'package:flowery_rider_app/features/orders/data/services/driver_location_service.dart';
 import 'package:flowery_rider_app/features/orders/domain/use_cases/update_order_state_use_case.dart';
 import 'package:flowery_rider_app/features/orders/presentation/view_models/active_order_view_model/active_order_event.dart';
 import 'package:flowery_rider_app/features/orders/presentation/view_models/active_order_view_model/active_order_state.dart';
@@ -34,6 +35,7 @@ class _FakeDocSnap extends Fake
   FirebaseFirestore,
   FcmService,
   UpdateOrderStateUseCase,
+  DriverLocationService,
 ], customMocks: [
   MockSpec<CollectionReference<Map<String, dynamic>>>(
     as: #MockCollectionReference,
@@ -50,6 +52,7 @@ void main() {
   late MockFirebaseFirestore mockFirestore;
   late MockFcmService mockFcmService;
   late MockUpdateOrderStateUseCase mockUpdateOrderStateUseCase;
+  late MockDriverLocationService mockDriverLocationService;
   late MockCollectionReference mockOrdersCollection;
   late MockDocumentReference mockOrderDoc;
   late StreamController<DocumentSnapshot<Map<String, dynamic>>>
@@ -59,9 +62,14 @@ void main() {
     mockFirestore = MockFirebaseFirestore();
     mockFcmService = MockFcmService();
     mockUpdateOrderStateUseCase = MockUpdateOrderStateUseCase();
+    mockDriverLocationService = MockDriverLocationService();
     mockOrdersCollection = MockCollectionReference();
     mockOrderDoc = MockDocumentReference();
     orderStreamController = StreamController.broadcast();
+
+    when(mockDriverLocationService.startTracking(any))
+        .thenAnswer((_) async {});
+    when(mockDriverLocationService.stopTracking()).thenAnswer((_) async {});
 
     when(mockFirestore.collection('orders')).thenReturn(mockOrdersCollection);
     when(mockOrdersCollection.doc(any)).thenReturn(mockOrderDoc);
@@ -90,6 +98,7 @@ void main() {
         mockFcmService,
         mockFirestore,
         mockUpdateOrderStateUseCase,
+        mockDriverLocationService,
       );
 
   test('initial state has status="accepted" and userConfirmed=false', () {
