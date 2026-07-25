@@ -1,13 +1,19 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flowery_rider_app/config/auth/auth_manager.dart';
+import 'package:flowery_rider_app/config/di/di.dart';
 import 'package:flowery_rider_app/core/reusable_widgets/app_snack_bar.dart';
 import 'package:flowery_rider_app/core/theme/app_colors.dart';
 import 'package:flowery_rider_app/core/theme/text_styles.dart';
 import 'package:flowery_rider_app/core/utils/validation/app_validations.dart';
+import 'package:flowery_rider_app/core/values/app_routs_name.dart';
 import 'package:flowery_rider_app/core/values/app_strings.dart';
+import 'package:flowery_rider_app/core/values/assets.dart';
 import 'package:flowery_rider_app/features/profile/presentation/view_models/change_password_view_model/change_password_events.dart';
 import 'package:flowery_rider_app/features/profile/presentation/view_models/change_password_view_model/change_password_state.dart';
 import 'package:flowery_rider_app/features/profile/presentation/view_models/change_password_view_model/change_password_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({super.key});
@@ -44,15 +50,39 @@ class _ChangePasswordViewState extends State<ChangePasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    context.locale;
+
     return Scaffold(
       backgroundColor: AppColors.white,
-      appBar: const _ChangePasswordAppBar(),
+      appBar: AppBar(
+        centerTitle: false,
+        leading: IconButton(
+          icon: SvgPicture.asset(
+            Assets.assetsIconsArrowBack,
+            width: 24,
+            height: 24,
+            matchTextDirection: true,
+          ),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: Text(
+          AppStrings.resetPassword,
+          style: TextStyles.appBarTextStyle,
+        ),
+      ),
       body: BlocListener<ChangePasswordViewModel, ChangePasswordState>(
-        listener: (context, state) {
+        listener: (context, state) async {
           if (!state.changePasswordState.isLoading &&
               state.changePasswordState.data != null) {
             AppSnackBar.showSuccess(context, AppStrings.passwordUpdated);
-            Navigator.pop(context);
+            await getIt<AuthManager>().logout();
+            if (context.mounted) {
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                AppRoutsName.loginScreen,
+                (route) => false,
+              );
+            }
           } else if (!state.changePasswordState.isLoading &&
               state.changePasswordState.msg != null) {
             AppSnackBar.showError(context, state.changePasswordState.msg!);
@@ -60,7 +90,7 @@ class _ChangePasswordViewState extends State<ChangePasswordScreen> {
         },
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: BlocBuilder<ChangePasswordViewModel, ChangePasswordState>(
               buildWhen: (prev, curr) =>
                   prev.autoValidate != curr.autoValidate ||
@@ -119,27 +149,6 @@ class _ChangePasswordViewState extends State<ChangePasswordScreen> {
       ),
     );
   }
-}
-
-class _ChangePasswordAppBar extends StatelessWidget
-    implements PreferredSizeWidget {
-  const _ChangePasswordAppBar();
-
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      backgroundColor: AppColors.white,
-      elevation: 0,
-      leading: IconButton(
-        onPressed: () => Navigator.pop(context),
-        icon: const Icon(Icons.arrow_back_ios_new, color: AppColors.black),
-      ),
-      title: Text(AppStrings.changePassword, style: TextStyles.appBarTextStyle),
-    );
-  }
-
-  @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
 
 class _PasswordField extends StatefulWidget {
@@ -237,19 +246,19 @@ class _UpdateButtonState extends State<_UpdateButton> {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: 52,
+      height: 50,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          disabledBackgroundColor: AppColors.grey,
+          disabledBackgroundColor: AppColors.grey.withValues(alpha: 0.4),
         ),
         onPressed: widget.isLoading || !_isEnabled ? null : widget.onPressed,
         child: widget.isLoading
             ? const SizedBox(
-                width: 22,
-                height: 22,
+                width: 20,
+                height: 20,
                 child: CircularProgressIndicator(
                   color: AppColors.white,
-                  strokeWidth: 2.5,
+                  strokeWidth: 2,
                 ),
               )
             : Text(AppStrings.update),

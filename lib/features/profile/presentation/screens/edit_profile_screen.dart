@@ -1,6 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flowery_rider_app/config/di/di.dart';
 import 'package:flowery_rider_app/core/reusable_widgets/app_snack_bar.dart';
+import 'package:flowery_rider_app/core/theme/app_colors.dart';
+import 'package:flowery_rider_app/core/theme/text_styles.dart';
 import 'package:flowery_rider_app/core/values/app_strings.dart';
+import 'package:flowery_rider_app/core/values/assets.dart';
 import 'package:flowery_rider_app/features/profile/api/request_models/edit_profile_request_model.dart';
 import 'package:flowery_rider_app/features/profile/domain/entities/profile_driver_entity.dart';
 import 'package:flowery_rider_app/features/profile/presentation/view_models/edit_profile_view_model/edit_profile_events.dart';
@@ -10,6 +14,7 @@ import 'package:flowery_rider_app/features/profile/presentation/widgets/edit_pro
 import 'package:flowery_rider_app/features/profile/presentation/widgets/profile_avatar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 
 class EditProfileScreen extends StatelessWidget {
@@ -42,6 +47,7 @@ class _EditProfileViewState extends State<EditProfileView> {
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
   final ValueNotifier<String?> _selectedImagePath = ValueNotifier(null);
+  String _gender = 'male';
 
   @override
   void initState() {
@@ -52,6 +58,9 @@ class _EditProfileViewState extends State<EditProfileView> {
       _lastNameController.text = driver.lastName;
       _emailController.text = driver.email;
       _phoneController.text = driver.phone;
+      if (driver.gender.isNotEmpty) {
+        _gender = driver.gender.toLowerCase();
+      }
     }
   }
 
@@ -65,9 +74,99 @@ class _EditProfileViewState extends State<EditProfileView> {
     super.dispose();
   }
 
-  Future<void> _pickImage() async {
+  Future<void> _showImageSourceDialog() async {
+    final ImageSource? source = await showDialog<ImageSource>(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          backgroundColor: AppColors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  AppStrings.editProfile,
+                  style: TextStyles.bodyMedium18.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                InkWell(
+                  onTap: () => Navigator.pop(context, ImageSource.camera),
+                  borderRadius: BorderRadius.circular(12),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 14,
+                      horizontal: 16,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.lightPink,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.camera_alt_rounded,
+                          color: AppColors.pink,
+                          size: 22,
+                        ),
+                        const SizedBox(width: 12),
+                        Text(
+                          AppStrings.takePhoto,
+                          style: TextStyles.bodyRegular14.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                InkWell(
+                  onTap: () => Navigator.pop(context, ImageSource.gallery),
+                  borderRadius: BorderRadius.circular(12),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 14,
+                      horizontal: 16,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.lightPink,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.photo_library_rounded,
+                          color: AppColors.pink,
+                          size: 22,
+                        ),
+                        const SizedBox(width: 12),
+                        Text(
+                          AppStrings.chooseFromGallery,
+                          style: TextStyles.bodyRegular14.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+
+    if (source == null) return;
+
     final picker = ImagePicker();
-    final file = await picker.pickImage(source: ImageSource.gallery);
+    final file = await picker.pickImage(source: source);
     if (file == null) return;
 
     _selectedImagePath.value = file.path;
@@ -95,8 +194,23 @@ class _EditProfileViewState extends State<EditProfileView> {
 
   @override
   Widget build(BuildContext context) {
+    context.locale;
+
     return Scaffold(
-      appBar: AppBar(title: Text(AppStrings.editProfile)),
+      backgroundColor: AppColors.white,
+      appBar: AppBar(
+        centerTitle: false,
+        leading: IconButton(
+          icon: SvgPicture.asset(
+            Assets.assetsIconsArrowBack,
+            width: 24,
+            height: 24,
+            matchTextDirection: true,
+          ),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: Text(AppStrings.editProfile),
+      ),
       body: BlocListener<EditProfileViewModel, EditProfileState>(
         listenWhen: (previous, current) =>
             (previous.editProfileState != current.editProfileState &&
@@ -109,6 +223,7 @@ class _EditProfileViewState extends State<EditProfileView> {
               context,
               AppStrings.profileUpdatedSuccessfully,
             );
+            Navigator.pop(context, true);
           } else if (state.editProfileState.msg != null) {
             AppSnackBar.showError(context, state.editProfileState.msg!);
           }
@@ -122,28 +237,41 @@ class _EditProfileViewState extends State<EditProfileView> {
             AppSnackBar.showError(context, state.uploadPhotoState.msg!);
           }
         },
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-          child: Column(
-            children: [
-              ValueListenableBuilder<String?>(
-                valueListenable: _selectedImagePath,
-                builder: (context, imagePath, _) => ProfileAvatarWidget(
-                  imagePath: imagePath,
-                  onTap: _pickImage,
-                ),
+        child: BlocBuilder<EditProfileViewModel, EditProfileState>(
+          builder: (context, state) {
+            final isLoading = state.editProfileState.isLoading;
+
+            return SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+              child: Column(
+                children: [
+                  ValueListenableBuilder<String?>(
+                    valueListenable: _selectedImagePath,
+                    builder: (context, imagePath, _) => ProfileAvatarWidget(
+                      imagePath: imagePath ?? widget.driver?.photo,
+                      onTap: _showImageSourceDialog,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  EditProfileFormWidget(
+                    formKey: _formKey,
+                    firstNameController: _firstNameController,
+                    lastNameController: _lastNameController,
+                    emailController: _emailController,
+                    phoneController: _phoneController,
+                    gender: _gender,
+                    onGenderChanged: (val) {
+                      setState(() {
+                        _gender = val;
+                      });
+                    },
+                    onUpdate: _onUpdate,
+                    isLoading: isLoading,
+                  ),
+                ],
               ),
-              const SizedBox(height: 24),
-              EditProfileFormWidget(
-                formKey: _formKey,
-                firstNameController: _firstNameController,
-                lastNameController: _lastNameController,
-                emailController: _emailController,
-                phoneController: _phoneController,
-                onUpdate: _onUpdate,
-              ),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );

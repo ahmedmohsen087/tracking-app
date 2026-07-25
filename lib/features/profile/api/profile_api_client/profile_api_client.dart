@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flowery_rider_app/core/values/api_endpoints.dart';
-import 'package:flowery_rider_app/core/values/api_parameters.dart';
 import 'package:flowery_rider_app/features/profile/api/request_models/edit_profile_request_model.dart';
 import 'package:flowery_rider_app/features/profile/api/request_models/profile_request_model.dart';
 import 'package:flowery_rider_app/features/profile/api/responses/edit_profile_response.dart';
@@ -19,7 +18,6 @@ part 'profile_api_client.g.dart';
 abstract class ProfileApiClient {
   @factoryMethod
   factory ProfileApiClient(Dio dio) = _ProfileApiClient;
-  @Extra({ApiParameters.requiresAuth: false})
   @PATCH(ApiEndpoints.changePassword)
   Future<ProfileResponseModel> changePassword(@Body() ProfileRequestModel body);
 

@@ -21,63 +21,86 @@ class PersonalInformationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final photoUrl = photo ?? '';
+    final hasPhoto = photoUrl.isNotEmpty && photoUrl.startsWith('http');
+
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(10),
+      borderRadius: BorderRadius.circular(12),
       child: Container(
-      height: 108,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.grey.withValues(alpha: 0.5),
-            spreadRadius: 5,
-            blurRadius: 7,
-            offset: Offset(0, 3),
+        padding: const EdgeInsets.all(16),
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: AppColors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: AppColors.grey.withValues(alpha: 0.15),
           ),
-        ],
-
-
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Row(
-          spacing: 20,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-              CircleAvatar(
-                child: Image.network(photo!,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ],),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(name!,
-              style: TextStyles.bodyMedium18,
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.black.withValues(alpha: 0.05),
+              spreadRadius: 0,
+              blurRadius: 10,
+              offset: const Offset(0, 4),
             ),
-                Text(email!,
-                  style: TextStyles.bodyRegular16,),
-                Text(phone!,
-                  style: TextStyles.bodyRegular16,),
-
-              ],
-            ),
-            Spacer(),
-            Icon(Icons.arrow_forward_ios,),
-
-
-
           ],
         ),
-      ),
+        child: Row(
+          children: [
+            CircleAvatar(
+              radius: 28,
+              backgroundColor: AppColors.lightPink,
+              backgroundImage: hasPhoto ? NetworkImage(photoUrl) : null,
+              child: !hasPhoto
+                  ? const Icon(
+                      Icons.person,
+                      color: AppColors.pink,
+                      size: 28,
+                    )
+                  : null,
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (name != null && name!.isNotEmpty)
+                    Text(
+                      name!,
+                      style: TextStyles.bodyMedium18.copyWith(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  if (email != null && email!.isNotEmpty) ...[
+                    const SizedBox(height: 4),
+                    Text(
+                      email!,
+                      style: TextStyles.bodyRegular14.copyWith(
+                        color: AppColors.grey,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                  if (phone != null && phone!.isNotEmpty) ...[
+                    const SizedBox(height: 4),
+                    Text(
+                      phone!,
+                      style: TextStyles.bodyRegular14.copyWith(
+                        color: AppColors.grey,
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+            const Icon(
+              Icons.chevron_right_rounded,
+              color: AppColors.grey,
+              size: 24,
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -82,18 +82,22 @@ class EditVehicleInfoFormWidget extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 32),
-          ElevatedButton(
-            onPressed: isLoading ? null : onUpdate,
-            child: isLoading
-                ? const SizedBox(
-                    height: 20,
-                    width: 20,
-                    child: CircularProgressIndicator(
-                      color: AppColors.white,
-                      strokeWidth: 2,
-                    ),
-                  )
-                : Text(AppStrings.updateProfile),
+          SizedBox(
+            width: double.infinity,
+            height: 50,
+            child: ElevatedButton(
+              onPressed: isLoading ? null : onUpdate,
+              child: isLoading
+                  ? const SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(
+                        color: AppColors.white,
+                        strokeWidth: 2,
+                      ),
+                    )
+                  : Text(AppStrings.updateProfile),
+            ),
           ),
         ],
       ),

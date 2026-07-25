@@ -10,67 +10,52 @@ class AppDialog {
     required BuildContext context,
     required String title,
     required String description,
-
     String? confirmText,
     String? cancelText,
-
     VoidCallback? onConfirm,
     VoidCallback? onCancel,
-
     SvgPicture? icon,
-
     bool barrierDismissible = true,
     bool buttonsVertical = false,
-
     Color confirmButtonColor = AppColors.pink,
-    Color cancelButtonColor = AppColors.red,
-
+    Color cancelButtonColor = AppColors.white,
     Color confirmTextColor = AppColors.white,
-    Color cancelTextColor = AppColors.white,
+    Color cancelTextColor = AppColors.black,
+    bool isCancelOutlined = true,
   }) {
     return showDialog(
       context: context,
       barrierDismissible: barrierDismissible,
-
       builder: (context) {
         return Dialog(
-          backgroundColor: AppColors.lightPink,
+          backgroundColor: AppColors.white,
           insetPadding: const EdgeInsets.symmetric(horizontal: 24),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(28),
+            borderRadius: BorderRadius.circular(20),
           ),
-
           child: Padding(
             padding: const EdgeInsets.all(24),
-
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 if (icon != null) ...[icon, const SizedBox(height: 18)],
-
                 Text(
                   title,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w700,
+                  style: TextStyles.bodyMedium18.copyWith(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-
                 const SizedBox(height: 12),
-
                 Text(
                   description,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 15,
-                    height: 1.5,
-                    color: Colors.grey.shade600,
+                  style: TextStyles.bodyRegular14.copyWith(
+                    color: AppColors.grey,
                   ),
                 ),
-
                 const SizedBox(height: 28),
-
                 if (buttonsVertical)
                   Column(
                     children: [
@@ -79,20 +64,20 @@ class AppDialog {
                           text: confirmText,
                           backgroundColor: confirmButtonColor,
                           textColor: confirmTextColor,
+                          isOutlined: false,
                           onPressed: () {
                             Navigator.pop(context);
                             onConfirm?.call();
                           },
                         ),
-
                       if (confirmText != null && cancelText != null)
                         const SizedBox(height: 12),
-
                       if (cancelText != null)
                         _DialogButton(
                           text: cancelText,
                           backgroundColor: cancelButtonColor,
                           textColor: cancelTextColor,
+                          isOutlined: isCancelOutlined,
                           onPressed: () {
                             Navigator.pop(context);
                             onCancel?.call();
@@ -109,22 +94,22 @@ class AppDialog {
                             text: cancelText,
                             backgroundColor: cancelButtonColor,
                             textColor: cancelTextColor,
+                            isOutlined: isCancelOutlined,
                             onPressed: () {
                               Navigator.pop(context);
                               onCancel?.call();
                             },
                           ),
                         ),
-
                       if (confirmText != null && cancelText != null)
                         const SizedBox(width: 12),
-
                       if (confirmText != null)
                         Expanded(
                           child: _DialogButton(
                             text: confirmText,
                             backgroundColor: confirmButtonColor,
                             textColor: confirmTextColor,
+                            isOutlined: false,
                             onPressed: () {
                               Navigator.pop(context);
                               onConfirm?.call();
@@ -145,40 +130,59 @@ class AppDialog {
 class _DialogButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
-
   final Color backgroundColor;
   final Color textColor;
+  final bool isOutlined;
 
   const _DialogButton({
     required this.text,
     required this.onPressed,
     required this.backgroundColor,
     required this.textColor,
+    this.isOutlined = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 52,
+      height: 48,
       width: double.infinity,
-
-      child: ElevatedButton(
-        onPressed: onPressed,
-
-        style: ElevatedButton.styleFrom(
-          elevation: 0,
-          backgroundColor: backgroundColor,
-
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-        ),
-
-        child: Text(
-          text,
-          style: TextStyles.bodyRegular14.copyWith(color: textColor),
-        ),
-      ),
+      child: isOutlined
+          ? OutlinedButton(
+              onPressed: onPressed,
+              style: OutlinedButton.styleFrom(
+                side: BorderSide(
+                  color: AppColors.grey.withValues(alpha: 0.4),
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24),
+                ),
+              ),
+              child: Text(
+                text,
+                style: TextStyles.bodyRegular14.copyWith(
+                  color: textColor,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            )
+          : ElevatedButton(
+              onPressed: onPressed,
+              style: ElevatedButton.styleFrom(
+                elevation: 0,
+                backgroundColor: backgroundColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24),
+                ),
+              ),
+              child: Text(
+                text,
+                style: TextStyles.bodyRegular14.copyWith(
+                  color: textColor,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
     );
   }
 }

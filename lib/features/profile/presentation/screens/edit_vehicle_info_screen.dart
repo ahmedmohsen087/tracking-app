@@ -1,6 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flowery_rider_app/config/di/di.dart';
 import 'package:flowery_rider_app/core/reusable_widgets/app_snack_bar.dart';
+import 'package:flowery_rider_app/core/theme/app_colors.dart';
 import 'package:flowery_rider_app/core/values/app_strings.dart';
+import 'package:flowery_rider_app/core/values/assets.dart';
 import 'package:flowery_rider_app/features/profile/api/request_models/edit_vehicle_info_request_model.dart';
 import 'package:flowery_rider_app/features/profile/domain/entities/profile_driver_entity.dart';
 import 'package:flowery_rider_app/features/profile/presentation/view_models/edit_vehicle_info_view_model/edit_vehicle_info_events.dart';
@@ -9,6 +12,7 @@ import 'package:flowery_rider_app/features/profile/presentation/view_models/edit
 import 'package:flowery_rider_app/features/profile/presentation/widgets/edit_vehicle_info_form_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 
 class EditVehicleInfoScreen extends StatelessWidget {
@@ -91,8 +95,23 @@ class _EditVehicleInfoViewState extends State<EditVehicleInfoView> {
 
   @override
   Widget build(BuildContext context) {
+    context.locale;
+
     return Scaffold(
-      appBar: AppBar(title: Text(AppStrings.editVehicleInfo)),
+      backgroundColor: AppColors.white,
+      appBar: AppBar(
+        centerTitle: false,
+        leading: IconButton(
+          icon: SvgPicture.asset(
+            Assets.assetsIconsArrowBack,
+            width: 24,
+            height: 24,
+            matchTextDirection: true,
+          ),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: Text(AppStrings.editVehicleInfo),
+      ),
       body: BlocListener<EditVehicleInfoViewModel, EditVehicleInfoState>(
         listenWhen: (previous, current) =>
             (previous.editVehicleInfoState != current.editVehicleInfoState &&
@@ -105,6 +124,7 @@ class _EditVehicleInfoViewState extends State<EditVehicleInfoView> {
               context,
               AppStrings.vehicleInfoUpdatedSuccessfully,
             );
+            Navigator.pop(context, true);
           } else if (state.editVehicleInfoState.msg != null) {
             AppSnackBar.showError(context, state.editVehicleInfoState.msg!);
           }

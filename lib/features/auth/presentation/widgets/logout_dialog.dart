@@ -10,12 +10,15 @@ class LogoutDialog {
   static Future<void> show(BuildContext context, LogoutViewModel viewModel) {
     return AppDialog.show(
       context: context,
-      title: AppStrings.logout,
+      title: AppStrings.logout.toUpperCase(),
       description: AppStrings.confirmLogout,
       confirmText: AppStrings.logout,
       cancelText: AppStrings.cancel,
-      confirmButtonColor: AppColors.red,
-      cancelButtonColor: AppColors.pink,
+      confirmButtonColor: AppColors.pink,
+      confirmTextColor: AppColors.white,
+      cancelButtonColor: AppColors.white,
+      cancelTextColor: AppColors.black,
+      isCancelOutlined: true,
       barrierDismissible: false,
       onConfirm: () {
         viewModel.doEvent(LogoutRequestEvent());

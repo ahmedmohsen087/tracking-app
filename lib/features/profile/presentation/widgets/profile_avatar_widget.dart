@@ -17,22 +17,29 @@ class ProfileAvatarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ImageProvider? imageProvider;
+    if (imagePath != null && imagePath!.isNotEmpty) {
+      if (imagePath!.startsWith('http')) {
+        imageProvider = NetworkImage(imagePath!);
+      } else {
+        imageProvider = FileImage(File(imagePath!));
+      }
+    }
+
     return Center(
       child: Stack(
         children: [
           CircleAvatar(
             radius: 48,
-            backgroundColor: AppColors.whiteGrey,
-            backgroundImage: imagePath != null
-                ? FileImage(File(imagePath!))
-                : null,
-            child: imagePath == null
+            backgroundColor: AppColors.lightPink,
+            backgroundImage: imageProvider,
+            child: imageProvider == null
                 ? SvgPicture.asset(
                     Assets.assetsIconsPerson,
                     width: 48,
                     height: 48,
                     colorFilter: const ColorFilter.mode(
-                      AppColors.grey,
+                      AppColors.pink,
                       BlendMode.srcIn,
                     ),
                   )
@@ -44,17 +51,27 @@ class ProfileAvatarWidget extends StatelessWidget {
             child: GestureDetector(
               onTap: onTap,
               child: Container(
-                padding: const EdgeInsets.all(6),
-                decoration: const BoxDecoration(
-                  color: AppColors.pink,
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: AppColors.white,
                   shape: BoxShape.circle,
+                  border: Border.all(
+                    color: AppColors.grey.withValues(alpha: 0.2),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.black.withValues(alpha: 0.05),
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
                 ),
                 child: SvgPicture.asset(
                   Assets.assetsIconsPhotoCamera,
                   width: 16,
                   height: 16,
                   colorFilter: const ColorFilter.mode(
-                    AppColors.white,
+                    AppColors.pink,
                     BlendMode.srcIn,
                   ),
                 ),
