@@ -59,24 +59,24 @@ void main() {
     test(
       'should forward params to repository and return SuccessBaseResponse on success',
       () async {
-        // Arrange
         final expectedResponse = SuccessBaseResponse<AuthResponseEntity>(
           data: tAuthResponseEntity,
         );
         when(
           mockRepository.login(
-              loginRequestModel: anyNamed('loginRequestModel')),
+            loginRequestModel: anyNamed('loginRequestModel'),
+          ),
         ).thenAnswer((_) async => expectedResponse);
 
-        // Act
         final result = await useCase.execute(
-            loginRequestModel: tLoginRequestModel);
+          loginRequestModel: tLoginRequestModel,
+        );
 
-        // Assert
         expect(result, expectedResponse);
         verify(
           mockRepository.login(
-              loginRequestModel: anyNamed('loginRequestModel')),
+            loginRequestModel: anyNamed('loginRequestModel'),
+          ),
         ).called(1);
         verifyNoMoreInteractions(mockRepository);
       },
@@ -85,24 +85,24 @@ void main() {
     test(
       'should forward params to repository and return ErrorBaseResponse on failure',
       () async {
-        // Arrange
         final expectedResponse = ErrorBaseResponse<AuthResponseEntity>(
           errorMessage: 'Invalid Credentials',
         );
         when(
           mockRepository.login(
-              loginRequestModel: anyNamed('loginRequestModel')),
+            loginRequestModel: anyNamed('loginRequestModel'),
+          ),
         ).thenAnswer((_) async => expectedResponse);
 
-        // Act
         final result = await useCase.execute(
-            loginRequestModel: tLoginRequestModel);
+          loginRequestModel: tLoginRequestModel,
+        );
 
-        // Assert
         expect(result, expectedResponse);
         verify(
           mockRepository.login(
-              loginRequestModel: anyNamed('loginRequestModel')),
+            loginRequestModel: anyNamed('loginRequestModel'),
+          ),
         ).called(1);
         verifyNoMoreInteractions(mockRepository);
       },

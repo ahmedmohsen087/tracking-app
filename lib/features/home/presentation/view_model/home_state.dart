@@ -1,36 +1,47 @@
 import '../../../../config/base_state/base_state.dart';
-import '../../domain/entities/home_order_entity.dart';
+import '../../domain/entities/order_entity.dart';
 
 class HomeState {
-  final BaseState<List<HomeOrderEntity>> getOrdersState;
+  final String? acceptingOrderId;
+  final BaseState<List<OrderEntity>> getOrdersState;
   final int currentPage;
   final int totalPages;
   final int limit;
   final bool isLoadingMore;
+  final BaseState<OrderEntity> acceptOrderState;
 
   const HomeState({
-    this.getOrdersState = const BaseState<List<HomeOrderEntity>>(),
+    this.acceptingOrderId,
+    this.getOrdersState = const BaseState<List<OrderEntity>>(),
     this.currentPage = 0,
     this.totalPages = 1,
     this.limit = 10,
     this.isLoadingMore = false,
+    this.acceptOrderState = const BaseState<OrderEntity>(),
   });
 
   bool get hasMorePages => currentPage < totalPages;
 
   HomeState copyWith({
-    BaseState<List<HomeOrderEntity>>? getOrdersState,
+    String? acceptingOrderId,
+    bool clearAcceptingOrder = false,
+    BaseState<List<OrderEntity>>? getOrdersState,
     int? currentPage,
     int? totalPages,
     int? limit,
     bool? isLoadingMore,
+    BaseState<OrderEntity>? acceptOrderState,
   }) {
     return HomeState(
+      acceptingOrderId: clearAcceptingOrder
+          ? null
+          : acceptingOrderId ?? this.acceptingOrderId,
       getOrdersState: getOrdersState ?? this.getOrdersState,
       currentPage: currentPage ?? this.currentPage,
       totalPages: totalPages ?? this.totalPages,
       limit: limit ?? this.limit,
       isLoadingMore: isLoadingMore ?? this.isLoadingMore,
+      acceptOrderState: acceptOrderState ?? this.acceptOrderState,
     );
   }
 }

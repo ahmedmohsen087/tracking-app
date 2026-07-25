@@ -84,8 +84,8 @@ class AppRoutes {
                       ..doEvent(const LoadMyOrdersEvent()),
               ),
             ],
-            child: const SectionApp(),
-          ),
+         child: const SectionApp(),
+        )
         );
 
       case AppRoutsName.changePasswordScreen:

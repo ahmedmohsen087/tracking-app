@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/text_styles.dart';
+import '../../../../core/values/api_endpoints.dart';
 import '../../../../core/values/assets.dart';
 
 class AddressItem extends StatelessWidget {
   final String? title;
   final String? address;
   final String? image;
+
   const AddressItem({super.key, this.title, this.address, this.image});
 
   @override
   Widget build(BuildContext context) {
+    final fullImageUrl = ApiEndpoints.imageUrl(image);
+
     return Container(
       padding: const EdgeInsets.all(10),
       width: double.infinity,
@@ -23,23 +28,28 @@ class AddressItem extends StatelessWidget {
             color: AppColors.grey.withValues(alpha: 0.5),
             spreadRadius: 5,
             blurRadius: 7,
-            offset: Offset(0, 3),
+            offset: const Offset(0, 3),
           ),
         ],
       ),
       child: Row(
         children: [
-          SizedBox(
-            width: 40,
-            height: 40,
-            child: CircleAvatar(
-              backgroundImage: image?.isNotEmpty == true
-                  ? NetworkImage(image!)
-                  : null,
-              child: image?.isNotEmpty == true
-                  ? null
-                  : Image.asset(Assets.userLogo),
-            ),
+          CircleAvatar(
+            radius: 20,
+            backgroundColor: AppColors.lightPink,
+            backgroundImage:
+                fullImageUrl.isNotEmpty ? NetworkImage(fullImageUrl) : null,
+            child: fullImageUrl.isEmpty
+                ? SvgPicture.asset(
+                    Assets.assetsIconsPerson,
+                    width: 20,
+                    height: 20,
+                    colorFilter: const ColorFilter.mode(
+                      AppColors.pink,
+                      BlendMode.srcIn,
+                    ),
+                  )
+                : null,
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -64,9 +74,11 @@ class AddressItem extends StatelessWidget {
                     Expanded(
                       child: Text(
                         address ?? '',
-                        maxLines: 2,
+                        maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyles.bodyRegular13,
+                        style: TextStyles.bodyRegular12.copyWith(
+                          color: AppColors.grey,
+                        ),
                       ),
                     ),
                   ],

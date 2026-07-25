@@ -61,7 +61,7 @@ void main() {
             .having(
               (s) => s.logoutState.data,
               'logoutState.data',
-              isNull, // لأنك بتباصي null في الفيتشر دي بالذات BaseState.success(null)
+              isNull,
             ),
       ],
       verify: (_) {

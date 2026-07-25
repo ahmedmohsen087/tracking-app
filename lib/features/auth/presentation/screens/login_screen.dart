@@ -152,7 +152,6 @@ class LoginForm extends StatelessWidget {
         children: [
           const SizedBox(height: 16),
 
-          // Email Field
           TextFormField(
             controller: emailController,
             validator: (value) => AppValidations.validateEmail(value ?? ''),
@@ -164,7 +163,6 @@ class LoginForm extends StatelessWidget {
           ),
           const SizedBox(height: 16),
 
-          // Password Field
           ValueListenableBuilder<bool>(
             valueListenable: obscurePasswordNotifier,
             builder: (context, isObscured, child) {
@@ -229,7 +227,6 @@ class LoginForm extends StatelessWidget {
           ),
           const SizedBox(height: 40),
 
-          // Login Button
           SizedBox(
             width: double.infinity,
             height: 52,

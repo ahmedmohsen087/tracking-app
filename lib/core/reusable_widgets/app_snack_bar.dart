@@ -83,7 +83,7 @@ class AppSnackBar {
     return _show(
       context: context,
       message: message,
-      backgroundColor: Colors.orange,
+      backgroundColor: AppColors.orange,
       icon: icon,
     );
   }

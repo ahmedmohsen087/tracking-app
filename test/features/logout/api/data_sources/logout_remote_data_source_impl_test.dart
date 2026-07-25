@@ -30,13 +30,11 @@ void main() {
     test(
       'should return SuccessBaseResponse when api call succeeds',
       () async {
-        // Arrange
+
         when(mockApiClient.logout()).thenAnswer((_) async => tAuthResponse);
 
-        // Act
         final result = await datasource.logout();
 
-        // Assert
         expect(result, isA<SuccessBaseResponse<AuthResponseModel>>());
         expect(
           (result as SuccessBaseResponse<AuthResponseModel>).data,
@@ -50,13 +48,11 @@ void main() {
     test(
       'should return ErrorBaseResponse when api call fails',
       () async {
-        // Arrange
+
         when(mockApiClient.logout()).thenThrow(Exception('Server Error'));
 
-        // Act
         final result = await datasource.logout();
 
-        // Assert
         expect(result, isA<ErrorBaseResponse<AuthResponseModel>>());
         verify(mockApiClient.logout()).called(1);
         verifyNoMoreInteractions(mockApiClient);

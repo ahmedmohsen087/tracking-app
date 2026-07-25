@@ -1,24 +1,24 @@
 import 'package:equatable/equatable.dart';
 
 class ProductEntity extends Equatable {
-  final String? id;
-  final String? title;
-  final String? description;
-  final String? imgCover;
+  final String id;
+  final String title;
+  final String description;
+  final String imgCover;
   final List<String> images;
-  final double? price;
-  final double? priceAfterDiscount;
-  final int? discount;
+  final double price;
+  final double priceAfterDiscount;
+  final int discount;
 
   const ProductEntity({
-    this.id,
-    this.title,
-    this.description,
-    this.imgCover,
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.imgCover,
     this.images = const [],
-    this.price,
-    this.priceAfterDiscount,
-    this.discount,
+    required this.price,
+    required this.priceAfterDiscount,
+    required this.discount,
   });
 
   @override

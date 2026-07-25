@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flowery_rider_app/core/values/api_parameters.dart';
 import 'package:flowery_rider_app/features/home/data/models/home_response.dart';
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/error_logger.dart';
@@ -14,7 +15,7 @@ abstract class HomeApiClient {
 
   @GET(ApiEndpoints.pendingOrders)
   Future<HomeResponse> getOrders({
-    @Query('page') required int page,
-    @Query('limit') required int limit,
+    @Query(ApiParameters.page) required int page,
+    @Query(ApiParameters.limit) required int limit,
   });
 }

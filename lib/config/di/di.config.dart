@@ -9,10 +9,12 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:cloud_firestore/cloud_firestore.dart' as _i974;
 import 'package:dio/dio.dart' as _i361;
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart' as _i695;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as _i558;
 import 'package:get_it/get_it.dart' as _i174;
+import 'package:http/http.dart' as _i519;
 import 'package:injectable/injectable.dart' as _i526;
 
 import '../../core/services/media_service.dart' as _i902;
@@ -55,14 +57,40 @@ import '../../features/orders/api/data_sources_impl/orders_remote_data_source_im
     as _i116;
 import '../../features/orders/api/orders_api_client/orders_api_client.dart'
     as _i84;
+import '../../features/orders/data/data_sources_contract/map_firestore_data_source_contract.dart'
+    as _i597;
+import '../../features/orders/data/data_sources_contract/map_remote_data_source_contract.dart'
+    as _i814;
 import '../../features/orders/data/data_sources_contract/orders_remote_data_source_contract.dart'
     as _i341;
+import '../../features/orders/data/data_sources_impl/map_firestore_data_source_impl.dart'
+    as _i176;
+import '../../features/orders/data/data_sources_impl/map_remote_data_source_impl.dart'
+    as _i269;
+import '../../features/orders/data/repository_impl/map_repository_impl.dart'
+    as _i1033;
 import '../../features/orders/data/repository_impl/orders_repository_impl.dart'
     as _i822;
+import '../../features/orders/data/services/driver_location_service.dart'
+    as _i241;
+import '../../features/orders/domain/repository_contract/map_repository_contract.dart'
+    as _i776;
 import '../../features/orders/domain/repository_contract/orders_repository_contract.dart'
     as _i440;
 import '../../features/orders/domain/use_cases/get_my_orders_use_case.dart'
     as _i78;
+import '../../features/orders/domain/use_cases/get_route_use_case.dart'
+    as _i661;
+import '../../features/orders/domain/use_cases/start_order_use_case.dart'
+    as _i810;
+import '../../features/orders/domain/use_cases/update_order_state_use_case.dart'
+    as _i65;
+import '../../features/orders/domain/use_cases/watch_driver_location_use_case.dart'
+    as _i343;
+import '../../features/orders/presentation/view_models/active_order_view_model/active_order_view_model.dart'
+    as _i1042;
+import '../../features/orders/presentation/view_models/map_cubit/map_cubit.dart'
+    as _i63;
 import '../../features/orders/presentation/view_models/my_orders_view_model.dart'
     as _i892;
 import '../../features/profile/api/data_sources_impl/profile_remote_data_source_impl.dart'
@@ -98,9 +126,12 @@ import '../../features/profile/presentation/view_models/get_profile_view_model/g
 import '../auth/auth_interceptor.dart' as _i53;
 import '../auth/auth_manager.dart' as _i692;
 import '../cache/smart_cache_interceptor.dart' as _i276;
+import '../firebase/fcm_service.dart' as _i92;
 import '../secure_storage/secure_storage_service.dart' as _i611;
 import 'modules/cache_module.dart' as _i953;
 import 'modules/dio_module.dart' as _i983;
+import 'modules/firebase_module.dart' as _i398;
+import 'modules/http_module.dart' as _i799;
 import 'modules/secure_storage_module.dart' as _i590;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -111,12 +142,17 @@ extension GetItInjectableX on _i174.GetIt {
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final cacheModule = _$CacheModule();
+    final firebaseModule = _$FirebaseModule();
+    final httpModule = _$HttpModule();
     final secureStorageModule = _$SecureStorageModule();
     final dioModule = _$DioModule();
     gh.lazySingleton<_i695.CacheStore>(() => cacheModule.cacheStore);
+    gh.lazySingleton<_i974.FirebaseFirestore>(() => firebaseModule.firestore);
+    gh.lazySingleton<_i519.Client>(() => httpModule.httpClient);
     gh.lazySingleton<_i558.FlutterSecureStorage>(
       () => secureStorageModule.secureStorage,
     );
+    gh.lazySingleton<_i92.FcmService>(() => _i92.FcmService());
     gh.factory<_i902.MediaService>(() => _i902.MediaServiceImpl());
     gh.lazySingleton<_i611.SecureStorageService>(
       () => _i611.SecureStorageService(gh<_i558.FlutterSecureStorage>()),
@@ -126,6 +162,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i695.DioCacheInterceptor>(
       () => cacheModule.dioCacheInterceptor(gh<_i695.CacheStore>()),
+    );
+    gh.factory<_i597.MapFirestoreDataSourceContract>(
+      () => _i176.MapFirestoreDataSourceImpl(gh<_i974.FirebaseFirestore>()),
+    );
+    gh.lazySingleton<_i241.DriverLocationService>(
+      () => _i241.DriverLocationService(gh<_i974.FirebaseFirestore>()),
     );
     gh.lazySingleton<_i692.AuthManager>(
       () => _i692.AuthManager(
@@ -155,8 +197,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i1000.ProfileApiClient>(
       () => _i1000.ProfileApiClient(gh<_i361.Dio>()),
     );
-    gh.factory<_i341.OrdersRemoteDataSourceContract>(
-      () => _i116.OrdersRemoteDataSourceImpl(gh<_i84.OrdersApiClient>()),
+    gh.factory<_i814.MapRemoteDataSourceContract>(
+      () => _i269.MapRemoteDataSourceImpl(gh<_i361.Dio>()),
     );
     gh.factory<_i1040.ProfileRemoteDataSourceContract>(
       () => _i1028.ProfileRemoteDataSourceImpl(
@@ -176,8 +218,13 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i830.HomeRemoteDataSourceContract>(
       () => _i938.HomeRemoteDataSourceImpl(gh<_i866.HomeApiClient>()),
     );
-    gh.factory<_i845.HomeRepositoryContract>(
-      () => _i60.HomeRepositoryImpl(gh<_i830.HomeRemoteDataSourceContract>()),
+    gh.factory<_i341.OrdersRemoteDataSourceContract>(
+      () => _i116.OrdersRemoteDataSourceImpl(gh<_i84.OrdersApiClient>()),
+    );
+    gh.factory<_i440.OrdersRepositoryContract>(
+      () => _i822.OrdersRepositoryImpl(
+        gh<_i341.OrdersRemoteDataSourceContract>(),
+      ),
     );
     gh.factory<_i963.ChangePasswordUseCase>(
       () => _i963.ChangePasswordUseCase(gh<_i193.ProfileRepositoryContract>()),
@@ -194,9 +241,24 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i967.UploadPhotoUseCase>(
       () => _i967.UploadPhotoUseCase(gh<_i193.ProfileRepositoryContract>()),
     );
-    gh.factory<_i440.OrdersRepositoryContract>(
-      () => _i822.OrdersRepositoryImpl(
-        gh<_i341.OrdersRemoteDataSourceContract>(),
+    gh.factory<_i810.StartOrderUseCase>(
+      () => _i810.StartOrderUseCase(gh<_i440.OrdersRepositoryContract>()),
+    );
+    gh.factory<_i65.UpdateOrderStateUseCase>(
+      () => _i65.UpdateOrderStateUseCase(gh<_i440.OrdersRepositoryContract>()),
+    );
+    gh.factory<_i1042.ActiveOrderViewModel>(
+      () => _i1042.ActiveOrderViewModel(
+        gh<_i92.FcmService>(),
+        gh<_i974.FirebaseFirestore>(),
+        gh<_i65.UpdateOrderStateUseCase>(),
+        gh<_i241.DriverLocationService>(),
+      ),
+    );
+    gh.factory<_i776.MapRepositoryContract>(
+      () => _i1033.MapRepositoryImpl(
+        gh<_i597.MapFirestoreDataSourceContract>(),
+        gh<_i814.MapRemoteDataSourceContract>(),
       ),
     );
     gh.factory<_i78.GetMyOrdersUseCase>(
@@ -226,6 +288,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i692.AuthManager>(),
       ),
     );
+    gh.factory<_i845.HomeRepositoryContract>(
+      () => _i60.HomeRepositoryImpl(gh<_i830.HomeRemoteDataSourceContract>()),
+    );
     gh.factory<_i548.ChangePasswordViewModel>(
       () => _i548.ChangePasswordViewModel(gh<_i963.ChangePasswordUseCase>()),
     );
@@ -248,7 +313,19 @@ extension GetItInjectableX on _i174.GetIt {
       ),
     );
     gh.factory<_i77.HomeViewModel>(
-      () => _i77.HomeViewModel(gh<_i1006.GetOrdersUseCase>()),
+      () => _i77.HomeViewModel(
+        gh<_i1006.GetOrdersUseCase>(),
+        gh<_i810.StartOrderUseCase>(),
+        gh<_i110.GetProfileUseCase>(),
+        gh<_i92.FcmService>(),
+        gh<_i974.FirebaseFirestore>(),
+      ),
+    );
+    gh.factory<_i661.GetRouteUseCase>(
+      () => _i661.GetRouteUseCase(gh<_i776.MapRepositoryContract>()),
+    );
+    gh.factory<_i343.WatchDriverLocationUseCase>(
+      () => _i343.WatchDriverLocationUseCase(gh<_i776.MapRepositoryContract>()),
     );
     gh.factory<_i743.ApplyUseCase>(
       () => _i743.ApplyUseCase(gh<_i148.AuthRepositoryContract>()),
@@ -265,11 +342,22 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i628.ForgetPasswordViewModel>(
       () => _i628.ForgetPasswordViewModel(gh<_i483.ForgetPasswordUseCase>()),
     );
+    gh.factory<_i63.MapCubit>(
+      () => _i63.MapCubit(
+        gh<_i343.WatchDriverLocationUseCase>(),
+        gh<_i661.GetRouteUseCase>(),
+        gh<_i974.FirebaseFirestore>(),
+      ),
+    );
     return this;
   }
 }
 
 class _$CacheModule extends _i953.CacheModule {}
+
+class _$FirebaseModule extends _i398.FirebaseModule {}
+
+class _$HttpModule extends _i799.HttpModule {}
 
 class _$SecureStorageModule extends _i590.SecureStorageModule {}
 

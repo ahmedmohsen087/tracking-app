@@ -166,7 +166,7 @@ class _ResendRow extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              AppStrings.didntReciveCode.tr(),
+              AppStrings.didntReceiveCode.tr(),
               style: TextStyles.bodyRegular16,
             ),
             GestureDetector(

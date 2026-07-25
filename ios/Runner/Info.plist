@@ -26,7 +26,12 @@
 		<string>$(FLUTTER_BUILD_NUMBER)</string>
 		<key>LSRequiresIPhoneOS</key>
 		<true/>
-		<key>NSCameraUsageDescription</key>
+		<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>tel</string>
+		<string>whatsapp</string>
+	</array>
+	<key>NSCameraUsageDescription</key>
 		<string>This app needs access to your camera to capture vehicle license and ID images.</string>
 		<key>NSPhotoLibraryUsageDescription</key>
 		<string>This app needs access to your photo library to upload vehicle license and ID images.</string>
@@ -72,5 +77,13 @@
 		</array>
 		<key>UIStatusBarHidden</key>
 		<false/>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Location is needed to show your position on the delivery map</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Location is needed to track your delivery route in the background</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>location</string>
+	</array>
 	</dict>
 </plist>

@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:bloc_test/bloc_test.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flowery_rider_app/config/base_state/base_state.dart';
+import 'package:flowery_rider_app/features/auth/presentation/view_models/logout_view_model/logout_state.dart';
+import 'package:flowery_rider_app/features/auth/presentation/view_models/logout_view_model/logout_view_model.dart';
 import 'package:flowery_rider_app/features/profile/domain/entities/profile_driver_entity.dart';
 import 'package:flowery_rider_app/features/profile/presentation/screens/profile_screen.dart';
 import 'package:flowery_rider_app/features/profile/presentation/view_models/get_profile_view_model/get_profile_state.dart';
@@ -11,100 +14,134 @@ import 'package:flowery_rider_app/features/profile/presentation/view_models/get_
 import 'package:flowery_rider_app/features/profile/presentation/widgets/personal_information_card.dart';
 import 'package:flowery_rider_app/features/profile/presentation/widgets/vehicle_info_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MockGetProfileViewModel extends MockCubit<GetProfileState>
     implements GetProfileViewModel {}
 
+class MockLogoutViewModel extends MockCubit<LogoutState>
+    implements LogoutViewModel {}
+
+class _CachedAssetLoader extends AssetLoader {
+  final Map<String, dynamic> data;
+  const _CachedAssetLoader(this.data);
+
+  @override
+  Future<Map<String, dynamic>> load(String path, Locale locale) async => data;
+}
+
 void main() {
   late MockGetProfileViewModel mockGetProfileViewModel;
+  late MockLogoutViewModel mockLogoutViewModel;
+  late Map<String, dynamic> translations;
 
-  setUpAll(() {
+  setUpAll(() async {
     HttpOverrides.global = MyHttpOverrides();
+    TestWidgetsFlutterBinding.ensureInitialized();
+    SharedPreferences.setMockInitialValues({});
+    await EasyLocalization.ensureInitialized();
+    final raw = await rootBundle.loadString('assets/translations/en.json');
+    translations = json.decode(raw) as Map<String, dynamic>;
   });
 
   setUp(() {
     mockGetProfileViewModel = MockGetProfileViewModel();
+    mockLogoutViewModel = MockLogoutViewModel();
+    whenListen(
+      mockLogoutViewModel,
+      Stream.value(const LogoutState()),
+      initialState: const LogoutState(),
+    );
   });
 
   Widget createWidgetUnderTest() {
-    return MaterialApp(
-      home: BlocProvider<GetProfileViewModel>.value(
-        value: mockGetProfileViewModel,
-        child: const ProfileScreen(),
+    return EasyLocalization(
+      supportedLocales: const [Locale('en')],
+      path: 'assets/translations',
+      fallbackLocale: const Locale('en'),
+      assetLoader: _CachedAssetLoader(translations),
+      child: Builder(
+        builder: (context) => MaterialApp(
+          localizationsDelegates: context.localizationDelegates,
+          supportedLocales: context.supportedLocales,
+          locale: context.locale,
+          home: MultiBlocProvider(
+            providers: [
+              BlocProvider<GetProfileViewModel>.value(
+                value: mockGetProfileViewModel,
+              ),
+              BlocProvider<LogoutViewModel>.value(value: mockLogoutViewModel),
+            ],
+            child: const ProfileScreen(),
+          ),
+        ),
       ),
     );
   }
 
-  testWidgets(
-    'displays CircularProgressIndicator when loading',
-        (WidgetTester tester) async {
-      const loadingState = GetProfileState(
-        getProfileState: BaseState(
-          isLoading: true,
-        ),
-      );
+  testWidgets('displays CircularProgressIndicator when loading', (
+    WidgetTester tester,
+  ) async {
+    const loadingState = GetProfileState(
+      getProfileState: BaseState(isLoading: true),
+    );
 
-      whenListen(
-        mockGetProfileViewModel,
-        Stream.value(loadingState),
-        initialState: loadingState,
-      );
+    whenListen(
+      mockGetProfileViewModel,
+      Stream.value(loadingState),
+      initialState: loadingState,
+    );
 
-      await tester.pumpWidget(createWidgetUnderTest());
+    await tester.pumpWidget(createWidgetUnderTest());
+    await tester.pump();
 
-      expect(find.byType(CircularProgressIndicator), findsOneWidget);
-    },
-  );
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+  });
 
+  testWidgets('displays profile cards when data is loaded successfully', (
+    WidgetTester tester,
+  ) async {
+    final driver = ProfileDriverEntity(
+      firstName: 'John',
+      lastName: 'Doe',
+      email: 'john.doe@example.com',
+      phone: '1234567890',
+      photo: 'https://placeholder.com/photo.jpg',
+      vehicleType: 'Car',
+      vehicleNumber: '123-ABC',
+      vehicleLicense: 'XYZ-789',
+      nid: '123456789',
+      nidImg: 'https://placeholder.com/nid.jpg',
+      gender: 'Male',
+      country: 'USA',
+      role: 'Driver',
+      createdAt: DateTime.now(),
+      id: '1',
+    );
 
+    final successState = GetProfileState(
+      getProfileState: BaseState(isLoading: false, data: driver),
+    );
 
-  testWidgets(
-    'displays profile cards when data is loaded successfully',
-        (WidgetTester tester) async {
-      final driver = ProfileDriverEntity(
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'john.doe@example.com',
-        phone: '1234567890',
-        photo: 'https://placeholder.com/photo.jpg',
-        vehicleType: 'Car',
-        vehicleNumber: '123-ABC',
-        vehicleLicense: 'XYZ-789',
-        nid: '123456789',
-        nidImg: 'https://placeholder.com/nid.jpg',
-        gender: 'Male',
-        country: 'USA',
-        role: 'Driver',
-        createdAt: DateTime.now(),
-        id: '1',
-      );
+    whenListen(
+      mockGetProfileViewModel,
+      Stream.value(successState),
+      initialState: successState,
+    );
 
-      final successState = GetProfileState(
-        getProfileState: BaseState(
-          isLoading: false,
-          data: driver,
-        ),
-      );
+    await tester.pumpWidget(createWidgetUnderTest());
+    await tester.pumpAndSettle();
 
-      whenListen(
-        mockGetProfileViewModel,
-        Stream.value(successState),
-        initialState: successState,
-      );
+    expect(find.byType(PersonalInformationCard), findsOneWidget);
+    expect(find.byType(VehicleInfoCard), findsOneWidget);
 
-      await tester.pumpWidget(createWidgetUnderTest());
-      await tester.pumpAndSettle();
-
-      expect(find.byType(PersonalInformationCard), findsOneWidget);
-      expect(find.byType(VehicleInfoCard), findsOneWidget);
-
-      expect(find.text('John Doe'), findsOneWidget);
-      expect(find.text('john.doe@example.com'), findsOneWidget);
-      expect(find.text('1234567890'), findsOneWidget);
-    },
-  );
+    expect(find.text('John Doe'), findsOneWidget);
+    expect(find.text('john.doe@example.com'), findsOneWidget);
+    expect(find.text('1234567890'), findsOneWidget);
+  });
 }
 
 class MyHttpOverrides extends HttpOverrides {
@@ -133,8 +170,7 @@ class MyHttpClient implements HttpClient {
   }
 
   @override
-  dynamic noSuchMethod(Invocation invocation) =>
-      super.noSuchMethod(invocation);
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
 class MyHttpClientRequest implements HttpClientRequest {
@@ -144,8 +180,7 @@ class MyHttpClientRequest implements HttpClientRequest {
   }
 
   @override
-  dynamic noSuchMethod(Invocation invocation) =>
-      super.noSuchMethod(invocation);
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
 class MyHttpClientResponse implements HttpClientResponse {
@@ -161,11 +196,11 @@ class MyHttpClientResponse implements HttpClientResponse {
 
   @override
   StreamSubscription<List<int>> listen(
-      void Function(List<int> event)? onData, {
-        Function? onError,
-        void Function()? onDone,
-        bool? cancelOnError,
-      }) {
+    void Function(List<int> event)? onData, {
+    Function? onError,
+    void Function()? onDone,
+    bool? cancelOnError,
+  }) {
     final transparentPng = Uint8List.fromList([
       137,
       80,
@@ -245,6 +280,5 @@ class MyHttpClientResponse implements HttpClientResponse {
   }
 
   @override
-  dynamic noSuchMethod(Invocation invocation) =>
-      super.noSuchMethod(invocation);
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }

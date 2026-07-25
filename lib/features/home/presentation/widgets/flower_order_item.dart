@@ -2,18 +2,22 @@ import 'package:flowery_rider_app/core/values/app_strings.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/text_styles.dart';
-import '../../domain/entities/home_order_entity.dart';
+import '../../domain/entities/order_entity.dart';
 import 'address_item.dart';
 import 'item_selected.dart';
 
 class FlowerOrderItem extends StatelessWidget {
-  final HomeOrderEntity order;
+  final OrderEntity order;
   final VoidCallback onReject;
+  final VoidCallback onAccept;
+  final bool isAccepting;
 
   const FlowerOrderItem({
     super.key,
     required this.order,
     required this.onReject,
+    required this.onAccept,
+    this.isAccepting = false,
   });
 
   @override
@@ -22,7 +26,7 @@ class FlowerOrderItem extends StatelessWidget {
     final userAddress = [
       shippingAddress.street,
       shippingAddress.city,
-    ].where((part) => part?.isNotEmpty == true).join(', ');
+    ].where((part) => part.isNotEmpty).join(', ');
 
     return Container(
       width: double.infinity,
@@ -58,8 +62,17 @@ class FlowerOrderItem extends StatelessWidget {
               AppStrings.userAddress,
               style: TextStyles.bodyRegular12.copyWith(color: AppColors.grey),
             ),
-            AddressItem(title: order.user.firstName, address: userAddress),
-            ItemSelected(price: order.totalPrice, onReject: onReject),
+            AddressItem(
+              title: '${order.user.firstName} ${order.user.lastName}'.trim(),
+              address: userAddress,
+              image: order.user.photo,
+            ),
+            ItemSelected(
+              price: order.totalPrice,
+              onReject: onReject,
+              onAccept: onAccept,
+              isAccepting: isAccepting,
+            ),
           ],
         ),
       ),
