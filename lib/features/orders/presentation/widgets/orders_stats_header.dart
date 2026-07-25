@@ -21,7 +21,7 @@ class OrdersStatsHeader extends StatelessWidget {
       spacing: 10,
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             NumberItem(
               numberOfOrders: cancelledCount.toString(),

@@ -1,11 +1,13 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import '../../domain/entities/my_order_item_entity.dart';
+import '../../domain/entities/driver_order_item_entity.dart';
 import '../../domain/entities/order_product_entity.dart';
 import 'order_product.dart';
-part 'my_order_item.g.dart';
+
+part 'driver_order_item.g.dart';
+
 @JsonSerializable()
-class MyOrderItem {
+class DriverOrderItem {
   @JsonKey(name: "product")
   OrderProduct? product;
   @JsonKey(name: "price")
@@ -15,19 +17,22 @@ class MyOrderItem {
   @JsonKey(name: "_id")
   String? id;
 
-  MyOrderItem({
+  DriverOrderItem({
     this.product,
     this.price,
     this.quantity,
     this.id,
   });
 
-  factory MyOrderItem.fromJson(Map<String, dynamic> json) => _$MyOrderItemFromJson(json);
+  factory DriverOrderItem.fromJson(Map<String, dynamic> json) =>
+      _$DriverOrderItemFromJson(json);
 
-  Map<String, dynamic> toJson() => _$MyOrderItemToJson(this);
-  MyOrderItemEntity toDomain (){
-    return MyOrderItemEntity(
-      product: product?.toDomain() ?? const OrderProductEntity(id: '', price: 0),
+  Map<String, dynamic> toJson() => _$DriverOrderItemToJson(this);
+
+  DriverOrderItemEntity toDomain() {
+    return DriverOrderItemEntity(
+      product:
+          product?.toDomain() ?? const OrderProductEntity(id: '', price: 0),
       price: price ?? 0,
       quantity: quantity ?? 0,
       id: id ?? '',

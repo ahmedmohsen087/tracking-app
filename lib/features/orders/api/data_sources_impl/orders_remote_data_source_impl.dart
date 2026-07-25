@@ -42,12 +42,12 @@ class OrdersRemoteDataSourceImpl implements OrdersRemoteDataSourceContract {
   }
 
   @override
-  Future<BaseResponse<GetOrderResponse>> getMyOrders({
+  Future<BaseResponse<GetOrderResponse>> getDriverOrders({
     required int page,
     required int limit,
   }) async {
     try {
-      final response = await _apiClient.getMyOrders(page, limit);
+      final response = await _apiClient.getDriverOrders(page, limit);
       return SuccessBaseResponse<GetOrderResponse>(data: response);
     } catch (e) {
       final String message = ErrorHandler.handle(e);

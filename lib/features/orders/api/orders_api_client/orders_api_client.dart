@@ -25,7 +25,7 @@ abstract class OrdersApiClient {
   );
 
   @GET(ApiEndpoints.myOrders)
-  Future<GetOrderResponse> getMyOrders(
+  Future<GetOrderResponse> getDriverOrders(
     @Query('page') int page,
     @Query('limit') int limit,
   );

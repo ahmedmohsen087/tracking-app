@@ -7,7 +7,7 @@ abstract interface class OrdersRemoteDataSourceContract {
 
   Future<BaseResponse<void>> updateOrderState(String orderId, String state);
 
-  Future<BaseResponse<GetOrderResponse>> getMyOrders({
+  Future<BaseResponse<GetOrderResponse>> getDriverOrders({
     required int page,
     required int limit,
   });

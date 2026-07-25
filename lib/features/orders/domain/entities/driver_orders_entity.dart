@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import 'my_order_item_entity.dart';
+import 'driver_order_item_entity.dart';
 import 'order_shipping_address_entity.dart';
 import 'order_users_entity.dart';
 
@@ -17,14 +17,14 @@ enum OrderState {
   @JsonValue('inProgress')
   inProgress,
 
-  @JsonValue('cancelled')
+  @JsonValue('canceled')
   cancelled,
 }
 
-class MyOrdersEntity extends Equatable {
+class DriverOrderEntity extends Equatable {
   final String id;
   final OrderUsersEntity user;
-  final List<MyOrderItemEntity> orderItems;
+  final List<DriverOrderItemEntity> orderItems;
   final double totalPrice;
   final OrderShippingAddressEntity shippingAddress;
   final PaymentType paymentType;
@@ -37,7 +37,7 @@ class MyOrdersEntity extends Equatable {
   final int v;
   final String orderNumber;
 
-  const MyOrdersEntity({
+  const DriverOrderEntity({
     required this.id,
     required this.user,
     required this.orderItems,

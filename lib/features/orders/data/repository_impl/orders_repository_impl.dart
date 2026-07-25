@@ -1,5 +1,5 @@
 import 'package:flowery_rider_app/config/base_response/base_response.dart';
-import 'package:flowery_rider_app/features/orders/api/request_models/get_my_orders_request.dart';
+import 'package:flowery_rider_app/features/orders/api/request_models/get_driver_orders_request.dart';
 import 'package:flowery_rider_app/features/orders/data/data_sources_contract/orders_remote_data_source_contract.dart';
 import 'package:flowery_rider_app/features/orders/data/models/get_order_response.dart';
 import 'package:flowery_rider_app/features/orders/data/models/start_order_response.dart';
@@ -40,10 +40,10 @@ class OrdersRepositoryImpl implements OrdersRepositoryContract {
   }
 
   @override
-  Future<BaseResponse<GetOrderResponseEntity>> getMyOrders({
-    required GetMyOrdersRequest request,
+  Future<BaseResponse<GetOrderResponseEntity>> getDriverOrders({
+    required GetDriverOrdersRequest request,
   }) async {
-    final response = await _dataSource.getMyOrders(
+    final response = await _dataSource.getDriverOrders(
       page: request.page,
       limit: request.limit,
     );

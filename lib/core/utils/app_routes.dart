@@ -18,8 +18,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../features/home/presentation/view_model/home_events.dart';
 import '../../features/home/presentation/view_model/home_view_model.dart';
-import '../../features/orders/presentation/view_models/my_orders_events.dart';
-import '../../features/orders/presentation/view_models/my_orders_view_model.dart';
+import '../../features/orders/domain/entities/driver_order_element_entity.dart';
+import '../../features/orders/presentation/screens/order_details_screen.dart';
+import '../../features/orders/presentation/view_models/driver_orders_events.dart';
+import '../../features/orders/presentation/view_models/driver_orders_view_model.dart';
 import '../../features/profile/presentation/view_models/get_profile_view_model/get_profile_event.dart';
 import '../../features/profile/presentation/view_models/get_profile_view_model/get_profile_view_model.dart';
 import '../../features/section_app/section_app.dart';
@@ -80,8 +82,8 @@ class AppRoutes {
               ),
               BlocProvider(
                 create: (_) =>
-                    getIt<MyOrdersViewModel>()
-                      ..doEvent(const LoadMyOrdersEvent()),
+                    getIt<DriverOrdersViewModel>()
+                      ..doEvent(const LoadDriverOrdersEvent()),
               ),
             ],
          child: const SectionApp(),
@@ -106,6 +108,12 @@ class AppRoutes {
         final vehicleDriver = settings.arguments as ProfileDriverEntity?;
         return MaterialPageRoute(
           builder: (_) => EditVehicleInfoScreen(driver: vehicleDriver),
+        );
+
+      case AppRoutsName.orderDetailsScreen:
+        final orderElement = settings.arguments as DriverOrderElementEntity;
+        return MaterialPageRoute(
+          builder: (_) => OrderDetailsScreen(orderElement: orderElement),
         );
 
       default:

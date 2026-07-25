@@ -1,14 +1,14 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import '../../domain/entities/my_orders_entity.dart';
-import 'my_order_item.dart';
+import '../../domain/entities/driver_orders_entity.dart';
+import 'driver_order_item.dart';
 import 'order_shipping_address.dart';
 import 'order_users.dart';
 
-part 'my_orders.g.dart';
+part 'driver_orders.g.dart';
 
 @JsonSerializable()
-class MyOrders {
+class DriverOrders {
   @JsonKey(name: "_id")
   final String? id;
 
@@ -16,7 +16,7 @@ class MyOrders {
   final OrderUsers? user;
 
   @JsonKey(name: "orderItems")
-  final List<MyOrderItem>? orderItems;
+  final List<DriverOrderItem>? orderItems;
 
   @JsonKey(name: "totalPrice")
   final double? totalPrice;
@@ -51,7 +51,7 @@ class MyOrders {
   @JsonKey(name: "__v")
   final int? v;
 
-  const MyOrders({
+  const DriverOrders({
     this.id,
     this.user,
     this.orderItems,
@@ -68,19 +68,19 @@ class MyOrders {
     this.v,
   });
 
-  factory MyOrders.fromJson(Map<String, dynamic> json) =>
-      _$MyOrdersFromJson(json);
+  factory DriverOrders.fromJson(Map<String, dynamic> json) =>
+      _$DriverOrdersFromJson(json);
 
-  Map<String, dynamic> toJson() => _$MyOrdersToJson(this);
+  Map<String, dynamic> toJson() => _$DriverOrdersToJson(this);
 
-  MyOrdersEntity toDomain() {
-    return MyOrdersEntity(
+  DriverOrderEntity toDomain() {
+    return DriverOrderEntity(
       id: id ?? '',
       user: user?.toDomain() ?? OrderUsers().toDomain(),
       orderItems: orderItems?.map((e) => e.toDomain()).toList() ?? [],
       totalPrice: totalPrice ?? 0,
       shippingAddress:
-      shippingAddress?.toDomain() ?? OrderShippingAddress().toDomain(),
+          shippingAddress?.toDomain() ?? OrderShippingAddress().toDomain(),
       paymentType: paymentType ?? PaymentType.cash,
       isPaid: isPaid ?? false,
       paidAt: paidAt ?? DateTime.now(),

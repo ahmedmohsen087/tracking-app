@@ -1,15 +1,14 @@
-class GetMyOrdersRequest {
+class GetDriverOrdersRequest {
   final int page;
   final int limit;
 
-  const GetMyOrdersRequest({
+  const GetDriverOrdersRequest({
     required this.page,
     required this.limit,
   });
 
   Map<String, dynamic> toJson() {
     return {
-
       'page': page,
       'limit': limit,
     };

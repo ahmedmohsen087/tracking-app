@@ -10,8 +10,15 @@ class AddressItem extends StatelessWidget {
   final String? title;
   final String? address;
   final String? image;
+  final bool hasShadow;
 
-  const AddressItem({super.key, this.title, this.address, this.image});
+  const AddressItem({
+    super.key,
+    this.title,
+    this.address,
+    this.image,
+    this.hasShadow = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,14 +30,19 @@ class AddressItem extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.grey.withValues(alpha: 0.5),
-            spreadRadius: 5,
-            blurRadius: 7,
-            offset: const Offset(0, 3),
-          ),
-        ],
+        border: hasShadow
+            ? null
+            : Border.all(color: AppColors.grey.withValues(alpha: 0.15)),
+        boxShadow: hasShadow
+            ? [
+                BoxShadow(
+                  color: AppColors.grey.withValues(alpha: 0.2),
+                  spreadRadius: 2,
+                  blurRadius: 7,
+                  offset: const Offset(0, 3),
+                ),
+              ]
+            : null,
       ),
       child: Row(
         children: [
@@ -66,9 +78,17 @@ class AddressItem extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    const SizedBox(
+                     SizedBox(
                       width: 18,
-                      child: Icon(Icons.location_on_outlined, size: 18),
+                      child: SvgPicture.asset(
+                        Assets.assetsIconsLocation,
+                        width: 18,
+                        height: 18,
+                        colorFilter: ColorFilter.mode(
+                          AppColors.black,
+                          BlendMode.srcIn,
+                        ),
+                      ),
                     ),
                     const SizedBox(width: 4),
                     Expanded(
@@ -76,9 +96,7 @@ class AddressItem extends StatelessWidget {
                         address ?? '',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyles.bodyRegular12.copyWith(
-                          color: AppColors.grey,
-                        ),
+                        style: TextStyles.bodyRegular12,
                       ),
                     ),
                   ],

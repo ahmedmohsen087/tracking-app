@@ -1,8 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../domain/entities/get_order_response_entity.dart';
+import 'driver_order_element.dart';
 import 'meta_data.dart';
-import 'my_order_element.dart';
 
 part 'get_order_response.g.dart';
 
@@ -13,7 +13,7 @@ class GetOrderResponse {
   @JsonKey(name: "metadata")
   Metadata? metadata;
   @JsonKey(name: "orders")
-  List<MyOrderElement>? orders;
+  List<DriverOrderElement>? orders;
 
   GetOrderResponse({
     this.message,
@@ -21,7 +21,8 @@ class GetOrderResponse {
     this.orders,
   });
 
-  factory GetOrderResponse.fromJson(Map<String, dynamic> json) => _$GetOrderResponseFromJson(json);
+  factory GetOrderResponse.fromJson(Map<String, dynamic> json) =>
+      _$GetOrderResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$GetOrderResponseToJson(this);
 
@@ -33,19 +34,3 @@ class GetOrderResponse {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

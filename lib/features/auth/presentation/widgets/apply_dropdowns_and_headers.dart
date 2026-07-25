@@ -13,7 +13,10 @@ class ApplyAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       leading: IconButton(
-        icon: SvgPicture.asset(Assets.assetsIconsArrowBack),
+        icon: SvgPicture.asset(
+          Assets.assetsIconsArrowBack,
+          matchTextDirection: true,
+        ),
         onPressed: () => Navigator.of(context).pop(),
       ),
       title: Text(AppStrings.apply),

@@ -179,6 +179,9 @@ abstract class AppStrings {
   static String get orderItems => 'orderItems'.tr();
   static String get itemFallback => 'itemFallback'.tr();
   static String get totalLabel => 'totalLabel'.tr();
+  static String get paymentMethod => 'paymentMethod'.tr();
+  static String get cashOnDelivery => 'cashOnDelivery'.tr();
+  static String get creditCard => 'creditCard'.tr();
 
   static String get statusAccepted => 'statusAccepted'.tr();
   static String get statusPicked => 'statusPicked'.tr();

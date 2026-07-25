@@ -41,7 +41,7 @@ class OrderUsers {
   OrderUsersEntity toDomain (){
     return OrderUsersEntity(
       id: id ?? '',
-      firstName: firstName,
+      firstName: firstName ?? '',
       lastName: lastName ?? '',
       email: email ?? '',
       gender: gender ?? '',

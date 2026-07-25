@@ -1,8 +1,8 @@
 import '../../../../config/base_state/base_state.dart';
-import '../../domain/entities/my_order_element_entity.dart';
+import '../../domain/entities/driver_order_element_entity.dart';
 
-class MyOrderState {
-  final BaseState<List<MyOrderElementEntity>> getOrdersState;
+class DriverOrdersState {
+  final BaseState<List<DriverOrderElementEntity>> getOrdersState;
   final int currentPage;
   final int totalPages;
   final int limit;
@@ -12,8 +12,8 @@ class MyOrderState {
   final bool isRejectedLoading;
   final String? rejectedErrorMsg;
 
-  const MyOrderState({
-    this.getOrdersState = const BaseState<List<MyOrderElementEntity>>(),
+  const DriverOrdersState({
+    this.getOrdersState = const BaseState<List<DriverOrderElementEntity>>(),
     this.currentPage = 0,
     this.totalPages = 1,
     this.limit = 10,
@@ -26,8 +26,8 @@ class MyOrderState {
 
   bool get hasMorePages => currentPage < totalPages;
 
-  MyOrderState copyWith({
-    BaseState<List<MyOrderElementEntity>>? getOrdersState,
+  DriverOrdersState copyWith({
+    BaseState<List<DriverOrderElementEntity>>? getOrdersState,
     int? currentPage,
     int? totalPages,
     int? limit,
@@ -37,7 +37,7 @@ class MyOrderState {
     bool? isRejectedLoading,
     String? rejectedErrorMsg,
   }) {
-    return MyOrderState(
+    return DriverOrdersState(
       getOrdersState: getOrdersState ?? this.getOrdersState,
       currentPage: currentPage ?? this.currentPage,
       totalPages: totalPages ?? this.totalPages,

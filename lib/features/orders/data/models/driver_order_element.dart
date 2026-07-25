@@ -1,20 +1,19 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import '../../../auth/data/models/driver_model.dart';
-import '../../domain/entities/my_order_element_entity.dart';
-import 'my_orders.dart';
+import '../../domain/entities/driver_order_element_entity.dart';
+import 'driver_orders.dart';
 import 'my_store.dart';
 
-part 'my_order_element.g.dart';
+part 'driver_order_element.g.dart';
 
 @JsonSerializable()
-class MyOrderElement {
+class DriverOrderElement {
   @JsonKey(name: "_id")
   String? id;
   @JsonKey(name: "driver")
-  Driver? driver;
+  String? driver;
   @JsonKey(name: "order")
-  MyOrders? order;
+  DriverOrders? order;
   @JsonKey(name: "__v")
   int? v;
   @JsonKey(name: "createdAt")
@@ -24,7 +23,7 @@ class MyOrderElement {
   @JsonKey(name: "store")
   MyStore? store;
 
-  MyOrderElement({
+  DriverOrderElement({
     this.id,
     this.driver,
     this.order,
@@ -34,15 +33,16 @@ class MyOrderElement {
     this.store,
   });
 
-  factory MyOrderElement.fromJson(Map<String, dynamic> json) => _$MyOrderElementFromJson(json);
+  factory DriverOrderElement.fromJson(Map<String, dynamic> json) =>
+      _$DriverOrderElementFromJson(json);
 
-  Map<String, dynamic> toJson() => _$MyOrderElementToJson(this);
+  Map<String, dynamic> toJson() => _$DriverOrderElementToJson(this);
 
-  MyOrderElementEntity toDomain (){
-    return MyOrderElementEntity(
+  DriverOrderElementEntity toDomain() {
+    return DriverOrderElementEntity(
       id: id ?? '',
-      driver: driver?.toDomain() ?? Driver().toDomain(),
-      order: order?.toDomain() ?? MyOrders().toDomain(),
+      driver: driver ?? '',
+      order: order?.toDomain() ?? const DriverOrders().toDomain(),
       v: v ?? 0,
       createdAt: createdAt ?? DateTime.now(),
       updatedAt: updatedAt ?? DateTime.now(),

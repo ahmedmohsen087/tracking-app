@@ -77,8 +77,8 @@ import '../../features/orders/domain/repository_contract/map_repository_contract
     as _i776;
 import '../../features/orders/domain/repository_contract/orders_repository_contract.dart'
     as _i440;
-import '../../features/orders/domain/use_cases/get_my_orders_use_case.dart'
-    as _i78;
+import '../../features/orders/domain/use_cases/get_driver_orders_use_case.dart'
+    as _i898;
 import '../../features/orders/domain/use_cases/get_route_use_case.dart'
     as _i661;
 import '../../features/orders/domain/use_cases/start_order_use_case.dart'
@@ -89,10 +89,10 @@ import '../../features/orders/domain/use_cases/watch_driver_location_use_case.da
     as _i343;
 import '../../features/orders/presentation/view_models/active_order_view_model/active_order_view_model.dart'
     as _i1042;
+import '../../features/orders/presentation/view_models/driver_orders_view_model.dart'
+    as _i792;
 import '../../features/orders/presentation/view_models/map_cubit/map_cubit.dart'
     as _i63;
-import '../../features/orders/presentation/view_models/my_orders_view_model.dart'
-    as _i892;
 import '../../features/profile/api/data_sources_impl/profile_remote_data_source_impl.dart'
     as _i1028;
 import '../../features/profile/api/profile_api_client/profile_api_client.dart'
@@ -261,8 +261,8 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i814.MapRemoteDataSourceContract>(),
       ),
     );
-    gh.factory<_i78.GetMyOrdersUseCase>(
-      () => _i78.GetMyOrdersUseCase(gh<_i440.OrdersRepositoryContract>()),
+    gh.factory<_i898.GetDriverOrdersUseCase>(
+      () => _i898.GetDriverOrdersUseCase(gh<_i440.OrdersRepositoryContract>()),
     );
     gh.factory<_i148.AuthRepositoryContract>(
       () => _i954.AuthRepositoryImpl(
@@ -294,9 +294,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i548.ChangePasswordViewModel>(
       () => _i548.ChangePasswordViewModel(gh<_i963.ChangePasswordUseCase>()),
     );
-    gh.factory<_i892.MyOrdersViewModel>(
-      () => _i892.MyOrdersViewModel(gh<_i78.GetMyOrdersUseCase>()),
-    );
     gh.factory<_i530.GetProfileViewModel>(
       () => _i530.GetProfileViewModel(gh<_i110.GetProfileUseCase>()),
     );
@@ -326,6 +323,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i343.WatchDriverLocationUseCase>(
       () => _i343.WatchDriverLocationUseCase(gh<_i776.MapRepositoryContract>()),
+    );
+    gh.factory<_i792.DriverOrdersViewModel>(
+      () => _i792.DriverOrdersViewModel(gh<_i898.GetDriverOrdersUseCase>()),
     );
     gh.factory<_i743.ApplyUseCase>(
       () => _i743.ApplyUseCase(gh<_i148.AuthRepositoryContract>()),

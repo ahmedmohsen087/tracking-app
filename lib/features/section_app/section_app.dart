@@ -23,15 +23,6 @@ class SectionApp extends StatefulWidget {
 class _SectionAppState extends State<SectionApp> {
   AppTab currentTab = AppTab.home;
 
-  final List<Widget> pages = [
-    const HomeScreen(),
-    const OrdersScreen(),
-    BlocProvider(
-      create: (context) => getIt<LogoutViewModel>(),
-      child: const ProfileScreen(),
-    ),
-  ];
-
   SvgPicture _icon(String asset, Color color) =>
       SvgPicture.asset(
         asset,
@@ -42,6 +33,17 @@ class _SectionAppState extends State<SectionApp> {
   @override
   Widget build(BuildContext context) {
     context.locale;
+
+    final List<Widget> pages = [
+      HomeScreen(key: ValueKey('home_${context.locale.languageCode}')),
+      OrdersScreen(key: ValueKey('orders_${context.locale.languageCode}')),
+      BlocProvider(
+        key: ValueKey('profile_${context.locale.languageCode}'),
+        create: (context) => getIt<LogoutViewModel>(),
+        child: const ProfileScreen(),
+      ),
+    ];
+
     return Scaffold(
       body: IndexedStack(index: currentTab.index, children: pages),
       bottomNavigationBar: BottomNavigationBar(
