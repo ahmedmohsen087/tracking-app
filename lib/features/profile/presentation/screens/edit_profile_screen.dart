@@ -75,96 +75,12 @@ class _EditProfileViewState extends State<EditProfileView> {
   }
 
   Future<void> _showImageSourceDialog() async {
-    final ImageSource? source = await showDialog<ImageSource>(
+    final source = await showDialog<ImageSource>(
       context: context,
-      builder: (context) {
-        return Dialog(
-          backgroundColor: AppColors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  AppStrings.editProfile,
-                  style: TextStyles.bodyMedium18.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                InkWell(
-                  onTap: () => Navigator.pop(context, ImageSource.camera),
-                  borderRadius: BorderRadius.circular(12),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 14,
-                      horizontal: 16,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppColors.lightPink,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.camera_alt_rounded,
-                          color: AppColors.pink,
-                          size: 22,
-                        ),
-                        const SizedBox(width: 12),
-                        Text(
-                          AppStrings.takePhoto,
-                          style: TextStyles.bodyRegular14.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                InkWell(
-                  onTap: () => Navigator.pop(context, ImageSource.gallery),
-                  borderRadius: BorderRadius.circular(12),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 14,
-                      horizontal: 16,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppColors.lightPink,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.photo_library_rounded,
-                          color: AppColors.pink,
-                          size: 22,
-                        ),
-                        const SizedBox(width: 12),
-                        Text(
-                          AppStrings.chooseFromGallery,
-                          style: TextStyles.bodyRegular14.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
+      builder: (_) => const _ImageSourceDialog(),
     );
 
     if (source == null) return;
-
     final picker = ImagePicker();
     final file = await picker.pickImage(source: source);
     if (file == null) return;
@@ -173,23 +89,44 @@ class _EditProfileViewState extends State<EditProfileView> {
     if (!mounted) return;
 
     context.read<EditProfileViewModel>().doEvent(
-      UploadPhotoEvent(filePath: file.path),
-    );
+          UploadPhotoEvent(filePath: file.path),
+        );
   }
 
   void _onUpdate() {
     if (!(_formKey.currentState?.validate() ?? false)) return;
 
     context.read<EditProfileViewModel>().doEvent(
-      EditProfileSubmitEvent(
-        requestModel: EditProfileRequestModel(
-          firstName: _firstNameController.text.trim(),
-          lastName: _lastNameController.text.trim(),
-          email: _emailController.text.trim(),
-          phone: _phoneController.text.trim(),
-        ),
-      ),
-    );
+          EditProfileSubmitEvent(
+            requestModel: EditProfileRequestModel(
+              firstName: _firstNameController.text.trim(),
+              lastName: _lastNameController.text.trim(),
+              email: _emailController.text.trim(),
+              phone: _phoneController.text.trim(),
+            ),
+          ),
+        );
+  }
+
+  void _onStateListener(BuildContext context, EditProfileState state) {
+    if (state.editProfileState.data != null) {
+      AppSnackBar.showSuccess(
+        context,
+        AppStrings.profileUpdatedSuccessfully,
+      );
+      Navigator.pop(context, true);
+    } else if (state.editProfileState.msg != null) {
+      AppSnackBar.showError(context, state.editProfileState.msg!);
+    }
+
+    if (state.uploadPhotoState.data != null) {
+      AppSnackBar.showSuccess(
+        context,
+        AppStrings.photoUploadedSuccessfully,
+      );
+    } else if (state.uploadPhotoState.msg != null) {
+      AppSnackBar.showError(context, state.uploadPhotoState.msg!);
+    }
   }
 
   @override
@@ -212,37 +149,17 @@ class _EditProfileViewState extends State<EditProfileView> {
         title: Text(AppStrings.editProfile),
       ),
       body: BlocListener<EditProfileViewModel, EditProfileState>(
-        listenWhen: (previous, current) =>
-            (previous.editProfileState != current.editProfileState &&
-                !current.editProfileState.isLoading) ||
-            (previous.uploadPhotoState != current.uploadPhotoState &&
-                !current.uploadPhotoState.isLoading),
-        listener: (context, state) {
-          if (state.editProfileState.data != null) {
-            AppSnackBar.showSuccess(
-              context,
-              AppStrings.profileUpdatedSuccessfully,
-            );
-            Navigator.pop(context, true);
-          } else if (state.editProfileState.msg != null) {
-            AppSnackBar.showError(context, state.editProfileState.msg!);
-          }
-
-          if (state.uploadPhotoState.data != null) {
-            AppSnackBar.showSuccess(
-              context,
-              AppStrings.photoUploadedSuccessfully,
-            );
-          } else if (state.uploadPhotoState.msg != null) {
-            AppSnackBar.showError(context, state.uploadPhotoState.msg!);
-          }
-        },
+        listenWhen: (prev, curr) =>
+            (prev.editProfileState != curr.editProfileState &&
+                !curr.editProfileState.isLoading) ||
+            (prev.uploadPhotoState != curr.uploadPhotoState &&
+                !curr.uploadPhotoState.isLoading),
+        listener: _onStateListener,
         child: BlocBuilder<EditProfileViewModel, EditProfileState>(
           builder: (context, state) {
-            final isLoading = state.editProfileState.isLoading;
-
             return SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
               child: Column(
                 children: [
                   ValueListenableBuilder<String?>(
@@ -260,18 +177,93 @@ class _EditProfileViewState extends State<EditProfileView> {
                     emailController: _emailController,
                     phoneController: _phoneController,
                     gender: _gender,
-                    onGenderChanged: (val) {
-                      setState(() {
-                        _gender = val;
-                      });
-                    },
+                    onGenderChanged: (val) => setState(() => _gender = val),
                     onUpdate: _onUpdate,
-                    isLoading: isLoading,
+                    isLoading: state.editProfileState.isLoading,
                   ),
                 ],
               ),
             );
           },
+        ),
+      ),
+    );
+  }
+}
+
+class _ImageSourceDialog extends StatelessWidget {
+  const _ImageSourceDialog();
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      backgroundColor: AppColors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              AppStrings.editProfile,
+              style: TextStyles.bodyMedium18.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 20),
+            _ImageSourceOption(
+              icon: Icons.camera_alt_rounded,
+              label: AppStrings.takePhoto,
+              onTap: () => Navigator.pop(context, ImageSource.camera),
+            ),
+            const SizedBox(height: 12),
+            _ImageSourceOption(
+              icon: Icons.photo_library_rounded,
+              label: AppStrings.chooseFromGallery,
+              onTap: () => Navigator.pop(context, ImageSource.gallery),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ImageSourceOption extends StatelessWidget {
+  const _ImageSourceOption({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+        decoration: BoxDecoration(
+          color: AppColors.lightPink,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Row(
+          children: [
+            Icon(icon, color: AppColors.pink, size: 22),
+            const SizedBox(width: 12),
+            Text(
+              label,
+              style: TextStyles.bodyRegular14.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
         ),
       ),
     );

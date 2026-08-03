@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flowery_rider_app/core/values/api_endpoints.dart';
 import 'package:flowery_rider_app/features/orders/data/data_sources_contract/map_remote_data_source_contract.dart';
 import 'package:flowery_rider_app/features/orders/data/models/osrm_route_response.dart';
 import 'package:flowery_rider_app/features/orders/domain/entities/lat_lng_point.dart';
@@ -17,8 +18,12 @@ class MapRemoteDataSourceImpl implements MapRemoteDataSourceContract {
     required LatLngPoint destination,
   }) async {
     try {
-      final url =
-          'https://router.project-osrm.org/route/v1/driving/${origin.lng},${origin.lat};${destination.lng},${destination.lat}?overview=full&geometries=geojson';
+      final url = ApiEndpoints.osrmRouteUrl(
+        origin.lng,
+        origin.lat,
+        destination.lng,
+        destination.lat,
+      );
       final response = await _dio.get<Map<String, dynamic>>(url);
       final data = response.data;
       if (data == null) return null;

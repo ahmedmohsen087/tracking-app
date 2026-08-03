@@ -58,13 +58,13 @@ class _LoginViewState extends State<LoginView> {
     if (!(_formKey.currentState?.validate() ?? false)) return;
 
     context.read<LoginViewModel>().doEvent(
-      LoginRequestEvent(
-        requestModel: LoginRequestModel(
-          email: _emailController.text.trim(),
-          password: _passwordController.text,
-        ),
-      ),
-    );
+          LoginRequestEvent(
+            requestModel: LoginRequestModel(
+              email: _emailController.text.trim(),
+              password: _passwordController.text,
+            ),
+          ),
+        );
   }
 
   @override
@@ -96,7 +96,7 @@ class _LoginAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       title: Padding(
-        padding: EdgeInsetsDirectional.only(start: 20),
+        padding: const EdgeInsetsDirectional.only(start: 20),
         child: Text(AppStrings.loginTitle),
       ),
       automaticallyImplyLeading: false,
@@ -151,94 +151,139 @@ class LoginForm extends StatelessWidget {
       child: Column(
         children: [
           const SizedBox(height: 16),
-
-          TextFormField(
-            controller: emailController,
-            validator: (value) => AppValidations.validateEmail(value ?? ''),
-            decoration: InputDecoration(
-              labelText: AppStrings.emailLabel,
-              hintText: AppStrings.emailHint,
-            ),
-            keyboardType: TextInputType.emailAddress,
+          _EmailInputField(controller: emailController),
+          const SizedBox(height: 16),
+          _PasswordInputField(
+            controller: passwordController,
+            obscureNotifier: obscurePasswordNotifier,
           ),
           const SizedBox(height: 16),
-
-          ValueListenableBuilder<bool>(
-            valueListenable: obscurePasswordNotifier,
-            builder: (context, isObscured, child) {
-              return TextFormField(
-                controller: passwordController,
-                obscureText: isObscured,
-                validator: (value) =>
-                    AppValidations.validatePassword(value ?? ''),
-                decoration: InputDecoration(
-                  labelText: AppStrings.passwordLabel,
-                  hintText: AppStrings.passwordHint,
-                  suffixIcon: IconButton(
-                    onPressed: () =>
-                        obscurePasswordNotifier.value = !isObscured,
-                    icon: SvgPicture.asset(
-                      isObscured
-                          ? Assets.assetsIconsVisibilityOff
-                          : Assets.assetsIconsVisibilityOn,
-                      width: 20,
-                      height: 20,
-                      colorFilter: const ColorFilter.mode(
-                        AppColors.grey,
-                        BlendMode.srcIn,
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            },
-          ),
-          const SizedBox(height: 16),
-
-          Row(
-            children: [
-              ValueListenableBuilder<bool>(
-                valueListenable: rememberMeNotifier,
-                builder: (context, isRemembered, child) {
-                  return Checkbox(
-                    value: isRemembered,
-                    onChanged: (v) => {
-                      rememberMeNotifier.value = v ?? false,
-                      context.read<LoginViewModel>().doEvent(
-                        RememberMeEvent(rememberMe: v ?? false),
-                      ),
-                    },
-                  );
-                },
-              ),
-              Text(AppStrings.rememberMe),
-              const Spacer(),
-              GestureDetector(
-                onTap: () => Navigator.pushNamed(
-                  context,
-                  AppRoutsName.forgetPasswordScreen,
-                ),
-                child: Text(
-                  AppStrings.dontRememberYourPassword,
-                  style: TextStyles.bodyRegularUnderLine13,
-                ),
-              ),
-            ],
-          ),
+          _RememberMeRow(rememberMeNotifier: rememberMeNotifier),
           const SizedBox(height: 40),
-
-          SizedBox(
-            width: double.infinity,
-            height: 52,
-            child: ElevatedButton(
-              onPressed: onLoginPressed,
-              child: Text(AppStrings.loginButton),
-            ),
-          ),
-
+          _LoginSubmitButton(onPressed: onLoginPressed),
           const SizedBox(height: 24),
           const _SignUpLink(),
         ],
+      ),
+    );
+  }
+}
+
+class _EmailInputField extends StatelessWidget {
+  const _EmailInputField({required this.controller});
+
+  final TextEditingController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      controller: controller,
+      validator: (value) => AppValidations.validateEmail(value ?? ''),
+      decoration: InputDecoration(
+        labelText: AppStrings.emailLabel,
+        hintText: AppStrings.emailHint,
+      ),
+      keyboardType: TextInputType.emailAddress,
+    );
+  }
+}
+
+class _PasswordInputField extends StatelessWidget {
+  const _PasswordInputField({
+    required this.controller,
+    required this.obscureNotifier,
+  });
+
+  final TextEditingController controller;
+  final ValueNotifier<bool> obscureNotifier;
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<bool>(
+      valueListenable: obscureNotifier,
+      builder: (context, isObscured, child) {
+        return TextFormField(
+          controller: controller,
+          obscureText: isObscured,
+          validator: (value) => AppValidations.validatePassword(value ?? ''),
+          decoration: InputDecoration(
+            labelText: AppStrings.passwordLabel,
+            hintText: AppStrings.passwordHint,
+            suffixIcon: IconButton(
+              onPressed: () => obscureNotifier.value = !isObscured,
+              icon: SvgPicture.asset(
+                isObscured
+                    ? Assets.assetsIconsVisibilityOff
+                    : Assets.assetsIconsVisibilityOn,
+                width: 20,
+                height: 20,
+                colorFilter: const ColorFilter.mode(
+                  AppColors.grey,
+                  BlendMode.srcIn,
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _RememberMeRow extends StatelessWidget {
+  const _RememberMeRow({required this.rememberMeNotifier});
+
+  final ValueNotifier<bool> rememberMeNotifier;
+
+  void _onForgotPassword(BuildContext context) {
+    Navigator.pushNamed(context, AppRoutsName.forgetPasswordScreen);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        ValueListenableBuilder<bool>(
+          valueListenable: rememberMeNotifier,
+          builder: (context, isRemembered, child) {
+            return Checkbox(
+              value: isRemembered,
+              onChanged: (v) {
+                rememberMeNotifier.value = v ?? false;
+                context.read<LoginViewModel>().doEvent(
+                      RememberMeEvent(rememberMe: v ?? false),
+                    );
+              },
+            );
+          },
+        ),
+        Text(AppStrings.rememberMe),
+        const Spacer(),
+        GestureDetector(
+          onTap: () => _onForgotPassword(context),
+          child: Text(
+            AppStrings.dontRememberYourPassword,
+            style: TextStyles.bodyRegularUnderLine13,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _LoginSubmitButton extends StatelessWidget {
+  const _LoginSubmitButton({required this.onPressed});
+
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: 52,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        child: Text(AppStrings.loginButton),
       ),
     );
   }

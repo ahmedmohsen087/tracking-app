@@ -45,9 +45,12 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   void initState() {
     super.initState();
-
     _seenOnboardingFuture = getIt<SecureStorageService>().readSeenOnboarding();
+    _initAnimations();
+    _runTimeline();
+  }
 
+  void _initAnimations() {
     _logoController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 800),
@@ -93,22 +96,27 @@ class _SplashScreenState extends State<SplashScreen>
         curve: const Cubic(0.2, 0.8, 0.25, 1),
       ),
     );
-
-    _runTimeline();
   }
 
   void _runTimeline() {
     _timers.add(
-      Timer(const Duration(milliseconds: 180), _logoController.forward),
+      Timer(const Duration(milliseconds: 180), () {
+        if (!mounted) return;
+        _logoController.forward();
+      }),
     );
     _timers.add(
       Timer(const Duration(milliseconds: 1350), () {
+        if (!mounted) return;
         setState(() => _step = 1);
         _revealController.forward();
       }),
     );
     _timers.add(
-      Timer(const Duration(milliseconds: 4500), _onHeroPhaseComplete),
+      Timer(const Duration(milliseconds: 4500), () {
+        if (!mounted) return;
+        _onHeroPhaseComplete();
+      }),
     );
   }
 
@@ -130,11 +138,25 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   void _goToOnboarding() {
+    if (!mounted) return;
     setState(() => _step = 2);
     _heroController.forward();
     _timers.add(
-      Timer(const Duration(milliseconds: 120), _contentController.forward),
+      Timer(const Duration(milliseconds: 120), () {
+        if (!mounted) return;
+        _contentController.forward();
+      }),
     );
+  }
+
+  void _onLogin() {
+    getIt<SecureStorageService>().writeSeenOnboarding(true);
+    Navigator.of(context).pushReplacementNamed(AppRoutsName.loginScreen);
+  }
+
+  void _onApplyNow() {
+    getIt<SecureStorageService>().writeSeenOnboarding(true);
+    Navigator.of(context).pushReplacementNamed(AppRoutsName.applyScreen);
   }
 
   @override
@@ -149,20 +171,8 @@ class _SplashScreenState extends State<SplashScreen>
     super.dispose();
   }
 
-  void _onLogin() {
-    getIt<SecureStorageService>().writeSeenOnboarding(true);
-    Navigator.of(context).pushReplacementNamed(AppRoutsName.loginScreen);
-  }
-
-  void _onApplyNow() {
-    getIt<SecureStorageService>().writeSeenOnboarding(true);
-    Navigator.of(context).pushReplacementNamed(AppRoutsName.applyScreen);
-  }
-
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.sizeOf(context).height;
-
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: _step >= 1
           ? SystemUiOverlayStyle.dark
@@ -171,70 +181,152 @@ class _SplashScreenState extends State<SplashScreen>
         backgroundColor: AppColors.pink,
         body: Stack(
           children: [
-            Positioned.fill(
-              child: AnimatedBuilder(
-                animation: _logoController,
-                builder: (context, _) => SplashBranding(
-                  opacity: _logoOpacity.value,
-                  scale: _logoScale.value,
-                ),
-              ),
+            _SplashBackgroundLayer(
+              logoController: _logoController,
+              logoOpacity: _logoOpacity,
+              logoScale: _logoScale,
             ),
-            Positioned.fill(
-              child: AnimatedBuilder(
-                animation: Listenable.merge([
-                  _revealController,
-                  _heroController,
-                  _contentController,
-                ]),
-                builder: (context, _) {
-                  final topFraction = 0.5 - 0.17 * _heroLift.value;
-                  final heroTop = screenHeight * topFraction - _heroHeight / 2;
-
-                  return ClipPath(
-                    clipper: CircularRevealClipper(progress: _reveal.value),
-                    child: Container(
-                      color: AppColors.white,
-                      child: Stack(
-                        children: [
-                          Positioned(
-                            left: -65,
-                            right: 0,
-                            top: heroTop,
-                            height: _heroHeight,
-                            child: Transform.scale(
-                              scale: _heroScale,
-                              child: Lottie.asset(
-                                Assets.assetsAnimationsOnboardingAnimation,
-                                fit: BoxFit.contain,
-                                repeat: true,
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            left: 0,
-                            right: 0,
-                            bottom: 0,
-                            child: IgnorePointer(
-                              ignoring: _step < 2,
-                              child: OnboardingPanel(
-                                opacity: _contentOpacity.value,
-                                translateY: _contentTranslateY.value,
-                                onLogin: _onLogin,
-                                onApplyNow: _onApplyNow,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
+            _SplashRevealLayer(
+              revealController: _revealController,
+              heroController: _heroController,
+              contentController: _contentController,
+              reveal: _reveal,
+              heroLift: _heroLift,
+              contentOpacity: _contentOpacity,
+              contentTranslateY: _contentTranslateY,
+              step: _step,
+              heroHeight: _heroHeight,
+              heroScale: _heroScale,
+              onLogin: _onLogin,
+              onApplyNow: _onApplyNow,
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class _SplashBackgroundLayer extends StatelessWidget {
+  const _SplashBackgroundLayer({
+    required this.logoController,
+    required this.logoOpacity,
+    required this.logoScale,
+  });
+
+  final AnimationController logoController;
+  final Animation<double> logoOpacity;
+  final Animation<double> logoScale;
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned.fill(
+      child: AnimatedBuilder(
+        animation: logoController,
+        builder: (context, _) => SplashBranding(
+          opacity: logoOpacity.value,
+          scale: logoScale.value,
+        ),
+      ),
+    );
+  }
+}
+
+class _SplashRevealLayer extends StatelessWidget {
+  const _SplashRevealLayer({
+    required this.revealController,
+    required this.heroController,
+    required this.contentController,
+    required this.reveal,
+    required this.heroLift,
+    required this.contentOpacity,
+    required this.contentTranslateY,
+    required this.step,
+    required this.heroHeight,
+    required this.heroScale,
+    required this.onLogin,
+    required this.onApplyNow,
+  });
+
+  final AnimationController revealController;
+  final AnimationController heroController;
+  final AnimationController contentController;
+  final Animation<double> reveal;
+  final Animation<double> heroLift;
+  final Animation<double> contentOpacity;
+  final Animation<double> contentTranslateY;
+  final int step;
+  final double heroHeight;
+  final double heroScale;
+  final VoidCallback onLogin;
+  final VoidCallback onApplyNow;
+
+  static const _lottieAnimationWidget = _LottieAnimationWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.sizeOf(context).height;
+
+    return Positioned.fill(
+      child: AnimatedBuilder(
+        animation: Listenable.merge([
+          revealController,
+          heroController,
+          contentController,
+        ]),
+        builder: (context, _) {
+          final topFraction = 0.5 - 0.17 * heroLift.value;
+          final heroTop = screenHeight * topFraction - heroHeight / 2;
+
+          return ClipPath(
+            clipper: CircularRevealClipper(progress: reveal.value),
+            child: Container(
+              color: AppColors.white,
+              child: Stack(
+                children: [
+                  Positioned(
+                    left: -65,
+                    right: 0,
+                    top: heroTop,
+                    height: heroHeight,
+                    child: Transform.scale(
+                      scale: heroScale,
+                      child: _lottieAnimationWidget,
+                    ),
+                  ),
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    child: IgnorePointer(
+                      ignoring: step < 2,
+                      child: OnboardingPanel(
+                        opacity: contentOpacity.value,
+                        translateY: contentTranslateY.value,
+                        onLogin: onLogin,
+                        onApplyNow: onApplyNow,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _LottieAnimationWidget extends StatelessWidget {
+  const _LottieAnimationWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    return Lottie.asset(
+      Assets.assetsAnimationsOnboardingAnimation,
+      fit: BoxFit.contain,
+      repeat: true,
     );
   }
 }

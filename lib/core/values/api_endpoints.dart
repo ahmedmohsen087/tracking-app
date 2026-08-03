@@ -19,6 +19,9 @@ abstract class ApiEndpoints {
   static const String orderState = "$orders/state";
   static const String myOrders = "$orders/driver-orders";
 
+  static String osrmRouteUrl(double originLng, double originLat, double destLng, double destLat) =>
+      'https://router.project-osrm.org/route/v1/driving/$originLng,$originLat;$destLng,$destLat?overview=full&geometries=geojson';
+
   static String imageUrl(String? path) {
     if (path == null || path.isEmpty) return '';
     if (path.startsWith('http')) return path;

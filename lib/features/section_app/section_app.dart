@@ -23,8 +23,50 @@ class SectionApp extends StatefulWidget {
 class _SectionAppState extends State<SectionApp> {
   AppTab currentTab = AppTab.home;
 
-  SvgPicture _icon(String asset, Color color) =>
-      SvgPicture.asset(
+  List<Widget> _buildPages(BuildContext context) {
+    final lang = context.locale.languageCode;
+    return [
+      HomeScreen(key: ValueKey('home_$lang')),
+      OrdersScreen(key: ValueKey('orders_$lang')),
+      BlocProvider(
+        key: ValueKey('profile_$lang'),
+        create: (_) => getIt<LogoutViewModel>(),
+        child: const ProfileScreen(),
+      ),
+    ];
+  }
+
+  void _onTabChanged(int index) {
+    setState(() {
+      currentTab = AppTab.values[index];
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    context.locale;
+    final pages = _buildPages(context);
+
+    return Scaffold(
+      body: IndexedStack(index: currentTab.index, children: pages),
+      bottomNavigationBar: _SectionBottomNavigationBar(
+        currentIndex: currentTab.index,
+        onTap: _onTabChanged,
+      ),
+    );
+  }
+}
+
+class _SectionBottomNavigationBar extends StatelessWidget {
+  const _SectionBottomNavigationBar({
+    required this.currentIndex,
+    required this.onTap,
+  });
+
+  final int currentIndex;
+  final ValueChanged<int> onTap;
+
+  SvgPicture _icon(String asset, Color color) => SvgPicture.asset(
         asset,
         height: 24,
         colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
@@ -32,48 +74,29 @@ class _SectionAppState extends State<SectionApp> {
 
   @override
   Widget build(BuildContext context) {
-    context.locale;
-
-    final List<Widget> pages = [
-      HomeScreen(key: ValueKey('home_${context.locale.languageCode}')),
-      OrdersScreen(key: ValueKey('orders_${context.locale.languageCode}')),
-      BlocProvider(
-        key: ValueKey('profile_${context.locale.languageCode}'),
-        create: (context) => getIt<LogoutViewModel>(),
-        child: const ProfileScreen(),
-      ),
-    ];
-
-    return Scaffold(
-      body: IndexedStack(index: currentTab.index, children: pages),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentTab.index,
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: AppColors.pink,
-        unselectedItemColor: AppColors.placeHolder,
-        onTap: (index) {
-          setState(() {
-            currentTab = AppTab.values[index];
-          });
-        },
-        items: [
-          BottomNavigationBarItem(
-            icon: _icon(Assets.assetsIconsHome, AppColors.placeHolder),
-            activeIcon: _icon(Assets.assetsIconsHome, AppColors.pink),
-            label: AppStrings.home,
-          ),
-          BottomNavigationBarItem(
-            icon: _icon(Assets.assetsIconsOrder, AppColors.placeHolder),
-            activeIcon: _icon(Assets.assetsIconsOrder, AppColors.pink),
-            label: AppStrings.orders,
-          ),
-          BottomNavigationBarItem(
-            icon: _icon(Assets.assetsIconsPerson, AppColors.placeHolder),
-            activeIcon: _icon(Assets.assetsIconsPerson, AppColors.pink),
-            label: AppStrings.profile,
-          ),
-        ],
-      ),
+    return BottomNavigationBar(
+      currentIndex: currentIndex,
+      type: BottomNavigationBarType.fixed,
+      selectedItemColor: AppColors.pink,
+      unselectedItemColor: AppColors.placeHolder,
+      onTap: onTap,
+      items: [
+        BottomNavigationBarItem(
+          icon: _icon(Assets.assetsIconsHome, AppColors.placeHolder),
+          activeIcon: _icon(Assets.assetsIconsHome, AppColors.pink),
+          label: AppStrings.home,
+        ),
+        BottomNavigationBarItem(
+          icon: _icon(Assets.assetsIconsOrder, AppColors.placeHolder),
+          activeIcon: _icon(Assets.assetsIconsOrder, AppColors.pink),
+          label: AppStrings.orders,
+        ),
+        BottomNavigationBarItem(
+          icon: _icon(Assets.assetsIconsPerson, AppColors.placeHolder),
+          activeIcon: _icon(Assets.assetsIconsPerson, AppColors.pink),
+          label: AppStrings.profile,
+        ),
+      ],
     );
   }
 }

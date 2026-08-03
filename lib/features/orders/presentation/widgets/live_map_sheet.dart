@@ -70,29 +70,11 @@ class _LiveMapViewState extends State<_LiveMapView> {
       widget.order.shippingAddress.long,
     );
     context.read<MapCubit>().init(
-      orderId: widget.orderId,
-      initialStatus: widget.initialStatus,
-      storePoint: _kStoreLocation,
-      buyerPoint: buyerPoint,
-    );
-  }
-
-  bool _isPickup(LatLngPoint destination) {
-    return destination.lat == _kStoreLocation.lat &&
-        destination.lng == _kStoreLocation.lng;
-  }
-
-  List<LatLng> _polylinePoints(MapState state) {
-    final waypoints = state.route?.waypoints;
-    if (waypoints != null && waypoints.isNotEmpty) {
-      return waypoints.map((p) => LatLng(p.lat, p.lng)).toList();
-    }
-    final driver = state.driverLocation;
-    final dest = state.destination;
-    if (driver != null && dest != null) {
-      return [LatLng(driver.lat, driver.lng), LatLng(dest.lat, dest.lng)];
-    }
-    return [];
+          orderId: widget.orderId,
+          initialStatus: widget.initialStatus,
+          storePoint: _kStoreLocation,
+          buyerPoint: buyerPoint,
+        );
   }
 
   void _fitCamera(MapState state) {
@@ -108,7 +90,9 @@ class _LiveMapViewState extends State<_LiveMapView> {
     if (points.length < 2) return;
     final bounds = LatLngBounds.fromPoints(points);
     if (bounds.northEast.latitude == bounds.southWest.latitude &&
-        bounds.northEast.longitude == bounds.southWest.longitude) return;
+        bounds.northEast.longitude == bounds.southWest.longitude) {
+      return;
+    }
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       try {
@@ -139,15 +123,47 @@ class _LiveMapViewState extends State<_LiveMapView> {
               if (state.phase == MapPhase.loading) {
                 return const Center(child: CircularProgressIndicator());
               }
-              return _buildMap(state);
+              return _LiveMapWidget(
+                mapController: _mapController,
+                state: state,
+              );
             },
           ),
         ),
       ],
     );
   }
+}
 
-  Widget _buildMap(MapState state) {
+class _LiveMapWidget extends StatelessWidget {
+  const _LiveMapWidget({
+    required this.mapController,
+    required this.state,
+  });
+
+  final MapController mapController;
+  final MapState state;
+
+  bool _isPickup(LatLngPoint destination) {
+    return destination.lat == _kStoreLocation.lat &&
+        destination.lng == _kStoreLocation.lng;
+  }
+
+  List<LatLng> _polylinePoints(MapState state) {
+    final waypoints = state.route?.waypoints;
+    if (waypoints != null && waypoints.isNotEmpty) {
+      return waypoints.map((p) => LatLng(p.lat, p.lng)).toList();
+    }
+    final driver = state.driverLocation;
+    final dest = state.destination;
+    if (driver != null && dest != null) {
+      return [LatLng(driver.lat, driver.lng), LatLng(dest.lat, dest.lng)];
+    }
+    return [];
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final driver = state.driverLocation;
     final dest = state.destination;
     final polylinePoints = _polylinePoints(state);
@@ -162,7 +178,7 @@ class _LiveMapViewState extends State<_LiveMapView> {
           width: size.width,
           height: size.height * 0.75,
           child: FlutterMap(
-            mapController: _mapController,
+            mapController: mapController,
             options: MapOptions(initialCenter: center, initialZoom: 13),
             children: [
               TileLayer(
@@ -219,40 +235,51 @@ class _LiveMapViewState extends State<_LiveMapView> {
           ),
         ),
         if (dest != null)
-          Positioned(
-            top: 12,
-            left: 0,
-            right: 0,
-            child: Center(
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 8,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.15),
-                      blurRadius: 6,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: Text(
-                  _isPickup(dest)
-                      ? AppStrings.goingToPickup
-                      : AppStrings.goingToDelivery,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                  ),
-                ),
+          _LiveMapHeaderOverlay(isPickup: _isPickup(dest)),
+      ],
+    );
+  }
+}
+
+class _LiveMapHeaderOverlay extends StatelessWidget {
+  const _LiveMapHeaderOverlay({required this.isPickup});
+
+  final bool isPickup;
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      top: 12,
+      left: 0,
+      right: 0,
+      child: Center(
+        child: Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 8,
+          ),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.15),
+                blurRadius: 6,
+                offset: const Offset(0, 2),
               ),
+            ],
+          ),
+          child: Text(
+            isPickup
+                ? AppStrings.goingToPickup
+                : AppStrings.goingToDelivery,
+            style: const TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 14,
             ),
           ),
-      ],
+        ),
+      ),
     );
   }
 }

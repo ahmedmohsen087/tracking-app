@@ -175,5 +175,6 @@
   "goingToPickup": "Going to Store",
   "goingToDelivery": "Going to Customer",
   "eta": "ETA",
-  "distanceKm": "km"
+  "distanceKm": "km",
+  "riderApp": "RIDER APP"
 }

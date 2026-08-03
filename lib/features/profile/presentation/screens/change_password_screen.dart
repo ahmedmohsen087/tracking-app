@@ -40,11 +40,30 @@ class _ChangePasswordViewState extends State<ChangePasswordScreen> {
     context.read<ChangePasswordViewModel>().doEvent(EnableAutoValidateEvent());
     if (_formKey.currentState?.validate() ?? false) {
       context.read<ChangePasswordViewModel>().doEvent(
-        ChangePasswordRequestEvent(
-          password: _currentPasswordController.text,
-          newPassword: _newPasswordController.text,
-        ),
-      );
+            ChangePasswordRequestEvent(
+              password: _currentPasswordController.text,
+              newPassword: _newPasswordController.text,
+            ),
+          );
+    }
+  }
+
+  Future<void> _onStateListener(
+      BuildContext context, ChangePasswordState state) async {
+    if (!state.changePasswordState.isLoading &&
+        state.changePasswordState.data != null) {
+      AppSnackBar.showSuccess(context, AppStrings.passwordUpdated);
+      await getIt<AuthManager>().logout();
+      if (context.mounted) {
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          AppRoutsName.loginScreen,
+          (route) => false,
+        );
+      }
+    } else if (!state.changePasswordState.isLoading &&
+        state.changePasswordState.msg != null) {
+      AppSnackBar.showError(context, state.changePasswordState.msg!);
     }
   }
 
@@ -71,23 +90,7 @@ class _ChangePasswordViewState extends State<ChangePasswordScreen> {
         ),
       ),
       body: BlocListener<ChangePasswordViewModel, ChangePasswordState>(
-        listener: (context, state) async {
-          if (!state.changePasswordState.isLoading &&
-              state.changePasswordState.data != null) {
-            AppSnackBar.showSuccess(context, AppStrings.passwordUpdated);
-            await getIt<AuthManager>().logout();
-            if (context.mounted) {
-              Navigator.pushNamedAndRemoveUntil(
-                context,
-                AppRoutsName.loginScreen,
-                (route) => false,
-              );
-            }
-          } else if (!state.changePasswordState.isLoading &&
-              state.changePasswordState.msg != null) {
-            AppSnackBar.showError(context, state.changePasswordState.msg!);
-          }
-        },
+        listener: _onStateListener,
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -127,9 +130,9 @@ class _ChangePasswordViewState extends State<ChangePasswordScreen> {
                         hint: AppStrings.confirmPassword,
                         validator: (v) =>
                             AppValidations.validateConfirmPassword(
-                              _newPasswordController.text,
-                              v ?? '',
-                            ),
+                          _newPasswordController.text,
+                          v ?? '',
+                        ),
                       ),
                       const SizedBox(height: 32),
                       _UpdateButton(

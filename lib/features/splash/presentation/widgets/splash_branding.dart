@@ -1,4 +1,5 @@
 import 'package:flowery_rider_app/core/theme/app_colors.dart';
+import 'package:flowery_rider_app/core/values/app_strings.dart';
 import 'package:flowery_rider_app/core/values/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -30,7 +31,7 @@ class SplashBranding extends StatelessWidget {
                   borderRadius: BorderRadius.circular(30),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.3),
+                      color: AppColors.black.withValues(alpha: 0.3),
                       blurRadius: 40,
                       offset: const Offset(0, 18),
                     ),
@@ -44,7 +45,7 @@ class SplashBranding extends StatelessWidget {
               ),
               const SizedBox(height: 22),
               Text(
-                'Flowery',
+                AppStrings.appName,
                 style: GoogleFonts.poppins(
                   fontSize: 30,
                   height: 1,
@@ -55,7 +56,7 @@ class SplashBranding extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                'RIDER APP',
+                AppStrings.riderApp,
                 style: GoogleFonts.poppins(
                   fontSize: 11,
                   fontWeight: FontWeight.w500,

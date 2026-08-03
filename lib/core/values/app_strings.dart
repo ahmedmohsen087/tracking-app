@@ -213,4 +213,5 @@ abstract class AppStrings {
   static String get goingToDelivery => 'goingToDelivery'.tr();
   static String get eta => 'eta'.tr();
   static String get distanceKm => 'distanceKm'.tr();
+  static String get riderApp => 'riderApp'.tr();
 }

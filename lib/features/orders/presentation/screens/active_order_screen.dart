@@ -21,12 +21,12 @@ import '../widgets/live_map_sheet.dart';
 import 'order_success_screen.dart';
 
 Map<String, String> _statusLabels() => {
-  OrderStatus.accepted: AppStrings.statusAccepted,
-  OrderStatus.arrivedPickup: AppStrings.statusPicked,
-  OrderStatus.outForDelivery: AppStrings.statusOutForDelivery,
-  OrderStatus.arrivedUser: AppStrings.statusArrived,
-  OrderStatus.delivered: AppStrings.statusDelivered,
-};
+      OrderStatus.accepted: AppStrings.statusAccepted,
+      OrderStatus.arrivedPickup: AppStrings.statusPicked,
+      OrderStatus.outForDelivery: AppStrings.statusOutForDelivery,
+      OrderStatus.arrivedUser: AppStrings.statusArrived,
+      OrderStatus.delivered: AppStrings.statusDelivered,
+    };
 
 const List<String> _statusOrder = OrderStatus.progressOrder;
 
@@ -43,6 +43,31 @@ class ActiveOrderScreen extends StatelessWidget {
     required this.order,
   });
 
+  void _onStateListener(BuildContext context, ActiveOrderState state) {
+    final update = state.updateOrderState;
+    if (update.isLoading) return;
+    if (update.msg != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(update.msg!)),
+      );
+      return;
+    }
+    if (state.submittedState == OrderStatus.completed) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => OrderSuccessScreen(orderId: state.orderId),
+        ),
+      );
+    } else if (state.submittedState == OrderStatus.canceled) {
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        AppRoutsName.sectionApp,
+        (route) => false,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -50,30 +75,7 @@ class ActiveOrderScreen extends StatelessWidget {
       child: BlocListener<ActiveOrderViewModel, ActiveOrderState>(
         listenWhen: (prev, curr) =>
             prev.updateOrderState != curr.updateOrderState,
-        listener: (context, state) {
-          final update = state.updateOrderState;
-          if (update.isLoading) return;
-          if (update.msg != null) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(update.msg!)));
-            return;
-          }
-          if (state.submittedState == OrderStatus.completed) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (_) => OrderSuccessScreen(orderId: state.orderId),
-              ),
-            );
-          } else if (state.submittedState == OrderStatus.canceled) {
-            Navigator.pushNamedAndRemoveUntil(
-              context,
-              AppRoutsName.sectionApp,
-              (route) => false,
-            );
-          }
-        },
+        listener: _onStateListener,
         child: Scaffold(
           backgroundColor: AppColors.white,
           appBar: AppBar(
@@ -81,92 +83,21 @@ class ActiveOrderScreen extends StatelessWidget {
             title: Text(AppStrings.orderDetails),
             centerTitle: false,
           ),
-          body: BlocBuilder<ActiveOrderViewModel, ActiveOrderState>(
-            builder: (context, state) {
-              return ListView(
-                padding: const EdgeInsets.all(16),
-                children: [
-                  _ProgressBar(status: state.status),
-                  const SizedBox(height: 16),
-                  _StatusCard(
-                    status: state.status,
-                    orderNumber: order.orderNumber,
-                    createdAt: order.createdAt,
-                  ),
-                  const SizedBox(height: 16),
-                  _AddressCard(
-                    label: AppStrings.pickupAddress,
-                    name: order.store.name,
-                    address: order.store.address,
-                    imageUrl: order.store.image,
-                    phone: order.store.phoneNumber,
-                  ),
-                  const SizedBox(height: 16),
-                  _AddressCard(
-                    label: AppStrings.userAddress,
-                    name: '${order.user.firstName} ${order.user.lastName}'
-                        .trim(),
-                    address: [
-                      order.shippingAddress.street,
-                      order.shippingAddress.city,
-                    ].where((p) => p.isNotEmpty).join(', '),
-                    imageUrl: order.user.photo,
-                    phone: order.shippingAddress.phone,
-                  ),
-                  const SizedBox(height: 16),
-                  _OrderItemsList(items: order.orderItems),
-                  const SizedBox(height: 16),
-                  _TotalRow(
-                    total: order.totalPrice,
-                    paymentMethod: order.paymentType,
-                  ),
-                  const SizedBox(height: 24),
-                  _ShowMapButton(
-                    onPressed: () => _openLiveMap(context, state.status),
-                  ),
-                  const SizedBox(height: 12),
-                  if (state.status != OrderStatus.delivered)
-                    _ActionButton(
-                      status: state.status,
-                      userConfirmed: state.userConfirmed,
-                      isUpdating: state.isUpdating,
-                      onPressed: () {
-                        final next = _nextStatus(state.status);
-                        if (next != null) {
-                          context.read<ActiveOrderViewModel>().doEvent(
-                            UpdateOrderStatusEvent(next),
-                          );
-                        }
-                      },
-                    ),
-                  if (state.status == OrderStatus.delivered)
-                    _CompleteButton(
-                      isLoading:
-                          state.updateOrderState.isLoading &&
-                          state.submittedState == OrderStatus.completed,
-                      enabled: !state.updateOrderState.isLoading,
-                      onPressed: () => context
-                          .read<ActiveOrderViewModel>()
-                          .completeOrder(state.orderId),
-                    ),
-                  const SizedBox(height: 12),
-                  _CancelButton(
-                    isLoading:
-                        state.updateOrderState.isLoading &&
-                        state.submittedState == OrderStatus.canceled,
-                    enabled: !state.updateOrderState.isLoading,
-                    onPressed: () =>
-                        _confirmCancelOrder(context, state.orderId),
-                  ),
-                  const SizedBox(height: 24),
-                ],
-              );
-            },
-          ),
+          body: _ActiveOrderBody(orderId: orderId, order: order),
         ),
       ),
     );
   }
+}
+
+class _ActiveOrderBody extends StatelessWidget {
+  const _ActiveOrderBody({
+    required this.orderId,
+    required this.order,
+  });
+
+  final String orderId;
+  final OrderEntity order;
 
   String? _nextStatus(String current) {
     final idx = _statusOrder.indexOf(current);
@@ -193,18 +124,102 @@ class ActiveOrderScreen extends StatelessWidget {
       ),
     );
   }
-}
 
-void _confirmCancelOrder(BuildContext context, String orderId) {
-  final viewModel = context.read<ActiveOrderViewModel>();
-  AppDialog.show(
-    context: context,
-    title: AppStrings.cancelOrderConfirmTitle,
-    description: AppStrings.cancelOrderConfirmDescription,
-    confirmText: AppStrings.confirm,
-    cancelText: AppStrings.cancel,
-    onConfirm: () => viewModel.cancelOrder(orderId),
-  );
+  void _confirmCancelOrder(BuildContext context, String id) {
+    final viewModel = context.read<ActiveOrderViewModel>();
+    AppDialog.show(
+      context: context,
+      title: AppStrings.cancelOrderConfirmTitle,
+      description: AppStrings.cancelOrderConfirmDescription,
+      confirmText: AppStrings.confirm,
+      cancelText: AppStrings.cancel,
+      onConfirm: () => viewModel.cancelOrder(id),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final userAddress = [
+      order.shippingAddress.street,
+      order.shippingAddress.city,
+    ].where((p) => p.isNotEmpty).join(', ');
+
+    return BlocBuilder<ActiveOrderViewModel, ActiveOrderState>(
+      builder: (context, state) {
+        return ListView(
+          padding: const EdgeInsets.all(16),
+          children: [
+            _ProgressBar(status: state.status),
+            const SizedBox(height: 16),
+            _StatusCard(
+              status: state.status,
+              orderNumber: order.orderNumber,
+              createdAt: order.createdAt,
+            ),
+            const SizedBox(height: 16),
+            _AddressCard(
+              label: AppStrings.pickupAddress,
+              name: order.store.name,
+              address: order.store.address,
+              imageUrl: order.store.image,
+              phone: order.store.phoneNumber,
+            ),
+            const SizedBox(height: 16),
+            _AddressCard(
+              label: AppStrings.userAddress,
+              name: '${order.user.firstName} ${order.user.lastName}'.trim(),
+              address: userAddress,
+              imageUrl: order.user.photo,
+              phone: order.shippingAddress.phone,
+            ),
+            const SizedBox(height: 16),
+            _OrderItemsList(items: order.orderItems),
+            const SizedBox(height: 16),
+            _TotalRow(
+              total: order.totalPrice,
+              paymentMethod: order.paymentType,
+            ),
+            const SizedBox(height: 24),
+            _ShowMapButton(
+              onPressed: () => _openLiveMap(context, state.status),
+            ),
+            const SizedBox(height: 12),
+            if (state.status != OrderStatus.delivered)
+              _ActionButton(
+                status: state.status,
+                userConfirmed: state.userConfirmed,
+                isUpdating: state.isUpdating,
+                onPressed: () {
+                  final next = _nextStatus(state.status);
+                  if (next != null) {
+                    context.read<ActiveOrderViewModel>().doEvent(
+                          UpdateOrderStatusEvent(next),
+                        );
+                  }
+                },
+              ),
+            if (state.status == OrderStatus.delivered)
+              _CompleteButton(
+                isLoading: state.updateOrderState.isLoading &&
+                    state.submittedState == OrderStatus.completed,
+                enabled: !state.updateOrderState.isLoading,
+                onPressed: () => context
+                    .read<ActiveOrderViewModel>()
+                    .completeOrder(state.orderId),
+              ),
+            const SizedBox(height: 12),
+            _CancelButton(
+              isLoading: state.updateOrderState.isLoading &&
+                  state.submittedState == OrderStatus.canceled,
+              enabled: !state.updateOrderState.isLoading,
+              onPressed: () => _confirmCancelOrder(context, state.orderId),
+            ),
+            const SizedBox(height: 24),
+          ],
+        );
+      },
+    );
+  }
 }
 
 class _CompleteButton extends StatelessWidget {
@@ -241,7 +256,8 @@ class _CompleteButton extends StatelessWidget {
                   color: AppColors.white,
                 ),
               )
-            : Text(AppStrings.completeOrder, style: TextStyles.buttonTextStyle),
+            : Text(AppStrings.completeOrder,
+                style: TextStyles.buttonTextStyle),
       ),
     );
   }
@@ -336,7 +352,8 @@ class _ProgressBar extends StatelessWidget {
         return Expanded(
           child: Container(
             height: 6,
-            margin: EdgeInsets.only(right: i < _statusOrder.length - 1 ? 4 : 0),
+            margin:
+                EdgeInsets.only(right: i < _statusOrder.length - 1 ? 4 : 0),
             decoration: BoxDecoration(
               color: isActive ? AppColors.pink : AppColors.whiteGrey,
               borderRadius: BorderRadius.circular(3),
@@ -559,7 +576,8 @@ class _OrderItemsList extends StatelessWidget {
       children: [
         Text(
           AppStrings.orderItems,
-          style: TextStyles.bodyRegular14.copyWith(fontWeight: FontWeight.w600),
+          style:
+              TextStyles.bodyRegular14.copyWith(fontWeight: FontWeight.w600),
         ),
         const SizedBox(height: 8),
         ...items.map((item) {
@@ -600,7 +618,8 @@ class _OrderItemsList extends StatelessWidget {
                   ),
                 const SizedBox(width: 12),
                 Expanded(
-                  child: Text('$title × $qty', style: TextStyles.bodyRegular13),
+                  child:
+                      Text('$title × $qty', style: TextStyles.bodyRegular13),
                 ),
                 Text(
                   '${AppStrings.egp} ${(price * qty).toStringAsFixed(0)}',
@@ -644,7 +663,8 @@ class _TotalRow extends StatelessWidget {
         ),
         if (paymentMethod.isNotEmpty)
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
               color: AppColors.lightPink,
               borderRadius: BorderRadius.circular(8),

@@ -83,14 +83,30 @@ class _EditVehicleInfoViewState extends State<EditVehicleInfoView> {
     }
 
     context.read<EditVehicleInfoViewModel>().doEvent(
-      EditVehicleInfoSubmitEvent(
-        requestModel: EditVehicleInfoRequestModel(
-          vehicleTypeId: _selectedVehicleTypeId.value!,
-          vehicleNumber: _vehicleNumberController.text.trim(),
-          vehicleLicenseFilePath: _selectedLicenseFilePath.value!,
-        ),
-      ),
-    );
+          EditVehicleInfoSubmitEvent(
+            requestModel: EditVehicleInfoRequestModel(
+              vehicleTypeId: _selectedVehicleTypeId.value!,
+              vehicleNumber: _vehicleNumberController.text.trim(),
+              vehicleLicenseFilePath: _selectedLicenseFilePath.value!,
+            ),
+          ),
+        );
+  }
+
+  void _onStateListener(BuildContext context, EditVehicleInfoState state) {
+    if (state.editVehicleInfoState.data != null) {
+      AppSnackBar.showSuccess(
+        context,
+        AppStrings.vehicleInfoUpdatedSuccessfully,
+      );
+      Navigator.pop(context, true);
+    } else if (state.editVehicleInfoState.msg != null) {
+      AppSnackBar.showError(context, state.editVehicleInfoState.msg!);
+    }
+
+    if (state.getVehicleTypesState.msg != null) {
+      AppSnackBar.showError(context, state.getVehicleTypesState.msg!);
+    }
   }
 
   @override
@@ -113,30 +129,16 @@ class _EditVehicleInfoViewState extends State<EditVehicleInfoView> {
         title: Text(AppStrings.editVehicleInfo),
       ),
       body: BlocListener<EditVehicleInfoViewModel, EditVehicleInfoState>(
-        listenWhen: (previous, current) =>
-            (previous.editVehicleInfoState != current.editVehicleInfoState &&
-                !current.editVehicleInfoState.isLoading) ||
-            (previous.getVehicleTypesState != current.getVehicleTypesState &&
-                !current.getVehicleTypesState.isLoading),
-        listener: (context, state) {
-          if (state.editVehicleInfoState.data != null) {
-            AppSnackBar.showSuccess(
-              context,
-              AppStrings.vehicleInfoUpdatedSuccessfully,
-            );
-            Navigator.pop(context, true);
-          } else if (state.editVehicleInfoState.msg != null) {
-            AppSnackBar.showError(context, state.editVehicleInfoState.msg!);
-          }
-
-          if (state.getVehicleTypesState.msg != null) {
-            AppSnackBar.showError(context, state.getVehicleTypesState.msg!);
-          }
-        },
+        listenWhen: (prev, curr) =>
+            (prev.editVehicleInfoState != curr.editVehicleInfoState &&
+                !curr.editVehicleInfoState.isLoading) ||
+            (prev.getVehicleTypesState != curr.getVehicleTypesState &&
+                !curr.getVehicleTypesState.isLoading),
+        listener: _onStateListener,
         child: BlocBuilder<EditVehicleInfoViewModel, EditVehicleInfoState>(
-          buildWhen: (previous, current) =>
-              previous.getVehicleTypesState != current.getVehicleTypesState ||
-              previous.editVehicleInfoState != current.editVehicleInfoState,
+          buildWhen: (prev, curr) =>
+              prev.getVehicleTypesState != curr.getVehicleTypesState ||
+              prev.editVehicleInfoState != curr.editVehicleInfoState,
           builder: (context, state) {
             if (state.getVehicleTypesState.isLoading) {
               return const Center(child: CircularProgressIndicator());
@@ -146,7 +148,8 @@ class _EditVehicleInfoViewState extends State<EditVehicleInfoView> {
                 state.getVehicleTypesState.data?.vehicles ?? [];
 
             return SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
               child: ValueListenableBuilder<String?>(
                 valueListenable: _selectedVehicleTypeId,
                 builder: (context, vehicleTypeId, _) {

@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flowery_rider_app/core/reusable_widgets/app_snack_bar.dart';
 import 'package:flowery_rider_app/core/theme/app_colors.dart';
 import 'package:flowery_rider_app/core/theme/text_styles.dart';
 import 'package:flowery_rider_app/core/utils/validation/app_validations.dart';
@@ -9,7 +10,6 @@ import 'package:flowery_rider_app/features/auth/api/request_models/forget_passwo
 import 'package:flowery_rider_app/features/auth/presentation/view_models/forget_password_view_model/forget_password_events.dart';
 import 'package:flowery_rider_app/features/auth/presentation/view_models/forget_password_view_model/forget_password_states.dart';
 import 'package:flowery_rider_app/features/auth/presentation/view_models/forget_password_view_model/forget_password_view_model.dart';
-import 'package:flowery_rider_app/core/reusable_widgets/app_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -17,37 +17,41 @@ import 'package:flutter_svg/svg.dart';
 class ForgetPasswordScreen extends StatelessWidget {
   const ForgetPasswordScreen({super.key});
 
+  void _onStateListener(BuildContext context, ForgetPasswordState state) {
+    final apiState = state.forgetPasswordState;
+
+    if (apiState.data != null) {
+      Navigator.pushNamed(
+        context,
+        AppRoutsName.emailVerificationScreen,
+        arguments: context.read<ForgetPasswordViewModel>(),
+      );
+    } else if (apiState.msg != null) {
+      AppSnackBar.showError(
+        context,
+        apiState.msg!,
+        icon: SvgPicture.asset(
+          Assets.assetsIconsError,
+          width: 22,
+          height: 22,
+          colorFilter: const ColorFilter.mode(
+            Colors.white,
+            BlendMode.srcIn,
+          ),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ForgetPasswordViewModel, ForgetPasswordState>(
-      listenWhen: (previous, current) =>
-          previous.forgetPasswordState.isLoading &&
-          !current.forgetPasswordState.isLoading,
-      listener: (context, state) {
-        final apiState = state.forgetPasswordState;
+    context.locale;
 
-        if (apiState.data != null) {
-          Navigator.pushNamed(
-            context,
-            AppRoutsName.emailVerificationScreen,
-            arguments: context.read<ForgetPasswordViewModel>(),
-          );
-        } else if (apiState.msg != null) {
-          AppSnackBar.showError(
-            context,
-            apiState.msg!,
-            icon: SvgPicture.asset(
-              Assets.assetsIconsError,
-              width: 22,
-              height: 22,
-              colorFilter: const ColorFilter.mode(
-                Colors.white,
-                BlendMode.srcIn,
-              ),
-            ),
-          );
-        }
-      },
+    return BlocListener<ForgetPasswordViewModel, ForgetPasswordState>(
+      listenWhen: (prev, curr) =>
+          prev.forgetPasswordState.isLoading &&
+          !curr.forgetPasswordState.isLoading,
+      listener: _onStateListener,
       child: const _ForgetPasswordScaffold(),
     );
   }
@@ -68,7 +72,7 @@ class _ForgetPasswordScaffold extends StatelessWidget {
           icon: const Icon(Icons.arrow_back_ios_new),
         ),
         title: Text(
-          AppStrings.password.tr(),
+          AppStrings.password,
           style: TextStyles.appBarTextStyle,
         ),
       ),
@@ -102,12 +106,12 @@ class _ForgetPasswordBodyState extends State<_ForgetPasswordBody> {
   void _onSubmit() {
     if (_formKey.currentState!.validate()) {
       context.read<ForgetPasswordViewModel>().doEvent(
-        SendForgetPasswordEmailEvent(
-          requestModel: ForgetPasswordRequestModel(
-            email: _emailController.text.trim(),
-          ),
-        ),
-      );
+            SendForgetPasswordEmailEvent(
+              requestModel: ForgetPasswordRequestModel(
+                email: _emailController.text.trim(),
+              ),
+            ),
+          );
     }
   }
 
@@ -124,8 +128,8 @@ class _ForgetPasswordBodyState extends State<_ForgetPasswordBody> {
             controller: _emailController,
             validator: (v) => AppValidations.validateEmail(v ?? ''),
             decoration: InputDecoration(
-              labelText: AppStrings.email.tr(),
-              hintText: AppStrings.enterYourEmail.tr(),
+              labelText: AppStrings.email,
+              hintText: AppStrings.enterYourEmail,
               floatingLabelBehavior: FloatingLabelBehavior.always,
             ),
           ),
@@ -140,7 +144,7 @@ class _ForgetPasswordBodyState extends State<_ForgetPasswordBody> {
                   onPressed: isLoading ? null : _onSubmit,
                   child: isLoading
                       ? const CircularProgressIndicator()
-                      : Text(AppStrings.confirm.tr()),
+                      : Text(AppStrings.confirm),
                 ),
               );
             },
