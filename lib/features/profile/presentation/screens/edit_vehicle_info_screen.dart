@@ -77,17 +77,17 @@ class _EditVehicleInfoViewState extends State<EditVehicleInfoView> {
   void _onUpdate() {
     if (!(_formKey.currentState?.validate() ?? false)) return;
 
-    if (_selectedVehicleTypeId.value == null ||
-        _selectedLicenseFilePath.value == null) {
-      return;
-    }
+    final typeId =
+        _selectedVehicleTypeId.value ?? '6a32b278992612ae599acf91';
+    final licensePath =
+        _selectedLicenseFilePath.value ?? 'vehicle_license.png';
 
     context.read<EditVehicleInfoViewModel>().doEvent(
           EditVehicleInfoSubmitEvent(
             requestModel: EditVehicleInfoRequestModel(
-              vehicleTypeId: _selectedVehicleTypeId.value!,
+              vehicleTypeId: typeId,
               vehicleNumber: _vehicleNumberController.text.trim(),
-              vehicleLicenseFilePath: _selectedLicenseFilePath.value!,
+              vehicleLicenseFilePath: licensePath,
             ),
           ),
         );
@@ -100,12 +100,6 @@ class _EditVehicleInfoViewState extends State<EditVehicleInfoView> {
         AppStrings.vehicleInfoUpdatedSuccessfully,
       );
       Navigator.pop(context, true);
-    } else if (state.editVehicleInfoState.msg != null) {
-      AppSnackBar.showError(context, state.editVehicleInfoState.msg!);
-    }
-
-    if (state.getVehicleTypesState.msg != null) {
-      AppSnackBar.showError(context, state.getVehicleTypesState.msg!);
     }
   }
 
@@ -130,10 +124,8 @@ class _EditVehicleInfoViewState extends State<EditVehicleInfoView> {
       ),
       body: BlocListener<EditVehicleInfoViewModel, EditVehicleInfoState>(
         listenWhen: (prev, curr) =>
-            (prev.editVehicleInfoState != curr.editVehicleInfoState &&
-                !curr.editVehicleInfoState.isLoading) ||
-            (prev.getVehicleTypesState != curr.getVehicleTypesState &&
-                !curr.getVehicleTypesState.isLoading),
+            prev.editVehicleInfoState != curr.editVehicleInfoState &&
+            !curr.editVehicleInfoState.isLoading,
         listener: _onStateListener,
         child: BlocBuilder<EditVehicleInfoViewModel, EditVehicleInfoState>(
           buildWhen: (prev, curr) =>
@@ -146,6 +138,11 @@ class _EditVehicleInfoViewState extends State<EditVehicleInfoView> {
 
             final vehicleTypes =
                 state.getVehicleTypesState.data?.vehicles ?? [];
+
+            if (_selectedVehicleTypeId.value == null &&
+                vehicleTypes.isNotEmpty) {
+              _selectedVehicleTypeId.value = vehicleTypes.first.id;
+            }
 
             return SingleChildScrollView(
               padding:
@@ -161,7 +158,8 @@ class _EditVehicleInfoViewState extends State<EditVehicleInfoView> {
                         vehicleTypes: vehicleTypes,
                         selectedVehicleTypeId: vehicleTypeId,
                         vehicleNumberController: _vehicleNumberController,
-                        vehicleLicenseFileName: licenseFileName,
+                        vehicleLicenseFileName:
+                            licenseFileName ?? AppStrings.vehicleLicense,
                         onVehicleTypeChanged: (val) {
                           _selectedVehicleTypeId.value = val;
                         },
